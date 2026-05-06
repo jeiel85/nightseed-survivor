@@ -1,5 +1,25 @@
 # CHANGELOG.md
 
+## v0.2.0 - 2026-05-07
+
+### Added
+- Godot 4 프로젝트 골격(`godot/`) 및 실행 가능한 `project.godot` 추가
+- Milestone 1 플레이어블 프로토타입 씬/스크립트 추가
+- 플레이어 이동(WASD/방향키), 체력, 피격 무적, 게임오버/재시작 루프 추가
+- 적 기본 씬, 플레이어 추적 이동, 플레이어 주변 스폰 로직 추가
+- HUD(HP, 생존 시간) 추가
+
+### Changed
+- 작업 우선순위를 Milestone 2(Combat Loop) 중심으로 갱신
+
+### Documentation
+- `.agent/tasks.md`, `.agent/progress.md`, `.agent/decisions.md` 갱신
+- `HISTORY.md` 작업 이력 갱신
+
+### Verification
+- 로컬 Godot headless 검증 시도 (환경 의존)
+- CI 검증은 푸시 후 GitHub Actions에서 확인
+
 ## v0.1.0 - 2026-05-06
 
 ### Added

@@ -47,3 +47,20 @@ Reason:
 
 - MVP should validate the core game loop first.
 - These features add policy, privacy, build, and maintenance complexity.
+
+## 2026-05-07
+
+### Decision: Milestone 1은 플러그인 없이 Godot 기본 기능으로 구현
+
+Reason:
+
+- 요구된 기능(이동, 추적 AI, 스폰, HUD, 게임오버)은 엔진 기본 노드와 GDScript로 충분히 구현 가능함.
+- 외부 의존성을 추가하지 않으면 초기 안정성과 유지보수성이 높음.
+- AGENTS.md 의존성 최소화 원칙과 일치함.
+
+### Decision: Placeholder 시각은 `Visual` 하위 Polygon2D로 고정
+
+Reason:
+
+- 로직 노드와 시각 노드 분리를 구조적으로 강제할 수 있음.
+- 이후 실제 Sprite2D/애니메이션으로 교체 시 충돌/이동 로직 영향을 줄일 수 있음.
