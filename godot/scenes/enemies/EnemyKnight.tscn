@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/EnemyBase.gd" id="1_e"]
+
+[sub_resource type="CircleShape2D" id="cs_body"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="cs_hit"]
+radius = 22.0
+
+[node name="EnemyKnight" type="CharacterBody2D"]
+script = ExtResource("1_e")
+collision_layer = 2
+collision_mask = 1
+move_speed = 55.0
+contact_damage = 14
+max_hp = 40
+xp_reward = 8
+gold_drop_chance = 0.1
+gold_drop_amount = 1
+body_color = Color(0.4, 0.4, 0.55, 1)
+body_size = 20.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("cs_body")
+
+[node name="HitArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+shape = SubResource("cs_hit")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Body" type="Polygon2D" parent="Visual"]
+color = Color(0.4, 0.4, 0.55, 1)
+polygon = PackedVector2Array(0, -20, 14, -14, 20, 0, 14, 14, 0, 20, -14, 14, -20, 0, -14, -14)

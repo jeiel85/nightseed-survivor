@@ -1,0 +1,7 @@
+# Godot engine binaries (portable, not part of the project)
+Godot_v*.exe
+Godot_v*.exe.zip
+*.zip
+
+# Godot generated/cache files
+godot/.godot/

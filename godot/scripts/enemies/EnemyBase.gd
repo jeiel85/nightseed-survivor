@@ -1,26 +1,69 @@
 extends CharacterBody2D
 class_name EnemyBase
 
+signal died(xp: int, gold: int, pos: Vector2)
+
 @export var move_speed: float = 70.0
 @export var contact_damage: int = 8
+@export var max_hp: int = 12
+@export var xp_reward: int = 2
+@export var gold_drop_chance: float = 0.05
+@export var gold_drop_amount: int = 1
+@export var body_color: Color = Color(0.9, 0.2, 0.2, 1.0)
+@export var body_size: float = 12.0
 
+var current_hp: int
 var target: Node2D
+var _flash_timer: float = 0.0
+
 @onready var hit_area: Area2D = $HitArea
+@onready var visual_body: Polygon2D = $Visual/Body
 
 func _ready() -> void:
+	current_hp = max_hp
+	add_to_group("enemies")
 	hit_area.body_entered.connect(_on_hit_area_body_entered)
+	_update_visual()
 
-func _physics_process(_delta: float) -> void:
+func _update_visual() -> void:
+	if not is_instance_valid(visual_body):
+		return
+	visual_body.color = body_color
+	var pts := PackedVector2Array()
+	for i in range(8):
+		var a := float(i) * TAU / 8.0
+		pts.append(Vector2(cos(a) * body_size, sin(a) * body_size))
+	visual_body.polygon = pts
+
+func _physics_process(delta: float) -> void:
 	if not is_instance_valid(target):
 		velocity = Vector2.ZERO
 		return
-
-	var direction := global_position.direction_to(target.global_position)
-	velocity = direction * move_speed
+	var dir := global_position.direction_to(target.global_position)
+	velocity = dir * move_speed
 	move_and_slide()
 
-func set_target(target_node: Node2D) -> void:
-	target = target_node
+	if _flash_timer > 0.0:
+		_flash_timer -= delta
+		if _flash_timer <= 0.0:
+			if is_instance_valid(visual_body):
+				visual_body.color = body_color
+
+func set_target(t: Node2D) -> void:
+	target = t
+
+func take_damage(amount: int) -> void:
+	current_hp -= amount
+	_flash_timer = 0.12
+	if is_instance_valid(visual_body):
+		visual_body.color = Color.WHITE
+	if current_hp <= 0:
+		_die()
+
+func _die() -> void:
+	var gold_drop: int = gold_drop_amount if randf() < gold_drop_chance else 0
+	died.emit(xp_reward, gold_drop, global_position)
+	queue_free()
 
 func _on_hit_area_body_entered(body: Node) -> void:
 	if body.has_method("apply_damage"):
