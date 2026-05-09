@@ -37,90 +37,105 @@ custom_minimum_size = Vector2(0, 320)
 size_flags_vertical = 3
 
 [node name="VBox" type="VBoxContainer" parent="Background/VBox/Card1"]
-theme_override_constants/separation = 8
+theme_override_constants/separation = 6
 
 [node name="Header" type="ColorRect" parent="Background/VBox/Card1/VBox"]
 custom_minimum_size = Vector2(0, 38)
 color = Color(0.5, 0.8, 1.0, 1)
 
+[node name="Icon" type="TextureRect" parent="Background/VBox/Card1/VBox"]
+custom_minimum_size = Vector2(0, 64)
+expand_mode = 5
+stretch_mode = 5
+
 [node name="Title" type="Label" parent="Background/VBox/Card1/VBox"]
-custom_minimum_size = Vector2(0, 56)
+custom_minimum_size = Vector2(0, 50)
 text = "Weapon"
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 28
 
 [node name="Desc" type="Label" parent="Background/VBox/Card1/VBox"]
-custom_minimum_size = Vector2(0, 90)
+custom_minimum_size = Vector2(0, 70)
 text = "Description"
 autowrap_mode = 3
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 20
 
 [node name="SelectBtn" type="Button" parent="Background/VBox/Card1/VBox"]
-custom_minimum_size = Vector2(0, 86)
+custom_minimum_size = Vector2(0, 80)
 text = "SELECT"
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 26
 
 [node name="Card2" type="PanelContainer" parent="Background/VBox"]
 custom_minimum_size = Vector2(0, 320)
 size_flags_vertical = 3
 
 [node name="VBox" type="VBoxContainer" parent="Background/VBox/Card2"]
-theme_override_constants/separation = 8
+theme_override_constants/separation = 6
 
 [node name="Header" type="ColorRect" parent="Background/VBox/Card2/VBox"]
 custom_minimum_size = Vector2(0, 38)
 color = Color(0.5, 0.8, 1.0, 1)
 
+[node name="Icon" type="TextureRect" parent="Background/VBox/Card2/VBox"]
+custom_minimum_size = Vector2(0, 64)
+expand_mode = 5
+stretch_mode = 5
+
 [node name="Title" type="Label" parent="Background/VBox/Card2/VBox"]
-custom_minimum_size = Vector2(0, 56)
+custom_minimum_size = Vector2(0, 50)
 text = "Weapon"
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 28
 
 [node name="Desc" type="Label" parent="Background/VBox/Card2/VBox"]
-custom_minimum_size = Vector2(0, 90)
+custom_minimum_size = Vector2(0, 70)
 text = "Description"
 autowrap_mode = 3
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 20
 
 [node name="SelectBtn" type="Button" parent="Background/VBox/Card2/VBox"]
-custom_minimum_size = Vector2(0, 86)
+custom_minimum_size = Vector2(0, 80)
 text = "SELECT"
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 26
 
 [node name="Card3" type="PanelContainer" parent="Background/VBox"]
 custom_minimum_size = Vector2(0, 320)
 size_flags_vertical = 3
 
 [node name="VBox" type="VBoxContainer" parent="Background/VBox/Card3"]
-theme_override_constants/separation = 8
+theme_override_constants/separation = 6
 
 [node name="Header" type="ColorRect" parent="Background/VBox/Card3/VBox"]
 custom_minimum_size = Vector2(0, 38)
 color = Color(0.5, 0.8, 1.0, 1)
 
+[node name="Icon" type="TextureRect" parent="Background/VBox/Card3/VBox"]
+custom_minimum_size = Vector2(0, 64)
+expand_mode = 5
+stretch_mode = 5
+
 [node name="Title" type="Label" parent="Background/VBox/Card3/VBox"]
-custom_minimum_size = Vector2(0, 56)
+custom_minimum_size = Vector2(0, 50)
 text = "Weapon"
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 28
 
 [node name="Desc" type="Label" parent="Background/VBox/Card3/VBox"]
-custom_minimum_size = Vector2(0, 90)
+custom_minimum_size = Vector2(0, 70)
 text = "Description"
 autowrap_mode = 3
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 20
 
 [node name="SelectBtn" type="Button" parent="Background/VBox/Card3/VBox"]
-custom_minimum_size = Vector2(0, 86)
+custom_minimum_size = Vector2(0, 80)
 text = "SELECT"
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 26

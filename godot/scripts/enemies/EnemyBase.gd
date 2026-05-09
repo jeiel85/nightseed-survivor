@@ -17,7 +17,8 @@ var target: Node2D
 var _flash_timer: float = 0.0
 
 @onready var hit_area: Area2D = $HitArea
-@onready var visual_body: Polygon2D = $Visual/Body
+@onready var visual_body: Polygon2D = $Visual.get_node_or_null("Body")
+@onready var visual_sprite: Sprite2D = $Visual.get_node_or_null("Sprite")
 
 func _ready() -> void:
 	var d: Dictionary = Difficulty.get_data(GameData.difficulty)
@@ -30,6 +31,10 @@ func _ready() -> void:
 	_update_visual()
 
 func _update_visual() -> void:
+	if is_instance_valid(visual_sprite):
+		var s: float = body_size / 7.0
+		visual_sprite.scale = Vector2(s, s)
+		return
 	if not is_instance_valid(visual_body):
 		return
 	visual_body.color = body_color
@@ -50,7 +55,9 @@ func _physics_process(delta: float) -> void:
 	if _flash_timer > 0.0:
 		_flash_timer -= delta
 		if _flash_timer <= 0.0:
-			if is_instance_valid(visual_body):
+			if is_instance_valid(visual_sprite):
+				visual_sprite.modulate = Color.WHITE
+			elif is_instance_valid(visual_body):
 				visual_body.color = body_color
 
 func set_target(t: Node2D) -> void:
@@ -59,7 +66,9 @@ func set_target(t: Node2D) -> void:
 func take_damage(amount: int) -> void:
 	current_hp -= amount
 	_flash_timer = 0.12
-	if is_instance_valid(visual_body):
+	if is_instance_valid(visual_sprite):
+		visual_sprite.modulate = Color(3.0, 3.0, 3.0)
+	elif is_instance_valid(visual_body):
 		visual_body.color = Color.WHITE
 	if current_hp <= 0:
 		_die()

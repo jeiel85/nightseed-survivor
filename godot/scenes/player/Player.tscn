@@ -20,13 +20,8 @@ shape = SubResource("cs_1")
 color = Color(0.2, 0.5, 1.0, 0.18)
 polygon = PackedVector2Array(0, -28, 19.8, -19.8, 28, 0, 19.8, 19.8, 0, 28, -19.8, 19.8, -28, 0, -19.8, -19.8)
 
-[node name="Body" type="Polygon2D" parent="Visual"]
-color = Color(0.2, 0.5, 1.0, 1)
-polygon = PackedVector2Array(0, -16, 11, -11, 16, 0, 11, 11, 0, 16, -11, 11, -16, 0, -11, -11)
-
-[node name="Core" type="Polygon2D" parent="Visual"]
-color = Color(1, 1, 1, 0.85)
-polygon = PackedVector2Array(0, -5, 4, 0, 0, 5, -4, 0)
+[node name="Sprite" type="Sprite2D" parent="Visual"]
+scale = Vector2(2, 2)
 
 [node name="Aim" type="Polygon2D" parent="Visual"]
 position = Vector2(24, 0)

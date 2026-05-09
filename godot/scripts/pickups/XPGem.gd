@@ -7,16 +7,16 @@ var _target_pos: Vector2 = Vector2.ZERO
 var _attracted: bool = false
 var _attract_speed: float = 240.0
 
+const SPRITE := preload("res://assets/sprites/pickup_xp.png")
+
 func _ready() -> void:
 	add_to_group("xp_gems")
 	_draw_gem()
 
 func _draw_gem() -> void:
-	var vis := Polygon2D.new()
-	vis.color = Color(0.2, 0.95, 0.4)
-	vis.polygon = PackedVector2Array([
-		Vector2(0, -7), Vector2(5, 0), Vector2(0, 7), Vector2(-5, 0)
-	])
+	var vis := Sprite2D.new()
+	vis.texture = SPRITE
+	vis.scale = Vector2(1.4, 1.4)
 	add_child(vis)
 
 func attract(toward: Vector2) -> void:

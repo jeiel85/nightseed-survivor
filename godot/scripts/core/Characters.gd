@@ -15,6 +15,7 @@ const DATA: Dictionary = {
 		"damage_mult": 1.0,
 		"xp_radius": 80.0,
 		"color": Color(0.2, 0.5, 1.0),
+		"sprite": "res://assets/sprites/char_vagrant.png",
 		"unlock_cost": 0,
 	},
 	"spirit_sister": {
@@ -27,6 +28,7 @@ const DATA: Dictionary = {
 		"damage_mult": 1.0,
 		"xp_radius": 110.0,
 		"color": Color(0.4, 0.95, 0.95),
+		"sprite": "res://assets/sprites/char_spirit_sister.png",
 		"unlock_cost": 200,
 	},
 	"hunter": {
@@ -39,6 +41,7 @@ const DATA: Dictionary = {
 		"damage_mult": 1.0,
 		"xp_radius": 80.0,
 		"color": Color(0.95, 0.85, 0.4),
+		"sprite": "res://assets/sprites/char_hunter.png",
 		"unlock_cost": 500,
 	},
 	"berserker": {
@@ -51,6 +54,7 @@ const DATA: Dictionary = {
 		"damage_mult": 1.25,
 		"xp_radius": 70.0,
 		"color": Color(0.5, 0.95, 0.4),
+		"sprite": "res://assets/sprites/char_berserker.png",
 		"unlock_cost": 1000,
 	},
 	"pyromancer": {
@@ -63,6 +67,7 @@ const DATA: Dictionary = {
 		"damage_mult": 1.1,
 		"xp_radius": 90.0,
 		"color": Color(1.0, 0.55, 0.2),
+		"sprite": "res://assets/sprites/char_pyromancer.png",
 		"unlock_cost": 1500,
 	},
 }

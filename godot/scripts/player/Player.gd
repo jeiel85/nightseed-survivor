@@ -22,7 +22,7 @@ var _invincible_timer: float = 0.0
 
 @onready var weapon_manager: WeaponManager = $WeaponManager
 @onready var aura: Polygon2D = $Visual/Aura
-@onready var body_visual: Polygon2D = $Visual/Body
+@onready var sprite_visual: Sprite2D = $Visual/Sprite
 @onready var aim_visual: Polygon2D = $Visual/Aim
 
 func _ready() -> void:
@@ -35,8 +35,10 @@ func _ready() -> void:
 	current_hp = max_hp
 	hp_changed.emit(current_hp, max_hp)
 	xp_changed.emit(0, get_xp_needed())
-	if body_visual:
-		body_visual.color = ch["color"]
+	if sprite_visual and ch.has("sprite"):
+		var tex: Texture2D = load(String(ch["sprite"]))
+		if tex:
+			sprite_visual.texture = tex
 	if aura:
 		var aura_c: Color = ch["color"]
 		aura_c.a = 0.18

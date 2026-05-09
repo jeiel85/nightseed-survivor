@@ -4,11 +4,11 @@ class_name LevelUpUI
 signal upgrade_chosen(upgrade_id: String)
 
 const WEAPON_DATA: Dictionary = {
-	"Moon Dagger":  {"desc": "Auto-fires at nearest enemy", "color": Color(0.5, 0.8, 1.0)},
-	"Spirit Orb":   {"desc": "Orbiting damage orbs",        "color": Color(0.3, 0.9, 1.0)},
-	"Fire Wisp":    {"desc": "Random area explosions",      "color": Color(1.0, 0.5, 0.15)},
-	"Thorn Ring":   {"desc": "Burst of radial spikes",      "color": Color(0.3, 0.9, 0.3)},
-	"Star Needle":  {"desc": "Spread needle volley",        "color": Color(0.95, 0.9, 0.2)},
+	"Moon Dagger":  {"desc": "Auto-fires at nearest enemy", "color": Color(0.5, 0.8, 1.0),  "icon": "res://assets/sprites/icon_moon_dagger.png"},
+	"Spirit Orb":   {"desc": "Orbiting damage orbs",        "color": Color(0.3, 0.9, 1.0),  "icon": "res://assets/sprites/icon_spirit_orb.png"},
+	"Fire Wisp":    {"desc": "Random area explosions",      "color": Color(1.0, 0.5, 0.15), "icon": "res://assets/sprites/icon_fire_wisp.png"},
+	"Thorn Ring":   {"desc": "Burst of radial spikes",      "color": Color(0.3, 0.9, 0.3),  "icon": "res://assets/sprites/icon_thorn_ring.png"},
+	"Star Needle":  {"desc": "Spread needle volley",        "color": Color(0.95, 0.9, 0.2), "icon": "res://assets/sprites/icon_star_needle.png"},
 }
 
 const PASSIVE_DATA: Dictionary = {
@@ -71,6 +71,7 @@ func _generate_options() -> void:
 				"title": wname,
 				"desc": WEAPON_DATA[wname]["desc"],
 				"color": WEAPON_DATA[wname]["color"],
+				"icon": WEAPON_DATA[wname].get("icon", ""),
 			})
 
 	for w in wm.weapons:
@@ -83,6 +84,7 @@ func _generate_options() -> void:
 				"title": wname + "  Lv." + str(w.level + 1),
 				"desc": "DMG +25% / CD -12%",
 				"color": WEAPON_DATA[wname]["color"].lightened(0.2),
+				"icon": WEAPON_DATA[wname].get("icon", ""),
 			})
 
 	for pkey in PASSIVE_DATA:
@@ -111,12 +113,21 @@ func _update_cards() -> void:
 
 func _setup_card(card: PanelContainer, opt: Dictionary, idx: int) -> void:
 	var header: ColorRect = card.get_node_or_null("VBox/Header")
+	var icon_rect: TextureRect = card.get_node_or_null("VBox/Icon")
 	var title_lbl: Label = card.get_node_or_null("VBox/Title")
 	var desc_lbl: Label = card.get_node_or_null("VBox/Desc")
 	var btn: Button = card.get_node_or_null("VBox/SelectBtn")
 
 	if header:
 		header.color = opt["color"]
+	if icon_rect:
+		var icon_path: String = String(opt.get("icon", ""))
+		if icon_path != "":
+			icon_rect.texture = load(icon_path)
+			icon_rect.visible = true
+		else:
+			icon_rect.texture = null
+			icon_rect.visible = false
 	if title_lbl:
 		title_lbl.text = opt["title"]
 	if desc_lbl:

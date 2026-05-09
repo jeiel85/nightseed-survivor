@@ -7,18 +7,16 @@ var _target_pos: Vector2 = Vector2.ZERO
 var _attracted: bool = false
 var _attract_speed: float = 200.0
 
+const SPRITE := preload("res://assets/sprites/pickup_gold.png")
+
 func _ready() -> void:
 	add_to_group("gold_coins")
 	_draw_coin()
 
 func _draw_coin() -> void:
-	var vis := Polygon2D.new()
-	vis.color = Color(1.0, 0.85, 0.1)
-	var pts := PackedVector2Array()
-	for i in range(8):
-		var a := i * TAU / 8.0
-		pts.append(Vector2(cos(a) * 6.0, sin(a) * 6.0))
-	vis.polygon = pts
+	var vis := Sprite2D.new()
+	vis.texture = SPRITE
+	vis.scale = Vector2(1.4, 1.4)
 	add_child(vis)
 
 func attract(toward: Vector2) -> void:
