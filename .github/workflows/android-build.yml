@@ -11,6 +11,9 @@ env:
   GODOT_VERSION: 4.2.2-stable
   GODOT_BIN_NAME: Godot_v4.2.2-stable_linux.x86_64
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
