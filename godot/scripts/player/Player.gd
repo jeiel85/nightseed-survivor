@@ -36,6 +36,10 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var input := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	if input.is_zero_approx():
+		input = TouchInput.move_vector
+	if input.length() > 1.0:
+		input = input.normalized()
 	velocity = input * move_speed
 	move_and_slide()
 	if _invincible_timer > 0.0:

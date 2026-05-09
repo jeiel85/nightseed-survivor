@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/GameRoot.gd" id="1_gr"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_p"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" path="res://scenes/enemies/EnemyKnight.tscn" id="9_knight"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/EnemyHound.tscn" id="10_hound"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/EnemyBoss.tscn" id="11_boss"]
+[ext_resource type="PackedScene" path="res://scenes/ui/VirtualJoystick.tscn" id="12_vj"]
 
 [node name="GameRoot" type="Node2D"]
 script = ExtResource("1_gr")
@@ -51,32 +52,50 @@ boss_scene = ExtResource("11_boss")
 
 [node name="LevelUpUI" parent="." instance=ExtResource("6_lui")]
 
+[node name="VirtualJoystick" parent="." instance=ExtResource("12_vj")]
+
 [node name="ResultPanel" type="CanvasLayer" parent="."]
 process_mode = 3
+layer = 20
+
+[node name="Backdrop" type="ColorRect" parent="ResultPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.8)
 
 [node name="Panel" type="PanelContainer" parent="ResultPanel"]
-offset_left = 380.0
-offset_top = 215.0
-offset_right = 900.0
-offset_bottom = 530.0
+offset_left = 60.0
+offset_top = 280.0
+offset_right = -60.0
+offset_bottom = -200.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="VBox" type="VBoxContainer" parent="ResultPanel/Panel"]
+theme_override_constants/separation = 18
 
 [node name="Title" type="Label" parent="ResultPanel/Panel/VBox"]
-custom_minimum_size = Vector2(0, 65)
+custom_minimum_size = Vector2(0, 100)
 text = "GAME OVER"
 horizontal_alignment = 1
 vertical_alignment = 1
+theme_override_font_sizes/font_size = 48
 
 [node name="Stats" type="Label" parent="ResultPanel/Panel/VBox"]
-custom_minimum_size = Vector2(0, 100)
-text = "Survived: 0:00\nKills: 0\nGold earned: 0"
+custom_minimum_size = Vector2(0, 200)
+text = "Survived: 0:00
+Kills: 0
+Gold earned: 0"
 horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 24
 
 [node name="BtnRestart" type="Button" parent="ResultPanel/Panel/VBox"]
-custom_minimum_size = Vector2(0, 52)
+custom_minimum_size = Vector2(0, 100)
 text = "Retry"
+theme_override_font_sizes/font_size = 32
 
 [node name="BtnMenu" type="Button" parent="ResultPanel/Panel/VBox"]
-custom_minimum_size = Vector2(0, 52)
+custom_minimum_size = Vector2(0, 90)
 text = "Main Menu"
+theme_override_font_sizes/font_size = 28

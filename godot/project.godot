@@ -16,11 +16,16 @@ config/icon=""
 
 [autoload]
 GameData="*res://scripts/core/GameData.gd"
+TouchInput="*res://scripts/core/TouchInput.gd"
 
 [display]
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_width=720
+window/size/viewport_height=1280
+window/size/window_width_override=540
+window/size/window_height_override=960
+window/handheld/orientation=1
 window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [input]
 move_up={

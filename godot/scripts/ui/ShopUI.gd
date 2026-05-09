@@ -32,41 +32,60 @@ func _build_rows() -> void:
 		var row := _make_row(key)
 		items_container.add_child(row)
 
-func _make_row(key: String) -> HBoxContainer:
-	var hbox := HBoxContainer.new()
-	hbox.name = "Row_" + key
+func _make_row(key: String) -> PanelContainer:
+	var card := PanelContainer.new()
+	card.name = "Row_" + key
+	card.custom_minimum_size = Vector2(0, 150)
+	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 6)
+	card.add_child(vbox)
+
+	var header := HBoxContainer.new()
+	vbox.add_child(header)
 
 	var name_lbl := Label.new()
 	name_lbl.text = UPGRADE_NAMES[key]
-	name_lbl.custom_minimum_size.x = 160
-	hbox.add_child(name_lbl)
-
-	var desc_lbl := Label.new()
-	desc_lbl.text = UPGRADE_DESCS[key]
-	desc_lbl.custom_minimum_size.x = 200
-	hbox.add_child(desc_lbl)
+	name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	name_lbl.add_theme_font_size_override("font_size", 26)
+	header.add_child(name_lbl)
 
 	var level_lbl := Label.new()
 	level_lbl.name = "LevelLbl"
 	level_lbl.text = "Lv %d" % GameData.permanent_upgrades.get(key, 0)
-	level_lbl.custom_minimum_size.x = 60
-	hbox.add_child(level_lbl)
+	level_lbl.add_theme_font_size_override("font_size", 24)
+	header.add_child(level_lbl)
+
+	var desc_lbl := Label.new()
+	desc_lbl.text = UPGRADE_DESCS[key]
+	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	desc_lbl.add_theme_font_size_override("font_size", 20)
+	vbox.add_child(desc_lbl)
+
+	var footer := HBoxContainer.new()
+	footer.add_theme_constant_override("separation", 12)
+	vbox.add_child(footer)
 
 	var cost := GameData.get_upgrade_cost(key)
 	var cost_lbl := Label.new()
 	cost_lbl.name = "CostLbl"
 	cost_lbl.text = ("Cost: %d" % cost) if cost > 0 else "MAX"
-	cost_lbl.custom_minimum_size.x = 100
-	hbox.add_child(cost_lbl)
+	cost_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	cost_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	cost_lbl.add_theme_font_size_override("font_size", 22)
+	footer.add_child(cost_lbl)
 
 	var btn := Button.new()
 	btn.name = "BuyBtn"
-	btn.text = "Buy"
+	btn.text = "BUY"
+	btn.custom_minimum_size = Vector2(160, 70)
 	btn.disabled = cost <= 0 or GameData.gold < cost
+	btn.add_theme_font_size_override("font_size", 24)
 	btn.pressed.connect(func(): _on_buy(key))
-	hbox.add_child(btn)
+	footer.add_child(btn)
 
-	return hbox
+	return card
 
 func _on_buy(key: String) -> void:
 	if GameData.try_upgrade(key):
@@ -78,9 +97,9 @@ func _refresh_all_rows() -> void:
 		var row := items_container.get_node_or_null("Row_" + key)
 		if row == null:
 			continue
-		var level_lbl: Label = row.get_node_or_null("LevelLbl")
-		var cost_lbl: Label = row.get_node_or_null("CostLbl")
-		var btn: Button = row.get_node_or_null("BuyBtn")
+		var level_lbl: Label = row.find_child("LevelLbl", true, false)
+		var cost_lbl: Label = row.find_child("CostLbl", true, false)
+		var btn: Button = row.find_child("BuyBtn", true, false)
 		var cost := GameData.get_upgrade_cost(key)
 		if level_lbl:
 			level_lbl.text = "Lv %d" % GameData.permanent_upgrades.get(key, 0)

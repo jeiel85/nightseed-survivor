@@ -1,13 +1,13 @@
 extends CanvasLayer
 class_name HUD
 
-@onready var hp_bar: ProgressBar = $Left/VBox/HPBar
-@onready var hp_label: Label = $Left/VBox/HPLabel
-@onready var xp_bar: ProgressBar = $Left/VBox/XPBar
-@onready var level_label: Label = $Left/VBox/LevelLabel
-@onready var kill_label: Label = $Left/VBox/KillLabel
-@onready var gold_label: Label = $Left/VBox/GoldLabel
-@onready var time_label: Label = $TimeLabel
+@onready var hp_bar: ProgressBar = $TopBar/HPBar
+@onready var hp_label: Label = $TopBar/HPLabel
+@onready var xp_bar: ProgressBar = $TopBar/XPBar
+@onready var time_label: Label = $TopBar/StatsRow/TimeLabel
+@onready var level_label: Label = $TopBar/StatsRow/LevelLabel
+@onready var kill_label: Label = $TopBar/StatsRow/KillLabel
+@onready var gold_label: Label = $TopBar/StatsRow/GoldLabel
 
 func set_hp(current: int, max_val: int) -> void:
 	if not is_instance_valid(hp_bar):
@@ -24,7 +24,7 @@ func set_xp(current: int, needed: int) -> void:
 
 func set_level(level: int) -> void:
 	if is_instance_valid(level_label):
-		level_label.text = "Level  %d" % level
+		level_label.text = "Lv  %d" % level
 
 func set_time(seconds_remaining: float) -> void:
 	if not is_instance_valid(time_label):

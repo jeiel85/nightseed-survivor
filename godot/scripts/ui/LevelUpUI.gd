@@ -28,9 +28,9 @@ func _ready() -> void:
 	visible = false
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_cards = [
-		$Background/HBox/Card1,
-		$Background/HBox/Card2,
-		$Background/HBox/Card3,
+		$Background/VBox/Card1,
+		$Background/VBox/Card2,
+		$Background/VBox/Card3,
 	]
 
 func show_for_player(p: Player) -> void:
