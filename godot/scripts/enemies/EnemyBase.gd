@@ -57,10 +57,17 @@ func _physics_process(delta: float) -> void:
 	if not is_instance_valid(target):
 		velocity = Vector2.ZERO
 		return
+	_update_velocity(delta)
+	move_and_slide()
+	_update_flash(delta)
+
+# Override in subclasses for custom behavior (dash, kite, etc.).
+# Default: walk straight at the player.
+func _update_velocity(_delta: float) -> void:
 	var dir := global_position.direction_to(target.global_position)
 	velocity = dir * move_speed
-	move_and_slide()
 
+func _update_flash(delta: float) -> void:
 	if _flash_timer > 0.0:
 		_flash_timer -= delta
 		if _flash_timer <= 0.0:

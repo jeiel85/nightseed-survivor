@@ -6,6 +6,13 @@ class_name WaveManager
 @export var knight_scene: PackedScene
 @export var hound_scene: PackedScene
 @export var boss_scene: PackedScene
+@export var dasher_scene: PackedScene
+@export var caster_scene: PackedScene
+@export var splitter_scene: PackedScene
+@export var miniboss_scene: PackedScene
+
+const MINI_BOSS_TIMES: Array = [120.0, 240.0, 360.0, 480.0]
+var _mini_boss_idx: int = 0
 
 var _elapsed: float = 0.0
 var _current_wave_idx: int = -1
@@ -24,6 +31,10 @@ func _ready() -> void:
 		"knight": knight_scene,
 		"hound": hound_scene,
 		"boss": boss_scene,
+		"dasher": dasher_scene,
+		"caster": caster_scene,
+		"splitter": splitter_scene,
+		"miniboss": miniboss_scene,
 	}
 
 func setup(spawner: EnemySpawner, stage_id: String = "") -> void:
@@ -44,6 +55,12 @@ func get_total_time() -> float:
 func update(delta: float) -> void:
 	_elapsed += delta
 	_check_wave_transitions()
+	# Mini-boss spawns at fixed intervals, separate from wave timeline
+	if miniboss_scene != null and _mini_boss_idx < MINI_BOSS_TIMES.size():
+		if _elapsed >= float(MINI_BOSS_TIMES[_mini_boss_idx]) and _elapsed < _boss_time:
+			_mini_boss_idx += 1
+			_spawner.spawn_specific(miniboss_scene)
+			AudioManager.play("boss_appear", 0.0)
 	if _elapsed >= _boss_time and not _boss_spawned and boss_scene != null:
 		_boss_spawned = true
 		var boss_type: String = String(_stage.get("boss_type", "boss"))

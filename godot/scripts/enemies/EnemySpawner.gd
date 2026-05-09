@@ -13,6 +13,7 @@ var _spawn_count: int = 2
 @onready var _timer: Timer = $SpawnTimer
 
 func _ready() -> void:
+	add_to_group("enemy_spawner")
 	_timer.timeout.connect(_on_timer_timeout)
 	_timer.wait_time = 1.5
 	_timer.start()
@@ -51,8 +52,13 @@ func _do_spawn(scene: PackedScene) -> void:
 	enemy.global_position = player.global_position + Vector2.RIGHT.rotated(angle) * spawn_radius
 	if enemy.has_method("set_target"):
 		enemy.set_target(player)
-	if enemy.has_signal("died"):
+	register_enemy(enemy)
+	get_parent().add_child(enemy)
+
+# Used by Splitter (and any other in-world spawner) to make sure offspring
+# kills also count toward enemy_killed → XP/gold/leaderboards.
+func register_enemy(enemy: Node) -> void:
+	if enemy and enemy.has_signal("died"):
 		enemy.died.connect(func(xp: int, gold: int, pos: Vector2):
 			enemy_killed.emit(xp, gold, pos)
 		)
-	get_parent().add_child(enemy)

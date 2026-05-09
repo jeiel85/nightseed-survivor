@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=20 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/GameRoot.gd" id="1_gr"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_p"]
@@ -15,6 +15,10 @@
 [ext_resource type="Script" path="res://scripts/fx/Starfield.gd" id="13_sf"]
 [ext_resource type="Script" path="res://scripts/fx/BackgroundTiler.gd" id="14_bt"]
 [ext_resource type="Texture2D" path="res://assets/sprites/ground_tile.png" id="15_gt"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/EnemyDasher.tscn" id="16_da"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/EnemyCaster.tscn" id="17_ca"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/EnemySplitter.tscn" id="18_sp"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/EnemyMiniBoss.tscn" id="19_mb"]
 
 [node name="GameRoot" type="Node2D"]
 script = ExtResource("1_gr")
@@ -64,6 +68,10 @@ bat_scene = ExtResource("8_bat")
 knight_scene = ExtResource("9_knight")
 hound_scene = ExtResource("10_hound")
 boss_scene = ExtResource("11_boss")
+dasher_scene = ExtResource("16_da")
+caster_scene = ExtResource("17_ca")
+splitter_scene = ExtResource("18_sp")
+miniboss_scene = ExtResource("19_mb")
 
 [node name="HUD" parent="." instance=ExtResource("3_hud")]
 

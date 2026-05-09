@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/EnemyBase.gd" id="1_e"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy_slime.png" id="2_t"]
+
+[sub_resource type="CircleShape2D" id="cs_body"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="cs_hit"]
+radius = 10.0
+
+[node name="EnemySplitterling" type="CharacterBody2D"]
+script = ExtResource("1_e")
+collision_layer = 2
+collision_mask = 1
+move_speed = 120.0
+contact_damage = 5
+max_hp = 6
+xp_reward = 1
+gold_drop_chance = 0.05
+gold_drop_amount = 1
+body_color = Color(0.5, 0.85, 0.4, 1)
+body_size = 8.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("cs_body")
+
+[node name="HitArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+shape = SubResource("cs_hit")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="Visual"]
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_t")
