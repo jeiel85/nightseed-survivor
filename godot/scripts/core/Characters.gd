@@ -2,7 +2,7 @@ class_name Characters
 extends RefCounted
 
 const DEFAULT_KEY: String = "vagrant"
-const ORDER: Array = ["vagrant", "spirit_sister", "hunter"]
+const ORDER: Array = ["vagrant", "spirit_sister", "hunter", "berserker", "pyromancer"]
 
 const DATA: Dictionary = {
 	"vagrant": {
@@ -40,6 +40,30 @@ const DATA: Dictionary = {
 		"xp_radius": 80.0,
 		"color": Color(0.95, 0.85, 0.4),
 		"unlock_cost": 500,
+	},
+	"berserker": {
+		"name": "Berserker",
+		"desc": "Reckless force. High HP and damage, slow.",
+		"starting_weapon": "Thorn Ring",
+		"max_hp": 140,
+		"move_speed": 140.0,
+		"cooldown_mult": 1.05,
+		"damage_mult": 1.25,
+		"xp_radius": 70.0,
+		"color": Color(0.5, 0.95, 0.4),
+		"unlock_cost": 1000,
+	},
+	"pyromancer": {
+		"name": "Pyromancer",
+		"desc": "Fire-bound caster. Wisp-charged from start.",
+		"starting_weapon": "Fire Wisp",
+		"max_hp": 90,
+		"move_speed": 155.0,
+		"cooldown_mult": 0.85,
+		"damage_mult": 1.1,
+		"xp_radius": 90.0,
+		"color": Color(1.0, 0.55, 0.2),
+		"unlock_cost": 1500,
 	},
 }
 

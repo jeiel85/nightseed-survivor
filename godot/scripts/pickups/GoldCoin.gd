@@ -28,6 +28,7 @@ func attract(toward: Vector2) -> void:
 func collect(p: Node) -> void:
 	if p.has_method("add_gold"):
 		p.add_gold(gold_value)
+	AudioManager.play("pickup_gold", -6.0)
 	queue_free()
 
 func _process(delta: float) -> void:

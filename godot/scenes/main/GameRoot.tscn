@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/GameRoot.gd" id="1_gr"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_p"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" path="res://scenes/enemies/EnemyHound.tscn" id="10_hound"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/EnemyBoss.tscn" id="11_boss"]
 [ext_resource type="PackedScene" path="res://scenes/ui/VirtualJoystick.tscn" id="12_vj"]
+[ext_resource type="Script" path="res://scripts/fx/Starfield.gd" id="13_sf"]
 
 [node name="GameRoot" type="Node2D"]
 script = ExtResource("1_gr")
@@ -22,6 +23,12 @@ offset_top = -3000.0
 offset_right = 3000.0
 offset_bottom = 3000.0
 color = Color(0.07, 0.08, 0.11, 1)
+
+[node name="Starfield" type="Node2D" parent="."]
+script = ExtResource("13_sf")
+star_count = 80
+area_size = 1400.0
+follow_target = NodePath("../Player")
 
 [node name="Player" parent="." instance=ExtResource("2_p")]
 position = Vector2(0, 0)

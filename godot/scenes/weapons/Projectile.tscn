@@ -13,6 +13,13 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("cs_1")
 
+[node name="Trail" type="Line2D" parent="."]
+width = 6.0
+default_color = Color(0.95, 0.95, 0.5, 0.5)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
 [node name="Visual" type="Polygon2D" parent="."]
 color = Color(0.95, 0.95, 0.2, 1)
 polygon = PackedVector2Array(-6, 0, 0, -6, 6, 0, 0, 6)

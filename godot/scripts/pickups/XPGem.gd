@@ -26,6 +26,7 @@ func attract(toward: Vector2) -> void:
 func collect(p: Node) -> void:
 	if p.has_method("add_xp"):
 		p.add_xp(xp_value)
+	AudioManager.play("pickup_xp", -8.0)
 	queue_free()
 
 func _process(delta: float) -> void:

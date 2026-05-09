@@ -66,8 +66,19 @@ func take_damage(amount: int) -> void:
 
 func _die() -> void:
 	var gold_drop: int = gold_drop_amount if randf() < gold_drop_chance else 0
+	_spawn_death_burst()
+	AudioManager.play("kill", -14.0)
 	died.emit(xp_reward, gold_drop, global_position)
 	queue_free()
+
+func _spawn_death_burst() -> void:
+	var burst := DeathBurst.new()
+	burst.global_position = global_position
+	burst.burst_color = body_color
+	burst.particle_count = int(8 + body_size * 0.3)
+	burst.spread = body_size * 6.0
+	burst.lifetime = 0.45
+	get_tree().current_scene.add_child(burst)
 
 func _on_hit_area_body_entered(body: Node) -> void:
 	if body.has_method("apply_damage"):

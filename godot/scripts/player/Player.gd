@@ -21,6 +21,9 @@ var session_gold: int = 0
 var _invincible_timer: float = 0.0
 
 @onready var weapon_manager: WeaponManager = $WeaponManager
+@onready var aura: Polygon2D = $Visual/Aura
+@onready var body_visual: Polygon2D = $Visual/Body
+@onready var aim_visual: Polygon2D = $Visual/Aim
 
 func _ready() -> void:
 	var ch: Dictionary = Characters.get_data(GameData.selected_character)
@@ -32,9 +35,12 @@ func _ready() -> void:
 	current_hp = max_hp
 	hp_changed.emit(current_hp, max_hp)
 	xp_changed.emit(0, get_xp_needed())
-	var body := $Visual/Body
-	if body:
-		body.color = ch["color"]
+	if body_visual:
+		body_visual.color = ch["color"]
+	if aura:
+		var aura_c: Color = ch["color"]
+		aura_c.a = 0.18
+		aura.color = aura_c
 	var w := _create_starting_weapon(ch["starting_weapon"])
 	if w:
 		weapon_manager.add_weapon(w)
@@ -59,6 +65,35 @@ func _physics_process(delta: float) -> void:
 	if _invincible_timer > 0.0:
 		_invincible_timer = maxf(_invincible_timer - delta, 0.0)
 	_handle_pickups()
+	_update_visuals(delta)
+
+func _update_visuals(delta: float) -> void:
+	if aura:
+		var t: float = float(Time.get_ticks_msec()) / 1000.0
+		var s: float = 1.0 + 0.08 * sin(t * 2.5)
+		aura.scale = Vector2(s, s)
+	if aim_visual:
+		var nearest := _find_nearest_enemy()
+		if is_instance_valid(nearest):
+			aim_visual.visible = true
+			var dir: Vector2 = global_position.direction_to(nearest.global_position)
+			aim_visual.rotation = dir.angle()
+			aim_visual.position = dir * 24.0
+		else:
+			aim_visual.visible = false
+
+func _find_nearest_enemy() -> Node2D:
+	var enemies := get_tree().get_nodes_in_group("enemies")
+	var nearest: Node2D = null
+	var nd: float = INF
+	for e in enemies:
+		if not is_instance_valid(e):
+			continue
+		var d: float = global_position.distance_squared_to(e.global_position)
+		if d < nd:
+			nd = d
+			nearest = e
+	return nearest
 
 func _handle_pickups() -> void:
 	for gem in get_tree().get_nodes_in_group("xp_gems"):
@@ -84,6 +119,7 @@ func apply_damage(amount: int) -> void:
 		return
 	current_hp = maxi(current_hp - amount, 0)
 	_invincible_timer = invincible_duration
+	AudioManager.play("damage", -4.0)
 	hp_changed.emit(current_hp, max_hp)
 	if current_hp <= 0:
 		died.emit()

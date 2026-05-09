@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "stages": [
     {
       "id": "forest",
@@ -40,6 +40,25 @@
       ]
     },
     {
+      "id": "twilight_sanctum",
+      "name": "Twilight Sanctum",
+      "desc": "Balanced trial of all foes",
+      "total_time": 600,
+      "boss_time": 570,
+      "boss_type": "boss",
+      "color": "#aa77ff",
+      "unlock_cost": 1000,
+      "waves": [
+        {"time": 0,   "interval": 1.4,  "count": 3, "types": ["slime", "bat"]},
+        {"time": 60,  "interval": 1.2,  "count": 3, "types": ["slime", "bat", "knight"]},
+        {"time": 120, "interval": 1.0,  "count": 4, "types": ["bat", "knight"]},
+        {"time": 240, "interval": 0.8,  "count": 4, "types": ["slime", "bat", "knight", "hound"]},
+        {"time": 360, "interval": 0.65, "count": 5, "types": ["bat", "knight", "hound"]},
+        {"time": 480, "interval": 0.5,  "count": 6, "types": ["slime", "bat", "knight", "hound"]},
+        {"time": 570, "interval": 0.55, "count": 5, "types": ["knight", "hound", "bat"]}
+      ]
+    },
+    {
       "id": "inferno_chasm",
       "name": "Inferno Chasm",
       "desc": "Knights and hounds in waves of fire",
@@ -56,6 +75,25 @@
         {"time": 360, "interval": 0.6,  "count": 5, "types": ["hound", "knight"]},
         {"time": 480, "interval": 0.5,  "count": 5, "types": ["hound", "knight", "bat"]},
         {"time": 570, "interval": 0.55, "count": 4, "types": ["hound", "knight"]}
+      ]
+    },
+    {
+      "id": "cursed_tomb",
+      "name": "Cursed Tomb",
+      "desc": "Endless undead tide. For the fearless.",
+      "total_time": 720,
+      "boss_time": 690,
+      "boss_type": "boss",
+      "color": "#dd4488",
+      "unlock_cost": 2500,
+      "waves": [
+        {"time": 0,   "interval": 1.2,  "count": 3, "types": ["slime", "knight"]},
+        {"time": 60,  "interval": 1.0,  "count": 4, "types": ["slime", "knight", "bat"]},
+        {"time": 180, "interval": 0.85, "count": 4, "types": ["knight", "hound"]},
+        {"time": 300, "interval": 0.7,  "count": 5, "types": ["knight", "hound", "bat"]},
+        {"time": 420, "interval": 0.55, "count": 6, "types": ["hound", "knight", "bat"]},
+        {"time": 540, "interval": 0.45, "count": 7, "types": ["hound", "knight"]},
+        {"time": 690, "interval": 0.5,  "count": 5, "types": ["hound", "knight", "bat"]}
       ]
     }
   ]
