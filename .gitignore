@@ -5,3 +5,7 @@ Godot_v*.exe.zip
 
 # Godot generated/cache files
 godot/.godot/
+
+# Build artifacts
+build/
+*.apk
