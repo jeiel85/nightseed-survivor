@@ -44,8 +44,9 @@ custom_minimum_size = Vector2(0, 38)
 color = Color(0.5, 0.8, 1.0, 1)
 
 [node name="Icon" type="TextureRect" parent="Background/VBox/Card1/VBox"]
-custom_minimum_size = Vector2(0, 64)
-expand_mode = 5
+custom_minimum_size = Vector2(80, 80)
+size_flags_horizontal = 4
+expand_mode = 1
 stretch_mode = 5
 
 [node name="Title" type="Label" parent="Background/VBox/Card1/VBox"]
@@ -80,8 +81,9 @@ custom_minimum_size = Vector2(0, 38)
 color = Color(0.5, 0.8, 1.0, 1)
 
 [node name="Icon" type="TextureRect" parent="Background/VBox/Card2/VBox"]
-custom_minimum_size = Vector2(0, 64)
-expand_mode = 5
+custom_minimum_size = Vector2(80, 80)
+size_flags_horizontal = 4
+expand_mode = 1
 stretch_mode = 5
 
 [node name="Title" type="Label" parent="Background/VBox/Card2/VBox"]
@@ -116,8 +118,9 @@ custom_minimum_size = Vector2(0, 38)
 color = Color(0.5, 0.8, 1.0, 1)
 
 [node name="Icon" type="TextureRect" parent="Background/VBox/Card3/VBox"]
-custom_minimum_size = Vector2(0, 64)
-expand_mode = 5
+custom_minimum_size = Vector2(80, 80)
+size_flags_horizontal = 4
+expand_mode = 1
 stretch_mode = 5
 
 [node name="Title" type="Label" parent="Background/VBox/Card3/VBox"]

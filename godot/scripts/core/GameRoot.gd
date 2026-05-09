@@ -135,24 +135,29 @@ func _show_result(victory: bool) -> void:
 	)
 	result_panel.visible = true
 	if victory:
-		result_title.text = "VICTORY!"
+		result_title.text = Localization.tr_key("result_victory")
 		result_title.modulate = Color(0.95, 0.9, 0.2)
 		AudioManager.play("victory", 0.0)
 	else:
-		result_title.text = "GAME OVER"
+		result_title.text = Localization.tr_key("result_gameover")
 		result_title.modulate = Color(1.0, 0.3, 0.3)
 		AudioManager.play("defeat", 0.0)
 	var tm := int(_survival_time)
-	var stats_text := "Survived:  %d:%02d\nKills:  %d\nGold earned:  %d" % [
-		tm / 60, tm % 60, player.kill_count, player.session_gold
+	var lines: Array = [
+		Localization.tr_key("result_survived_fmt") % [tm / 60, tm % 60],
+		Localization.tr_key("result_kills_fmt") % player.kill_count,
+		Localization.tr_key("result_gold_fmt") % player.session_gold,
 	]
 	if not _newly_unlocked_achievements.is_empty():
-		stats_text += "\n\n★ NEW ACHIEVEMENTS"
+		lines.append("")
+		lines.append(Localization.tr_key("result_new_ach"))
 		for key in _newly_unlocked_achievements:
-			var ach: Dictionary = Achievements.DATA[key]
-			stats_text += "\n%s  (+%d gold)" % [String(ach["name"]), int(ach["gold"])]
-	result_stats.text = stats_text
-	btn_restart.text = "Play Again" if victory else "Retry"
+			var ach_name: String = Achievements.display_name(key)
+			var ach_gold: int = int(Achievements.DATA[key]["gold"])
+			lines.append(Localization.tr_key("result_ach_line") % [ach_name, ach_gold])
+	result_stats.text = "\n".join(lines)
+	btn_restart.text = Localization.tr_key("btn_play_again") if victory else Localization.tr_key("btn_retry")
+	btn_menu.text = Localization.tr_key("btn_main_menu")
 
 func _on_restart_pressed() -> void:
 	get_tree().paused = false

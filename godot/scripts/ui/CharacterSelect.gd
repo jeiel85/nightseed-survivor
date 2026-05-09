@@ -4,8 +4,13 @@ extends Control
 @onready var items_container: VBoxContainer = $VBox/Scroll/Items
 @onready var btn_back: Button = $VBox/BtnBack
 
+@onready var title_label: Label = $VBox/Title
+
 func _ready() -> void:
 	btn_back.pressed.connect(_on_back_pressed)
+	if title_label:
+		title_label.text = Localization.tr_key("choose_character")
+	btn_back.text = Localization.tr_key("btn_back")
 	_build_cards()
 	_refresh_gold()
 
@@ -37,18 +42,18 @@ func _make_card(key: String) -> PanelContainer:
 	hbox.add_child(info)
 
 	var name_lbl := Label.new()
-	name_lbl.text = data["name"]
+	name_lbl.text = Characters.display_name(key)
 	name_lbl.add_theme_font_size_override("font_size", 28)
 	info.add_child(name_lbl)
 
 	var desc_lbl := Label.new()
-	desc_lbl.text = data["desc"]
+	desc_lbl.text = Characters.display_desc(key)
 	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	desc_lbl.add_theme_font_size_override("font_size", 18)
 	info.add_child(desc_lbl)
 
 	var stats_lbl := Label.new()
-	stats_lbl.text = "Start: " + data["starting_weapon"]
+	stats_lbl.text = Localization.tr_key("label_start_fmt") % data["starting_weapon"]
 	stats_lbl.add_theme_font_size_override("font_size", 18)
 	stats_lbl.add_theme_color_override("font_color", data["color"])
 	info.add_child(stats_lbl)
@@ -72,14 +77,14 @@ func _setup_button(btn: Button, key: String, data: Dictionary) -> void:
 		btn.pressed.disconnect(c["callable"])
 	if not GameData.is_character_unlocked(key):
 		var cost: int = int(data["unlock_cost"])
-		btn.text = "UNLOCK  (%d gold)" % cost
+		btn.text = Localization.tr_key("btn_unlock_fmt") % cost
 		btn.disabled = GameData.gold < cost
 		btn.pressed.connect(func(): _on_unlock_pressed(key, cost))
 	elif GameData.selected_character == key:
-		btn.text = "SELECTED"
+		btn.text = Localization.tr_key("btn_selected")
 		btn.disabled = true
 	else:
-		btn.text = "SELECT"
+		btn.text = Localization.tr_key("btn_select")
 		btn.disabled = false
 		btn.pressed.connect(func(): _on_select_pressed(key))
 
@@ -103,7 +108,7 @@ func _refresh_all() -> void:
 			_setup_button(btn, key, Characters.DATA[key])
 
 func _refresh_gold() -> void:
-	gold_label.text = "Gold: %d" % GameData.gold
+	gold_label.text = Localization.tr_key("label_gold") % GameData.gold
 
 func _on_back_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/ui/MainMenu.tscn")

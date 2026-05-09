@@ -1,5 +1,7 @@
 extends Control
 
+@onready var title_label: Label = $VBox/TitleLabel
+@onready var subtitle_label: Label = $VBox/Subtitle
 @onready var gold_label: Label = $VBox/GoldLabel
 @onready var status_label: Label = $VBox/StatusLabel
 @onready var btn_play: Button = $VBox/BtnPlay
@@ -8,6 +10,7 @@ extends Control
 @onready var btn_shop: Button = $VBox/BtnShop
 @onready var btn_difficulty: Button = $VBox/BtnDifficulty
 @onready var btn_leaderboard: Button = $VBox/BtnLeaderboard
+@onready var btn_language: Button = $VBox/BtnLanguage
 @onready var btn_credits: Button = $VBox/BtnCredits
 
 func _ready() -> void:
@@ -18,20 +21,34 @@ func _ready() -> void:
 	btn_shop.pressed.connect(_on_shop_pressed)
 	btn_difficulty.pressed.connect(_on_difficulty_pressed)
 	btn_leaderboard.pressed.connect(_on_leaderboard_pressed)
+	btn_language.pressed.connect(_on_language_pressed)
 	btn_credits.pressed.connect(_on_credits_pressed)
 	btn_leaderboard.visible = LeaderboardManager.is_supported() or OS.get_name() == "Android"
+	if Localization:
+		Localization.language_changed.connect(_on_language_changed)
 
 func _refresh() -> void:
-	gold_label.text = "Gold: %d" % GameData.gold
-	var ch: Dictionary = Characters.get_data(GameData.selected_character)
-	var st: Dictionary = Stages.get_stage(GameData.selected_stage)
+	title_label.text = Localization.tr_key("app_title")
+	subtitle_label.text = Localization.tr_key("app_subtitle")
+	gold_label.text = Localization.tr_key("label_gold") % GameData.gold
+	var ch_name: String = Characters.display_name(GameData.selected_character)
+	var st_name: String = Stages.display_name(GameData.selected_stage)
+	var df_name: String = Difficulty.display_name(GameData.difficulty)
+	status_label.text = Localization.tr_key("label_status") % [ch_name, st_name, df_name]
 	var df: Dictionary = Difficulty.get_data(GameData.difficulty)
-	status_label.text = "%s  ·  %s  ·  %s" % [
-		String(ch["name"]), String(st.get("name", "?")), String(df["name"])
-	]
 	status_label.add_theme_color_override("font_color", df["color"])
-	btn_difficulty.text = "DIFFICULTY:  %s" % String(df["name"])
+	btn_play.text = Localization.tr_key("btn_play")
+	btn_character.text = Localization.tr_key("btn_characters")
+	btn_stage.text = Localization.tr_key("btn_stages")
+	btn_shop.text = Localization.tr_key("btn_shop")
+	btn_difficulty.text = Localization.tr_key("btn_difficulty_fmt") % df_name
 	btn_difficulty.add_theme_color_override("font_color", df["color"])
+	btn_leaderboard.text = Localization.tr_key("btn_leaderboard")
+	btn_language.text = Localization.tr_key("btn_language_fmt") % Localization.current_label()
+	btn_credits.text = Localization.tr_key("btn_credits")
+
+func _on_language_changed(_lang: String) -> void:
+	_refresh()
 
 func _on_play_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/main/GameRoot.tscn")
@@ -57,3 +74,6 @@ func _on_leaderboard_pressed() -> void:
 		LeaderboardManager.sign_in()
 		return
 	LeaderboardManager.show_all_leaderboards()
+
+func _on_language_pressed() -> void:
+	Localization.cycle_language()

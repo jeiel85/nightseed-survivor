@@ -159,6 +159,10 @@ jobs:
         run: |
           mkdir -p build/web
           ~/godot-bin/godot --headless --path godot --export-release "Web" "${{ github.workspace }}/build/web/index.html"
+          # Inject COI service worker so Godot's SharedArrayBuffer check passes on GitHub Pages
+          # (GitHub Pages can't send COOP/COEP headers; coi-serviceworker patches them client-side)
+          cp godot/web_extras/coi-serviceworker.js build/web/
+          sed -i 's|<head>|<head>\n\t<script src="coi-serviceworker.js"></script>|' build/web/index.html
           ls -la build/web/
 
       - name: Upload Web artifact

@@ -41,3 +41,15 @@ func get_default_id() -> String:
 	if stages.is_empty():
 		return ""
 	return String(stages[0].get("id", ""))
+
+func display_name(id: String) -> String:
+	var s := get_stage(id)
+	if s.has("name_key") and Localization:
+		return Localization.tr_key(String(s["name_key"]), String(s.get("name", "?")))
+	return String(s.get("name", "?"))
+
+func display_desc(id: String) -> String:
+	var s := get_stage(id)
+	if s.has("desc_key") and Localization:
+		return Localization.tr_key(String(s["desc_key"]), String(s.get("desc", "")))
+	return String(s.get("desc", ""))

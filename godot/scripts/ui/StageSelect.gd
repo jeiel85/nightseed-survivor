@@ -4,8 +4,13 @@ extends Control
 @onready var items_container: VBoxContainer = $VBox/Scroll/Items
 @onready var btn_back: Button = $VBox/BtnBack
 
+@onready var title_label: Label = $VBox/Title
+
 func _ready() -> void:
 	btn_back.pressed.connect(_on_back_pressed)
+	if title_label:
+		title_label.text = Localization.tr_key("choose_stage")
+	btn_back.text = Localization.tr_key("btn_back")
 	_build_cards()
 	_refresh_gold()
 
@@ -38,19 +43,19 @@ func _make_card(stage: Dictionary) -> PanelContainer:
 	hbox.add_child(info)
 
 	var name_lbl := Label.new()
-	name_lbl.text = String(stage.get("name", "?"))
+	name_lbl.text = Stages.display_name(stage_id)
 	name_lbl.add_theme_font_size_override("font_size", 28)
 	info.add_child(name_lbl)
 
 	var desc_lbl := Label.new()
-	desc_lbl.text = String(stage.get("desc", ""))
+	desc_lbl.text = Stages.display_desc(stage_id)
 	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	desc_lbl.add_theme_font_size_override("font_size", 18)
 	info.add_child(desc_lbl)
 
 	var time_lbl := Label.new()
 	var tt: int = int(stage.get("total_time", 600))
-	time_lbl.text = "Duration: %d:%02d   ·   %d waves" % [tt / 60, tt % 60, int((stage.get("waves", []) as Array).size())]
+	time_lbl.text = Localization.tr_key("stage_duration_fmt") % [tt / 60, tt % 60, int((stage.get("waves", []) as Array).size())]
 	time_lbl.add_theme_font_size_override("font_size", 18)
 	info.add_child(time_lbl)
 
@@ -68,14 +73,14 @@ func _setup_button(btn: Button, stage_id: String, stage: Dictionary) -> void:
 		btn.pressed.disconnect(c["callable"])
 	if not GameData.is_stage_unlocked(stage_id):
 		var cost: int = int(stage.get("unlock_cost", 0))
-		btn.text = "UNLOCK  (%d gold)" % cost
+		btn.text = Localization.tr_key("btn_unlock_fmt") % cost
 		btn.disabled = GameData.gold < cost
 		btn.pressed.connect(func(): _on_unlock_pressed(stage_id, cost))
 	elif GameData.selected_stage == stage_id:
-		btn.text = "SELECTED"
+		btn.text = Localization.tr_key("btn_selected")
 		btn.disabled = true
 	else:
-		btn.text = "SELECT"
+		btn.text = Localization.tr_key("btn_select")
 		btn.disabled = false
 		btn.pressed.connect(func(): _on_select_pressed(stage_id))
 
@@ -102,7 +107,7 @@ func _refresh_all() -> void:
 			_setup_button(btn, stage_id, stage)
 
 func _refresh_gold() -> void:
-	gold_label.text = "Gold: %d" % GameData.gold
+	gold_label.text = Localization.tr_key("label_gold") % GameData.gold
 
 func _on_back_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/ui/MainMenu.tscn")

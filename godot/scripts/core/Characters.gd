@@ -17,6 +17,8 @@ const DATA: Dictionary = {
 		"color": Color(0.2, 0.5, 1.0),
 		"sprite": "res://assets/sprites/char_vagrant.png",
 		"unlock_cost": 0,
+		"name_key": "char_vagrant_name",
+		"desc_key": "char_vagrant_desc",
 	},
 	"spirit_sister": {
 		"name": "Spirit Sister",
@@ -30,6 +32,8 @@ const DATA: Dictionary = {
 		"color": Color(0.4, 0.95, 0.95),
 		"sprite": "res://assets/sprites/char_spirit_sister.png",
 		"unlock_cost": 200,
+		"name_key": "char_spirit_sister_name",
+		"desc_key": "char_spirit_sister_desc",
 	},
 	"hunter": {
 		"name": "Hunter",
@@ -43,6 +47,8 @@ const DATA: Dictionary = {
 		"color": Color(0.95, 0.85, 0.4),
 		"sprite": "res://assets/sprites/char_hunter.png",
 		"unlock_cost": 500,
+		"name_key": "char_hunter_name",
+		"desc_key": "char_hunter_desc",
 	},
 	"berserker": {
 		"name": "Berserker",
@@ -56,6 +62,8 @@ const DATA: Dictionary = {
 		"color": Color(0.5, 0.95, 0.4),
 		"sprite": "res://assets/sprites/char_berserker.png",
 		"unlock_cost": 1000,
+		"name_key": "char_berserker_name",
+		"desc_key": "char_berserker_desc",
 	},
 	"pyromancer": {
 		"name": "Pyromancer",
@@ -69,11 +77,25 @@ const DATA: Dictionary = {
 		"color": Color(1.0, 0.55, 0.2),
 		"sprite": "res://assets/sprites/char_pyromancer.png",
 		"unlock_cost": 1500,
+		"name_key": "char_pyromancer_name",
+		"desc_key": "char_pyromancer_desc",
 	},
 }
 
 static func get_data(key: String) -> Dictionary:
 	return DATA.get(key, DATA[DEFAULT_KEY])
+
+static func display_name(key: String) -> String:
+	var d := get_data(key)
+	if d.has("name_key") and Localization:
+		return Localization.tr_key(String(d["name_key"]), String(d.get("name", "?")))
+	return String(d.get("name", "?"))
+
+static func display_desc(key: String) -> String:
+	var d := get_data(key)
+	if d.has("desc_key") and Localization:
+		return Localization.tr_key(String(d["desc_key"]), String(d.get("desc", "")))
+	return String(d.get("desc", ""))
 
 static func stat_summary(key: String) -> String:
 	var d := get_data(key)

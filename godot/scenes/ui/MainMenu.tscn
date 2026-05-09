@@ -82,6 +82,11 @@ custom_minimum_size = Vector2(0, 64)
 text = "★ LEADERBOARDS"
 theme_override_font_sizes/font_size = 22
 
+[node name="BtnLanguage" type="Button" parent="VBox"]
+custom_minimum_size = Vector2(0, 56)
+text = "Language:  English"
+theme_override_font_sizes/font_size = 20
+
 [node name="BtnCredits" type="Button" parent="VBox"]
 custom_minimum_size = Vector2(0, 56)
 text = "Credits & Licenses"

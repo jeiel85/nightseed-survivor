@@ -4,19 +4,19 @@ class_name LevelUpUI
 signal upgrade_chosen(upgrade_id: String)
 
 const WEAPON_DATA: Dictionary = {
-	"Moon Dagger":  {"desc": "Auto-fires at nearest enemy", "color": Color(0.5, 0.8, 1.0),  "icon": "res://assets/sprites/icon_moon_dagger.png"},
-	"Spirit Orb":   {"desc": "Orbiting damage orbs",        "color": Color(0.3, 0.9, 1.0),  "icon": "res://assets/sprites/icon_spirit_orb.png"},
-	"Fire Wisp":    {"desc": "Random area explosions",      "color": Color(1.0, 0.5, 0.15), "icon": "res://assets/sprites/icon_fire_wisp.png"},
-	"Thorn Ring":   {"desc": "Burst of radial spikes",      "color": Color(0.3, 0.9, 0.3),  "icon": "res://assets/sprites/icon_thorn_ring.png"},
-	"Star Needle":  {"desc": "Spread needle volley",        "color": Color(0.95, 0.9, 0.2), "icon": "res://assets/sprites/icon_star_needle.png"},
+	"Moon Dagger":  {"name_key": "weapon_moon_dagger", "desc_key": "weapon_desc_moon_dagger", "color": Color(0.5, 0.8, 1.0),  "icon": "res://assets/sprites/icon_moon_dagger.png"},
+	"Spirit Orb":   {"name_key": "weapon_spirit_orb",  "desc_key": "weapon_desc_spirit_orb",  "color": Color(0.3, 0.9, 1.0),  "icon": "res://assets/sprites/icon_spirit_orb.png"},
+	"Fire Wisp":    {"name_key": "weapon_fire_wisp",   "desc_key": "weapon_desc_fire_wisp",   "color": Color(1.0, 0.5, 0.15), "icon": "res://assets/sprites/icon_fire_wisp.png"},
+	"Thorn Ring":   {"name_key": "weapon_thorn_ring",  "desc_key": "weapon_desc_thorn_ring",  "color": Color(0.3, 0.9, 0.3),  "icon": "res://assets/sprites/icon_thorn_ring.png"},
+	"Star Needle":  {"name_key": "weapon_star_needle", "desc_key": "weapon_desc_star_needle", "color": Color(0.95, 0.9, 0.2), "icon": "res://assets/sprites/icon_star_needle.png"},
 }
 
 const PASSIVE_DATA: Dictionary = {
-	"swift_boots":  {"name": "Swift Boots",  "desc": "Move speed +20",      "color": Color(0.5, 0.85, 0.5)},
-	"magnet_charm": {"name": "Magnet Charm", "desc": "XP pickup range +40", "color": Color(0.75, 0.5, 0.95)},
-	"iron_heart":   {"name": "Iron Heart",   "desc": "Max HP +20",          "color": Color(1.0, 0.35, 0.35)},
-	"battle_focus": {"name": "Battle Focus", "desc": "All cooldowns -8%",   "color": Color(0.9, 0.7, 0.2)},
-	"power_core":   {"name": "Power Core",   "desc": "All damage +15%",     "color": Color(1.0, 0.3, 0.65)},
+	"swift_boots":  {"name_key": "passive_swift_boots_name",  "desc_key": "passive_swift_boots_desc",  "color": Color(0.5, 0.85, 0.5)},
+	"magnet_charm": {"name_key": "passive_magnet_charm_name", "desc_key": "passive_magnet_charm_desc", "color": Color(0.75, 0.5, 0.95)},
+	"iron_heart":   {"name_key": "passive_iron_heart_name",   "desc_key": "passive_iron_heart_desc",   "color": Color(1.0, 0.35, 0.35)},
+	"battle_focus": {"name_key": "passive_battle_focus_name", "desc_key": "passive_battle_focus_desc", "color": Color(0.9, 0.7, 0.2)},
+	"power_core":   {"name_key": "passive_power_core_name",   "desc_key": "passive_power_core_desc",   "color": Color(1.0, 0.3, 0.65)},
 }
 
 var _options: Array = []
@@ -43,6 +43,9 @@ func show_for_player(p: Player) -> void:
 func _show_next() -> void:
 	_generate_options()
 	_update_cards()
+	var title_lbl: Label = $Background/Title
+	if title_lbl:
+		title_lbl.text = Localization.tr_key("levelup_title")
 	visible = true
 	get_tree().paused = true
 
@@ -66,12 +69,13 @@ func _generate_options() -> void:
 
 	for wname in WEAPON_DATA:
 		if not wm.has_weapon(wname):
+			var wd: Dictionary = WEAPON_DATA[wname]
 			pool.append({
 				"id": "new:" + wname,
-				"title": wname,
-				"desc": WEAPON_DATA[wname]["desc"],
-				"color": WEAPON_DATA[wname]["color"],
-				"icon": WEAPON_DATA[wname].get("icon", ""),
+				"title": Localization.tr_key(String(wd["name_key"]), wname),
+				"desc": Localization.tr_key(String(wd["desc_key"]), ""),
+				"color": wd["color"],
+				"icon": wd.get("icon", ""),
 			})
 
 	for w in wm.weapons:
@@ -79,12 +83,13 @@ func _generate_options() -> void:
 			continue
 		var wname: String = w.weapon_name
 		if WEAPON_DATA.has(wname):
+			var wd2: Dictionary = WEAPON_DATA[wname]
 			pool.append({
 				"id": "up:" + wname,
-				"title": wname + "  Lv." + str(w.level + 1),
-				"desc": "DMG +25% / CD -12%",
-				"color": WEAPON_DATA[wname]["color"].lightened(0.2),
-				"icon": WEAPON_DATA[wname].get("icon", ""),
+				"title": Localization.tr_key(String(wd2["name_key"]), wname) + "  Lv." + str(w.level + 1),
+				"desc": Localization.tr_key("upgrade_desc_default", "DMG +25% / CD -12%"),
+				"color": wd2["color"].lightened(0.2),
+				"icon": wd2.get("icon", ""),
 			})
 
 	for pkey in PASSIVE_DATA:
@@ -92,8 +97,8 @@ func _generate_options() -> void:
 			var pd: Dictionary = PASSIVE_DATA[pkey]
 			pool.append({
 				"id": "passive:" + pkey,
-				"title": pd["name"],
-				"desc": pd["desc"],
+				"title": Localization.tr_key(String(pd["name_key"]), pkey),
+				"desc": Localization.tr_key(String(pd["desc_key"]), ""),
 				"color": pd["color"],
 			})
 
@@ -133,6 +138,7 @@ func _setup_card(card: PanelContainer, opt: Dictionary, idx: int) -> void:
 	if desc_lbl:
 		desc_lbl.text = opt["desc"]
 	if btn:
+		btn.text = Localization.tr_key("btn_select")
 		for connection in btn.pressed.get_connections():
 			btn.pressed.disconnect(connection["callable"])
 		var captured_idx := idx

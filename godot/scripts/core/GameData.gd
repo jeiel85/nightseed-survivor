@@ -14,6 +14,7 @@ var achievements_unlocked: Array = []
 var selected_stage: String = "forest"
 var unlocked_stages: Array = ["forest"]
 var difficulty: String = "normal"
+var language: String = "auto"
 
 const UPGRADE_COSTS: Array = [100, 200, 350, 550, 800, 1100, 1500, 2000, 2600, 3300]
 const UPGRADE_MAX_LEVEL: int = 10
@@ -98,6 +99,7 @@ func save_data() -> void:
 		"selected_stage": selected_stage,
 		"unlocked_stages": unlocked_stages.duplicate(),
 		"difficulty": difficulty,
+		"language": language,
 	}
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file:
@@ -141,6 +143,7 @@ func load_data() -> void:
 	difficulty = result.get("difficulty", "normal")
 	if not Difficulty.DATA.has(difficulty):
 		difficulty = "normal"
+	language = result.get("language", "auto")
 
 func cycle_difficulty() -> String:
 	difficulty = Difficulty.next_key(difficulty)

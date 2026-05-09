@@ -2,28 +2,33 @@ extends Control
 
 const UPGRADE_KEYS: Array = ["swift_boots", "magnet_charm", "iron_heart", "battle_focus", "power_core"]
 
-const UPGRADE_NAMES: Dictionary = {
-	"swift_boots":  "Swift Boots",
-	"magnet_charm": "Magnet Charm",
-	"iron_heart":   "Iron Heart",
-	"battle_focus": "Battle Focus",
-	"power_core":   "Power Core",
+const UPGRADE_NAME_KEYS: Dictionary = {
+	"swift_boots":  "passive_swift_boots_name",
+	"magnet_charm": "passive_magnet_charm_name",
+	"iron_heart":   "passive_iron_heart_name",
+	"battle_focus": "passive_battle_focus_name",
+	"power_core":   "passive_power_core_name",
 }
 
-const UPGRADE_DESCS: Dictionary = {
-	"swift_boots":  "Move Speed +12 per level",
-	"magnet_charm": "XP Radius +20 per level",
-	"iron_heart":   "Max HP +10 per level",
-	"battle_focus": "Cooldowns -4% per level",
-	"power_core":   "All Damage +5% per level",
+const UPGRADE_DESC_KEYS: Dictionary = {
+	"swift_boots":  "shop_swift_boots_desc",
+	"magnet_charm": "shop_magnet_charm_desc",
+	"iron_heart":   "shop_iron_heart_desc",
+	"battle_focus": "shop_battle_focus_desc",
+	"power_core":   "shop_power_core_desc",
 }
 
 @onready var gold_label: Label = $VBox/GoldLabel
 @onready var items_container: VBoxContainer = $VBox/Scroll/Items
 @onready var btn_back: Button = $VBox/BtnBack
 
+@onready var title_label: Label = $VBox/Title
+
 func _ready() -> void:
 	btn_back.pressed.connect(_on_back_pressed)
+	if title_label:
+		title_label.text = Localization.tr_key("shop_title")
+	btn_back.text = Localization.tr_key("btn_back")
 	_build_rows()
 	_refresh_gold()
 
@@ -46,19 +51,19 @@ func _make_row(key: String) -> PanelContainer:
 	vbox.add_child(header)
 
 	var name_lbl := Label.new()
-	name_lbl.text = UPGRADE_NAMES[key]
+	name_lbl.text = Localization.tr_key(UPGRADE_NAME_KEYS[key])
 	name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	name_lbl.add_theme_font_size_override("font_size", 26)
 	header.add_child(name_lbl)
 
 	var level_lbl := Label.new()
 	level_lbl.name = "LevelLbl"
-	level_lbl.text = "Lv %d" % GameData.permanent_upgrades.get(key, 0)
+	level_lbl.text = Localization.tr_key("label_lv_fmt") % GameData.permanent_upgrades.get(key, 0)
 	level_lbl.add_theme_font_size_override("font_size", 24)
 	header.add_child(level_lbl)
 
 	var desc_lbl := Label.new()
-	desc_lbl.text = UPGRADE_DESCS[key]
+	desc_lbl.text = Localization.tr_key(UPGRADE_DESC_KEYS[key])
 	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	desc_lbl.add_theme_font_size_override("font_size", 20)
 	vbox.add_child(desc_lbl)
@@ -70,7 +75,7 @@ func _make_row(key: String) -> PanelContainer:
 	var cost := GameData.get_upgrade_cost(key)
 	var cost_lbl := Label.new()
 	cost_lbl.name = "CostLbl"
-	cost_lbl.text = ("Cost: %d" % cost) if cost > 0 else "MAX"
+	cost_lbl.text = (Localization.tr_key("label_cost_fmt") % cost) if cost > 0 else Localization.tr_key("btn_max")
 	cost_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	cost_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	cost_lbl.add_theme_font_size_override("font_size", 22)
@@ -78,7 +83,7 @@ func _make_row(key: String) -> PanelContainer:
 
 	var btn := Button.new()
 	btn.name = "BuyBtn"
-	btn.text = "BUY"
+	btn.text = Localization.tr_key("btn_buy")
 	btn.custom_minimum_size = Vector2(160, 70)
 	btn.disabled = cost <= 0 or GameData.gold < cost
 	btn.add_theme_font_size_override("font_size", 24)
@@ -102,14 +107,14 @@ func _refresh_all_rows() -> void:
 		var btn: Button = row.find_child("BuyBtn", true, false)
 		var cost := GameData.get_upgrade_cost(key)
 		if level_lbl:
-			level_lbl.text = "Lv %d" % GameData.permanent_upgrades.get(key, 0)
+			level_lbl.text = Localization.tr_key("label_lv_fmt") % GameData.permanent_upgrades.get(key, 0)
 		if cost_lbl:
-			cost_lbl.text = ("Cost: %d" % cost) if cost > 0 else "MAX"
+			cost_lbl.text = (Localization.tr_key("label_cost_fmt") % cost) if cost > 0 else Localization.tr_key("btn_max")
 		if btn:
 			btn.disabled = cost <= 0 or GameData.gold < cost
 
 func _refresh_gold() -> void:
-	gold_label.text = "Gold: %d" % GameData.gold
+	gold_label.text = Localization.tr_key("label_gold") % GameData.gold
 
 func _on_back_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/ui/MainMenu.tscn")
