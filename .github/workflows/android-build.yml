@@ -97,6 +97,9 @@ jobs:
           unzip -q -o ~/.local/share/godot/export_templates/4.2.2.stable/android_source.zip 'libs/*' -d .
           ls -lh libs/debug libs/release
 
+      - name: Make gradlew executable
+        run: chmod +x godot/android/build/gradlew
+
       - name: Import project (build .godot cache, 2 passes for class_name resolution)
         run: |
           ~/godot-bin/godot --headless --path godot --editor --quit-after 200 || true
