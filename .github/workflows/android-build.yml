@@ -1,4 +1,4 @@
-name: Android APK Build
+name: Build (Android + Windows)
 
 on:
   push:
@@ -127,8 +127,22 @@ jobs:
           path: build/nightseed-survivor-release.apk
           retention-days: 30
 
-      - name: Attach APK to release
+      - name: Build Windows release
+        run: |
+          ~/godot-bin/godot --headless --path godot --export-release "Windows Desktop" "${{ github.workspace }}/build/nightseed-survivor.exe"
+          ls -la build/nightseed-survivor.exe
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightseed-survivor-windows
+          path: build/nightseed-survivor.exe
+          retention-days: 30
+
+      - name: Attach assets to release
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
         with:
-          files: build/nightseed-survivor-release.apk
+          files: |
+            build/nightseed-survivor-release.apk
+            build/nightseed-survivor.exe
