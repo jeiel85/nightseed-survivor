@@ -76,3 +76,8 @@ theme_override_font_sizes/font_size = 22
 custom_minimum_size = Vector2(0, 64)
 text = "DIFFICULTY:  Normal"
 theme_override_font_sizes/font_size = 22
+
+[node name="BtnCredits" type="Button" parent="VBox"]
+custom_minimum_size = Vector2(0, 56)
+text = "Credits & Licenses"
+theme_override_font_sizes/font_size = 18

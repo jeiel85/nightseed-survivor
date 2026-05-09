@@ -1,0 +1,105 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/CreditsUI.gd" id="1_c"]
+
+[node name="CreditsUI" type="Control"]
+script = ExtResource("1_c")
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.06, 0.06, 0.1, 1)
+
+[node name="VBox" type="VBoxContainer" parent="."]
+offset_left = 40.0
+offset_top = 60.0
+offset_right = -40.0
+offset_bottom = -40.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="VBox"]
+custom_minimum_size = Vector2(0, 80)
+text = "NIGHTSEED SURVIVOR"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 36
+
+[node name="VersionLabel" type="Label" parent="VBox"]
+custom_minimum_size = Vector2(0, 36)
+text = "v0.5.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 22
+
+[node name="Spacer1" type="Control" parent="VBox"]
+custom_minimum_size = Vector2(0, 12)
+
+[node name="Scroll" type="ScrollContainer" parent="VBox"]
+size_flags_vertical = 3
+
+[node name="Body" type="VBoxContainer" parent="VBox/Scroll"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 18
+
+[node name="ArtHeader" type="Label" parent="VBox/Scroll/Body"]
+text = "★ ART"
+theme_override_font_sizes/font_size = 26
+
+[node name="ArtBody" type="Label" parent="VBox/Scroll/Body"]
+text = "Sprites: Kenney - Tiny Dungeon
+Source: kenney.nl/assets/tiny-dungeon
+License: Creative Commons Zero (CC0 1.0)
+Free for personal, educational, and commercial use."
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 18
+
+[node name="EngineHeader" type="Label" parent="VBox/Scroll/Body"]
+text = "★ ENGINE"
+theme_override_font_sizes/font_size = 26
+
+[node name="EngineBody" type="Label" parent="VBox/Scroll/Body"]
+text = "Godot Engine 4.2.2
+godotengine.org
+License: MIT"
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 18
+
+[node name="AudioHeader" type="Label" parent="VBox/Scroll/Body"]
+text = "★ AUDIO"
+theme_override_font_sizes/font_size = 26
+
+[node name="AudioBody" type="Label" parent="VBox/Scroll/Body"]
+text = "All sound effects are procedurally generated at runtime
+using AudioStreamWAV + sine/sweep/arpeggio synthesis.
+No external audio assets."
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 18
+
+[node name="GameHeader" type="Label" parent="VBox/Scroll/Body"]
+text = "★ GAME"
+theme_override_font_sizes/font_size = 26
+
+[node name="GameBody" type="Label" parent="VBox/Scroll/Body"]
+text = "Code & design: jeiel85
+Source: github.com/jeiel85/nightseed-survivor
+
+Inspired by the survivor / horde-action genre."
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 18
+
+[node name="Spacer2" type="Control" parent="VBox/Scroll/Body"]
+custom_minimum_size = Vector2(0, 24)
+
+[node name="ThanksLabel" type="Label" parent="VBox/Scroll/Body"]
+text = "Thanks for playing."
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 22
+
+[node name="BtnBack" type="Button" parent="VBox"]
+custom_minimum_size = Vector2(0, 90)
+text = "Back to Menu"
+theme_override_font_sizes/font_size = 28
