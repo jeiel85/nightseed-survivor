@@ -67,6 +67,7 @@ func update(delta: float) -> void:
 		var bs: PackedScene = _scene_map.get(boss_type, boss_scene)
 		_spawner.spawn_specific(bs)
 		AudioManager.play("boss_appear", 0.0)
+		AudioManager.play_bgm("boss")
 
 func _check_wave_transitions() -> void:
 	if _waves.is_empty():

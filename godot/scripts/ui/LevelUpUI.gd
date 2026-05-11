@@ -48,6 +48,24 @@ func _show_next() -> void:
 		title_lbl.text = Localization.tr_key("levelup_title")
 	visible = true
 	get_tree().paused = true
+	_animate_cards_in()
+
+func _animate_cards_in() -> void:
+	# Staggered slide-in + fade-in. Cards start ~40px lower and transparent.
+	for i in range(_cards.size()):
+		var card: PanelContainer = _cards[i]
+		card.pivot_offset = card.size * 0.5
+		card.modulate.a = 0.0
+		card.position.y = 40.0
+		var delay := float(i) * 0.08
+		var tw := create_tween()
+		tw.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+		tw.tween_interval(delay)
+		tw.tween_property(card, "modulate:a", 1.0, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		var tw2 := create_tween()
+		tw2.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+		tw2.tween_interval(delay)
+		tw2.tween_property(card, "position:y", 0.0, 0.32).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 func _generate_options() -> void:
 	var pool: Array = []

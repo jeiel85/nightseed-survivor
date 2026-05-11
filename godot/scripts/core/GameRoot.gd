@@ -27,6 +27,7 @@ var _last_seen_hp: int = -1
 var _newly_unlocked_achievements: Array = []
 
 func _ready() -> void:
+	AudioManager.play_bgm("game")
 	randomize()
 	enemy_spawner.setup(player)
 	wave_manager.setup(enemy_spawner, GameData.selected_stage)
@@ -162,11 +163,11 @@ func _show_result(victory: bool) -> void:
 
 func _on_restart_pressed() -> void:
 	get_tree().paused = false
-	get_tree().reload_current_scene()
+	Transition.change_scene("res://scenes/main/GameRoot.tscn")
 
 func _on_menu_pressed() -> void:
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://scenes/ui/MainMenu.tscn")
+	Transition.change_scene("res://scenes/ui/MainMenu.tscn")
 
 func _on_upgrade_chosen(upgrade_id: String) -> void:
 	if upgrade_id.begins_with("new:"):

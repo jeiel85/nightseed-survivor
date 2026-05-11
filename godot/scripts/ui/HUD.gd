@@ -25,20 +25,29 @@ func _on_language_changed(_lang: String) -> void:
 	set_kills(_last_kills)
 	set_gold(_last_gold)
 
+var _hp_tween: Tween
+var _xp_tween: Tween
+
 func set_hp(current: int, max_val: int) -> void:
 	_last_hp = current
 	_last_max = max_val
 	if not is_instance_valid(hp_bar):
 		return
 	hp_bar.max_value = max_val
-	hp_bar.value = current
+	if _hp_tween and _hp_tween.is_valid():
+		_hp_tween.kill()
+	_hp_tween = create_tween()
+	_hp_tween.tween_property(hp_bar, "value", float(current), 0.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	hp_label.text = Localization.tr_key("hud_hp_fmt") % [current, max_val]
 
 func set_xp(current: int, needed: int) -> void:
 	if not is_instance_valid(xp_bar):
 		return
 	xp_bar.max_value = needed
-	xp_bar.value = current
+	if _xp_tween and _xp_tween.is_valid():
+		_xp_tween.kill()
+	_xp_tween = create_tween()
+	_xp_tween.tween_property(xp_bar, "value", float(current), 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 func set_level(level: int) -> void:
 	_last_level = level

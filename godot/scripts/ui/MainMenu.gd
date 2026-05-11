@@ -14,6 +14,7 @@ extends Control
 @onready var btn_credits: Button = $VBox/BtnCredits
 
 func _ready() -> void:
+	AudioManager.play_bgm("menu")
 	_refresh()
 	btn_play.pressed.connect(_on_play_pressed)
 	btn_character.pressed.connect(_on_character_pressed)
@@ -51,23 +52,23 @@ func _on_language_changed(_lang: String) -> void:
 	_refresh()
 
 func _on_play_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/main/GameRoot.tscn")
+	Transition.change_scene("res://scenes/main/GameRoot.tscn")
 
 func _on_character_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/CharacterSelect.tscn")
+	Transition.change_scene("res://scenes/ui/CharacterSelect.tscn")
 
 func _on_stage_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/StageSelect.tscn")
+	Transition.change_scene("res://scenes/ui/StageSelect.tscn")
 
 func _on_shop_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/ShopUI.tscn")
+	Transition.change_scene("res://scenes/ui/ShopUI.tscn")
 
 func _on_difficulty_pressed() -> void:
 	GameData.cycle_difficulty()
 	_refresh()
 
 func _on_credits_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/CreditsUI.tscn")
+	Transition.change_scene("res://scenes/ui/CreditsUI.tscn")
 
 func _on_leaderboard_pressed() -> void:
 	if not LeaderboardManager.is_signed_in():

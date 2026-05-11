@@ -41,6 +41,7 @@ const UPGRADE_COLORS: Dictionary = {
 @onready var title_label: Label = $VBox/Title
 
 func _ready() -> void:
+	AudioManager.play_bgm("menu")
 	btn_back.pressed.connect(_on_back_pressed)
 	if title_label:
 		title_label.text = Localization.tr_key("shop_title")
@@ -162,4 +163,4 @@ func _refresh_gold() -> void:
 	gold_label.text = Localization.tr_key("label_gold") % GameData.gold
 
 func _on_back_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/MainMenu.tscn")
+	Transition.change_scene("res://scenes/ui/MainMenu.tscn")

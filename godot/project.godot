@@ -22,6 +22,7 @@ TouchInput="*res://scripts/core/TouchInput.gd"
 Stages="*res://scripts/core/Stages.gd"
 AudioManager="*res://scripts/core/AudioManager.gd"
 Localization="*res://scripts/core/Localization.gd"
+Transition="*res://scripts/core/Transition.gd"
 GodotPlayGameServices="*res://addons/GodotPlayGameServices/scripts/autoloads/godot_play_game_services.gd"
 LeaderboardManager="*res://scripts/core/LeaderboardManager.gd"
 
