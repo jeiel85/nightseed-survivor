@@ -129,6 +129,22 @@ jobs:
           path: build/nightseed-survivor-release.apk
           retention-days: 30
 
+      - name: Build release AAB (Android App Bundle for Play Store)
+        env:
+          GODOT_ANDROID_KEYSTORE_RELEASE_PATH: ${{ github.workspace }}/secrets/release.keystore
+          GODOT_ANDROID_KEYSTORE_RELEASE_USER: nightseed
+          GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD }}
+        run: |
+          ~/godot-bin/godot --headless --path godot --export-release "Android AAB" "${{ github.workspace }}/build/nightseed-survivor-release.aab"
+          ls -lh build/nightseed-survivor-release.aab
+
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightseed-survivor-aab
+          path: build/nightseed-survivor-release.aab
+          retention-days: 30
+
       - name: Build Windows release
         run: |
           ~/godot-bin/godot --headless --path godot --export-release "Windows Desktop" "${{ github.workspace }}/build/nightseed-survivor.exe"
@@ -162,6 +178,8 @@ jobs:
           # (GitHub Pages can't send COOP/COEP headers; coi-serviceworker patches them client-side)
           cp godot/web_extras/coi-serviceworker.js build/web/
           sed -i 's|<head>|<head>\n\t<script src="coi-serviceworker.js"></script>|' build/web/index.html
+          # Ship the privacy policy alongside the game (Play Store requires a hosted URL)
+          cp godot/web_extras/privacy.html build/web/
           ls -la build/web/
 
       - name: Upload Web artifact
@@ -191,5 +209,6 @@ jobs:
           fail_on_unmatched_files: true
           files: |
             build/nightseed-survivor-release.apk
+            build/nightseed-survivor-release.aab
             build/nightseed-survivor.exe
             build/nightseed-survivor.x86_64
