@@ -55,19 +55,80 @@ static func sweep(freq_start: float, freq_end: float, duration: float, amplitude
 	return _make_stream(buf)
 
 # 3-note arpeggio - good for level up / evolve
-static func arpeggio(freqs: Array, note_duration: float = 0.08, amplitude: float = 0.35) -> AudioStreamWAV:
+# `harmonic` adds a 2nd-partial overtone for richer body.
+# `sub` adds a 3rd-partial overtone for sparkle (helpful for victory/evolve).
+static func arpeggio(freqs: Array, note_duration: float = 0.08, amplitude: float = 0.35, harmonic: float = 0.0, sub: float = 0.0) -> AudioStreamWAV:
 	var per_note: int = int(SAMPLE_RATE * note_duration)
 	var samples: int = per_note * freqs.size()
 	var buf := PackedByteArray()
 	buf.resize(samples * 2)
 	var phase: float = 0.0
+	var h_phase: float = 0.0
+	var s_phase: float = 0.0
 	for i in range(samples):
 		var note_idx: int = i / per_note
 		var local_t: float = float(i % per_note) / float(SAMPLE_RATE)
 		var freq: float = float(freqs[note_idx])
 		phase += freq * TAU / float(SAMPLE_RATE)
+		var v: float = sin(phase)
+		if harmonic > 0.0:
+			h_phase += freq * 2.0 * TAU / float(SAMPLE_RATE)
+			v += harmonic * sin(h_phase)
+		if sub > 0.0:
+			s_phase += freq * 3.0 * TAU / float(SAMPLE_RATE)
+			v += sub * sin(s_phase)
+		var norm: float = 1.0 + harmonic + sub
+		if norm > 1.0:
+			v /= norm
 		var env: float = exp(-local_t * 8.0 / note_duration)
-		_write_sample(buf, i, sin(phase) * env * amplitude)
+		_write_sample(buf, i, v * env * amplitude)
+	return _make_stream(buf)
+
+# Punch-y tone: short noise transient on the attack + harmonic body.
+# Good for hits/kills where pure sine feels too soft.
+static func punch_tone(freq: float, duration: float, amplitude: float = 0.4, harmonic: float = 0.5, noise_amt: float = 0.45) -> AudioStreamWAV:
+	var samples: int = int(SAMPLE_RATE * duration)
+	var buf := PackedByteArray()
+	buf.resize(samples * 2)
+	var attack_samples: int = int(SAMPLE_RATE * 0.003)
+	var noise_decay_samples: int = int(SAMPLE_RATE * 0.018)
+	var rng := RandomNumberGenerator.new()
+	rng.randomize()
+	for i in range(samples):
+		var t: float = float(i) / float(SAMPLE_RATE)
+		var env: float = exp(-t * 7.0 / duration)
+		if i < attack_samples:
+			env *= float(i) / float(attack_samples)
+		var v: float = sin(t * freq * TAU)
+		if harmonic > 0.0:
+			v += harmonic * sin(t * freq * 2.0 * TAU)
+			v /= 1.0 + harmonic
+		# Brief noise burst on attack only — adds bite without muddying the tail.
+		if i < noise_decay_samples:
+			var n_env: float = 1.0 - float(i) / float(noise_decay_samples)
+			v += rng.randf_range(-1.0, 1.0) * noise_amt * n_env
+		_write_sample(buf, i, v * env * amplitude)
+	return _make_stream(buf)
+
+# Boom: low rumble swept down + noise tail. For boss appearance, etc.
+static func boom(duration: float = 0.7, amplitude: float = 0.5) -> AudioStreamWAV:
+	var samples: int = int(SAMPLE_RATE * duration)
+	var buf := PackedByteArray()
+	buf.resize(samples * 2)
+	var rng := RandomNumberGenerator.new()
+	rng.randomize()
+	var phase: float = 0.0
+	var noise_prev: float = 0.0
+	for i in range(samples):
+		var t: float = float(i) / float(SAMPLE_RATE)
+		var p: float = t / duration
+		var freq: float = lerp(140.0, 38.0, sqrt(p))
+		phase += freq * TAU / float(SAMPLE_RATE)
+		var env: float = exp(-t * 3.0)
+		var raw: float = rng.randf_range(-1.0, 1.0)
+		noise_prev = lerp(noise_prev, raw, 0.06)
+		var v: float = sin(phase) * 0.75 + noise_prev * 0.55
+		_write_sample(buf, i, v * env * amplitude)
 	return _make_stream(buf)
 
 # Procedural BGM loop. Lo-fi bass drone + sparse melody from a minor scale,
@@ -93,14 +154,53 @@ static func bgm_loop(root_freq: float, bpm: float, bars: int, mood: String = "me
 	var rest_prob: float = 0.55
 	var mel_amp_mult: float = 0.30
 	var bass_oct_alt: bool = false
+	var kick_amp: float = 0.0
+	var hat_amp: float = 0.0
+	var hat_on_beat: bool = false
 	match mood:
 		"game":
 			rest_prob = 0.32
 			mel_amp_mult = 0.34
+			kick_amp = 0.55
+			hat_amp = 0.22
 		"boss":
 			rest_prob = 0.16
 			mel_amp_mult = 0.42
 			bass_oct_alt = true
+			kick_amp = 0.72
+			hat_amp = 0.28
+			hat_on_beat = true
+
+	# Pre-render one-shot drum samples (kick + hi-hat). Mixed in below at each beat.
+	var kick_len: int = int(SAMPLE_RATE * 0.14)
+	var kick_data: PackedFloat32Array = PackedFloat32Array()
+	kick_data.resize(kick_len)
+	var k_phase: float = 0.0
+	for ki in range(kick_len):
+		var kt: float = float(ki) / float(SAMPLE_RATE)
+		var kp: float = kt / 0.14
+		var kfreq: float = lerp(120.0, 42.0, sqrt(kp))
+		k_phase += kfreq * TAU / float(SAMPLE_RATE)
+		var kenv: float = exp(-kt * 16.0)
+		# Click on attack for sharper transient
+		var click: float = 0.0
+		if ki < int(SAMPLE_RATE * 0.004):
+			click = sin(kt * 1800.0 * TAU) * exp(-kt * 600.0) * 0.45
+		kick_data[ki] = (sin(k_phase) + click) * kenv
+
+	var hat_len: int = int(SAMPLE_RATE * 0.045)
+	var hat_data: PackedFloat32Array = PackedFloat32Array()
+	hat_data.resize(hat_len)
+	var hrng := RandomNumberGenerator.new()
+	hrng.seed = int(root_freq) + mood_salt * 31
+	var h_prev: float = 0.0
+	for hi in range(hat_len):
+		var ht: float = float(hi) / float(SAMPLE_RATE)
+		var hraw: float = hrng.randf_range(-1.0, 1.0)
+		h_prev = lerp(h_prev, hraw, 0.72)
+		var hpv: float = hraw - h_prev * 0.5
+		var henv: float = exp(-ht * 65.0)
+		hat_data[hi] = hpv * henv
 
 	# Compose melody (per beat). Slight rest weighting on first beat for breathing room
 	var melody := []
@@ -154,7 +254,19 @@ static func bgm_loop(root_freq: float, bpm: float, bars: int, mood: String = "me
 		noise_prev = lerp(noise_prev, noise_raw, 0.025)
 		var amb: float = noise_prev * 0.045
 
-		_write_sample(buf, i, (bass + mel + amb) * amplitude)
+		# Drum mix: kick on every beat, hi-hat on the offbeat (and on-beat for boss).
+		var drum: float = 0.0
+		if kick_amp > 0.0:
+			var bp: int = i - beat_idx * beat_samples
+			if bp >= 0 and bp < kick_len:
+				drum += kick_data[bp] * kick_amp
+			var half_pos: int = bp - beat_samples / 2
+			if half_pos >= 0 and half_pos < hat_len:
+				drum += hat_data[half_pos] * hat_amp
+			if hat_on_beat and bp >= 0 and bp < hat_len:
+				drum += hat_data[bp] * hat_amp * 0.55
+
+		_write_sample(buf, i, (bass + mel + amb + drum) * amplitude)
 
 	var stream := _make_stream(buf)
 	stream.loop_mode = AudioStreamWAV.LOOP_FORWARD

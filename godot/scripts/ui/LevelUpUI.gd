@@ -154,9 +154,38 @@ func _setup_card(card: PanelContainer, opt: Dictionary, idx: int) -> void:
 	var title_lbl: Label = card.get_node_or_null("VBox/Title")
 	var desc_lbl: Label = card.get_node_or_null("VBox/Desc")
 	var btn: Button = card.get_node_or_null("VBox/SelectBtn")
+	var color: Color = opt["color"]
+	var captured_idx := idx
+
+	# Distinct colored frame per card so options read as 3 separate choices
+	# at a glance, not one continuous strip.
+	var card_style := StyleBoxFlat.new()
+	card_style.bg_color = Color(color.r * 0.16, color.g * 0.16, color.b * 0.20, 0.95)
+	card_style.border_color = color
+	card_style.set_border_width_all(4)
+	card_style.set_corner_radius_all(16)
+	card_style.set_content_margin_all(10)
+	card_style.shadow_color = Color(color.r, color.g, color.b, 0.40)
+	card_style.shadow_size = 8
+	card.add_theme_stylebox_override("panel", card_style)
+
+	# Whole card is the tap target — players can tap the icon, title, desc, or button.
+	# Inner children must not stop the event from reaching the panel's gui_input.
+	card.mouse_filter = Control.MOUSE_FILTER_STOP
+	var inner_vbox: VBoxContainer = card.get_node_or_null("VBox")
+	if inner_vbox:
+		inner_vbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		for child in inner_vbox.get_children():
+			if child is Button:
+				continue
+			if child is Control:
+				(child as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
+	for connection in card.gui_input.get_connections():
+		card.gui_input.disconnect(connection["callable"])
+	card.gui_input.connect(func(event): _on_card_gui_input(event, captured_idx))
 
 	if header:
-		header.color = opt["color"]
+		header.color = color
 	if icon_rect:
 		var icon_path: String = String(opt.get("icon", ""))
 		if icon_path != "":
@@ -167,14 +196,41 @@ func _setup_card(card: PanelContainer, opt: Dictionary, idx: int) -> void:
 			icon_rect.visible = false
 	if title_lbl:
 		title_lbl.text = opt["title"]
+		title_lbl.add_theme_color_override("font_color", color.lightened(0.35))
 	if desc_lbl:
 		desc_lbl.text = opt["desc"]
 	if btn:
-		btn.text = Localization.tr_key("btn_select")
+		btn.text = "▶  " + Localization.tr_key("btn_select")
 		for connection in btn.pressed.get_connections():
 			btn.pressed.disconnect(connection["callable"])
-		var captured_idx := idx
 		btn.pressed.connect(func(): _on_card_selected(captured_idx))
+		var btn_normal := StyleBoxFlat.new()
+		btn_normal.bg_color = color
+		btn_normal.set_corner_radius_all(10)
+		btn_normal.set_content_margin_all(8)
+		var btn_hover := StyleBoxFlat.new()
+		btn_hover.bg_color = color.lightened(0.18)
+		btn_hover.set_corner_radius_all(10)
+		btn_hover.set_content_margin_all(8)
+		var btn_press := StyleBoxFlat.new()
+		btn_press.bg_color = color.darkened(0.25)
+		btn_press.set_corner_radius_all(10)
+		btn_press.set_content_margin_all(8)
+		btn.add_theme_stylebox_override("normal", btn_normal)
+		btn.add_theme_stylebox_override("hover", btn_hover)
+		btn.add_theme_stylebox_override("pressed", btn_press)
+		btn.add_theme_stylebox_override("focus", btn_hover)
+		btn.add_theme_color_override("font_color", Color.WHITE)
+		btn.add_theme_color_override("font_hover_color", Color.WHITE)
+		btn.add_theme_color_override("font_pressed_color", Color.WHITE)
+		btn.add_theme_color_override("font_focus_color", Color.WHITE)
+
+func _on_card_gui_input(event: InputEvent, idx: int) -> void:
+	# Fire on release so a stray drag-out doesn't lock in a choice.
+	if event is InputEventScreenTouch and not event.pressed:
+		_on_card_selected(idx)
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		_on_card_selected(idx)
 
 func _on_card_selected(idx: int) -> void:
 	if idx >= _options.size():

@@ -33,8 +33,6 @@ func _handle_touch(event: InputEventScreenTouch, paused: bool) -> void:
 	if event.pressed:
 		if paused or _active_touch_id != -1:
 			return
-		if event.position.x >= size.x * 0.5:
-			return
 		_active_touch_id = event.index
 		_begin_drag(event.position)
 	elif event.index == _active_touch_id:
@@ -50,8 +48,6 @@ func _handle_mouse_button(event: InputEventMouseButton, paused: bool) -> void:
 		return
 	if event.pressed:
 		if paused or _active_touch_id != -1:
-			return
-		if event.position.x >= size.x * 0.5:
 			return
 		_active_touch_id = -2
 		_begin_drag(event.position)

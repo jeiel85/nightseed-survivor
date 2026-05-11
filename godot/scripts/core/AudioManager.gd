@@ -20,16 +20,16 @@ func _ready() -> void:
 		_players.append(p)
 
 	sounds["pickup_xp"]   = SoundFx.tone(880.0, 0.06, 0.30, 0.4)
-	sounds["pickup_gold"] = SoundFx.arpeggio([1046.0, 1396.0], 0.05, 0.30)
-	sounds["level_up"]    = SoundFx.arpeggio([523.0, 659.0, 784.0], 0.08, 0.32)
-	sounds["evolve"]      = SoundFx.arpeggio([523.0, 659.0, 784.0, 1047.0, 1318.0], 0.08, 0.34)
-	sounds["kill"]        = SoundFx.tone(330.0, 0.08, 0.28, 0.3)
-	sounds["hit"]         = SoundFx.tone(700.0, 0.05, 0.16)
-	sounds["damage"]      = SoundFx.thud(0.18, 0.45)
+	sounds["pickup_gold"] = SoundFx.arpeggio([1046.0, 1396.0], 0.05, 0.32, 0.45)
+	sounds["level_up"]    = SoundFx.arpeggio([523.0, 659.0, 784.0], 0.09, 0.38, 0.5, 0.2)
+	sounds["evolve"]      = SoundFx.arpeggio([523.0, 659.0, 784.0, 1047.0, 1318.0], 0.09, 0.42, 0.55, 0.25)
+	sounds["kill"]        = SoundFx.punch_tone(280.0, 0.10, 0.40, 0.6, 0.45)
+	sounds["hit"]         = SoundFx.punch_tone(720.0, 0.06, 0.24, 0.4, 0.35)
+	sounds["damage"]      = SoundFx.thud(0.22, 0.55)
 	sounds["ui_click"]    = SoundFx.tone(660.0, 0.04, 0.22)
-	sounds["boss_appear"] = SoundFx.sweep(120.0, 60.0, 0.6, 0.45)
-	sounds["victory"]     = SoundFx.arpeggio([523.0, 659.0, 784.0, 1047.0], 0.18, 0.34)
-	sounds["defeat"]      = SoundFx.sweep(440.0, 110.0, 0.7, 0.4)
+	sounds["boss_appear"] = SoundFx.boom(0.75, 0.55)
+	sounds["victory"]     = SoundFx.arpeggio([523.0, 659.0, 784.0, 1047.0], 0.18, 0.42, 0.55, 0.30)
+	sounds["defeat"]      = SoundFx.sweep(440.0, 90.0, 0.8, 0.45)
 
 	# Procedural BGM. ~16s loops, generated once at startup.
 	# Different root notes + tempo + mood create distinct atmospheres.
