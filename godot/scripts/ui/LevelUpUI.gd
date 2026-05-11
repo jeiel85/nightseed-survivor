@@ -12,11 +12,11 @@ const WEAPON_DATA: Dictionary = {
 }
 
 const PASSIVE_DATA: Dictionary = {
-	"swift_boots":  {"name_key": "passive_swift_boots_name",  "desc_key": "passive_swift_boots_desc",  "color": Color(0.5, 0.85, 0.5)},
-	"magnet_charm": {"name_key": "passive_magnet_charm_name", "desc_key": "passive_magnet_charm_desc", "color": Color(0.75, 0.5, 0.95)},
-	"iron_heart":   {"name_key": "passive_iron_heart_name",   "desc_key": "passive_iron_heart_desc",   "color": Color(1.0, 0.35, 0.35)},
-	"battle_focus": {"name_key": "passive_battle_focus_name", "desc_key": "passive_battle_focus_desc", "color": Color(0.9, 0.7, 0.2)},
-	"power_core":   {"name_key": "passive_power_core_name",   "desc_key": "passive_power_core_desc",   "color": Color(1.0, 0.3, 0.65)},
+	"swift_boots":  {"name_key": "passive_swift_boots_name",  "desc_key": "passive_swift_boots_desc",  "color": Color(0.5, 0.85, 0.5),  "icon": "res://assets/sprites/shop_swift.png"},
+	"magnet_charm": {"name_key": "passive_magnet_charm_name", "desc_key": "passive_magnet_charm_desc", "color": Color(0.75, 0.5, 0.95), "icon": "res://assets/sprites/shop_magnet.png"},
+	"iron_heart":   {"name_key": "passive_iron_heart_name",   "desc_key": "passive_iron_heart_desc",   "color": Color(1.0, 0.35, 0.35), "icon": "res://assets/sprites/shop_heart.png"},
+	"battle_focus": {"name_key": "passive_battle_focus_name", "desc_key": "passive_battle_focus_desc", "color": Color(0.9, 0.7, 0.2),   "icon": "res://assets/sprites/shop_focus.png"},
+	"power_core":   {"name_key": "passive_power_core_name",   "desc_key": "passive_power_core_desc",   "color": Color(1.0, 0.3, 0.65),  "icon": "res://assets/sprites/shop_power.png"},
 }
 
 var _options: Array = []
@@ -60,11 +60,15 @@ func _generate_options() -> void:
 			continue
 		if Evolutions.can_evolve(w.weapon_name, w.level, Callable(wm, "get_passive_level")):
 			var rule: Dictionary = Evolutions.RULES[w.weapon_name]
+			var base_icon: String = ""
+			if WEAPON_DATA.has(w.weapon_name):
+				base_icon = String(WEAPON_DATA[w.weapon_name].get("icon", ""))
 			priority.append({
 				"id": "evolve:" + w.weapon_name,
 				"title": "★ EVOLVE: " + String(rule["evolved_name"]),
 				"desc": String(rule["desc"]),
 				"color": rule["color"],
+				"icon": base_icon,
 			})
 
 	for wname in WEAPON_DATA:
@@ -100,13 +104,20 @@ func _generate_options() -> void:
 				"title": Localization.tr_key(String(pd["name_key"]), pkey),
 				"desc": Localization.tr_key(String(pd["desc_key"]), ""),
 				"color": pd["color"],
+				"icon": pd.get("icon", ""),
 			})
 
 	pool.shuffle()
 	_options = priority + pool
 	_options = _options.slice(0, 3)
 
-	var fallback := {"id": "passive:iron_heart", "title": "Iron Heart", "desc": "Max HP +20", "color": Color(1.0, 0.35, 0.35)}
+	var fallback := {
+		"id": "passive:iron_heart",
+		"title": Localization.tr_key("passive_iron_heart_name", "Iron Heart"),
+		"desc": Localization.tr_key("passive_iron_heart_desc", "Max HP +20"),
+		"color": Color(1.0, 0.35, 0.35),
+		"icon": "res://assets/sprites/shop_heart.png",
+	}
 	while _options.size() < 3:
 		_options.append(fallback)
 

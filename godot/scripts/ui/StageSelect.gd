@@ -21,21 +21,31 @@ func _build_cards() -> void:
 		if stage is Dictionary:
 			items_container.add_child(_make_card(stage))
 
+const STAGE_PREVIEW: Dictionary = {
+	"forest":           ["res://assets/sprites/enemy_slime.png", "res://assets/sprites/enemy_bat.png"],
+	"frozen_wastes":    ["res://assets/sprites/enemy_bat.png",   "res://assets/sprites/enemy_hound.png"],
+	"twilight_sanctum": ["res://assets/sprites/enemy_knight.png", "res://assets/sprites/enemy_caster.png"],
+	"inferno_chasm":    ["res://assets/sprites/enemy_hound.png", "res://assets/sprites/enemy_dasher.png"],
+	"cursed_tomb":      ["res://assets/sprites/enemy_boss.png",  "res://assets/sprites/enemy_miniboss.png"],
+}
+
 func _make_card(stage: Dictionary) -> PanelContainer:
 	var stage_id := String(stage.get("id", ""))
+	var unlocked: bool = GameData.is_stage_unlocked(stage_id)
+	var selected: bool = GameData.selected_stage == stage_id
+	var stage_color := Color.html(String(stage.get("color", "#888888")))
 	var card := PanelContainer.new()
 	card.name = "Card_" + stage_id
-	card.custom_minimum_size = Vector2(0, 200)
+	card.custom_minimum_size = Vector2(0, 220)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 	var hbox := HBoxContainer.new()
 	hbox.add_theme_constant_override("separation", 14)
 	card.add_child(hbox)
 
-	var color_block := ColorRect.new()
-	color_block.custom_minimum_size = Vector2(70, 0)
-	color_block.color = Color.html(String(stage.get("color", "#888888")))
-	hbox.add_child(color_block)
+	# Portrait (tinted bg + 2 enemy icons + lock/selected state)
+	var portrait := _make_stage_portrait(stage_id, stage_color, unlocked, selected)
+	hbox.add_child(portrait)
 
 	var info := VBoxContainer.new()
 	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -68,6 +78,98 @@ func _make_card(stage: Dictionary) -> PanelContainer:
 
 	return card
 
+func _make_stage_portrait(stage_id: String, stage_color: Color, unlocked: bool, selected: bool) -> Control:
+	var portrait := Control.new()
+	portrait.name = "Portrait"
+	portrait.custom_minimum_size = Vector2(140, 0)
+
+	var bg := ColorRect.new()
+	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	var bgc := stage_color
+	bgc.a = 0.30 if selected else 0.18
+	bg.color = bgc
+	portrait.add_child(bg)
+
+	if selected:
+		var border_c: Color = stage_color
+		border_c.a = 0.85
+		_add_border(portrait, border_c, 3.0)
+
+	# Two enemy sprites diagonally arranged
+	var sprites: Array = STAGE_PREVIEW.get(stage_id, [])
+	if sprites.size() >= 1:
+		var s1 := TextureRect.new()
+		var p1: String = String(sprites[0])
+		if ResourceLoader.exists(p1):
+			s1.texture = load(p1)
+		s1.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		s1.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+		s1.custom_minimum_size = Vector2(72, 72)
+		s1.set_anchors_preset(Control.PRESET_CENTER_LEFT)
+		s1.offset_left = 12
+		s1.offset_top = -56
+		s1.offset_right = 84
+		s1.offset_bottom = 16
+		if not unlocked:
+			s1.modulate = Color(0.10, 0.10, 0.15, 1.0)
+		portrait.add_child(s1)
+
+	if sprites.size() >= 2:
+		var s2 := TextureRect.new()
+		var p2: String = String(sprites[1])
+		if ResourceLoader.exists(p2):
+			s2.texture = load(p2)
+		s2.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		s2.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+		s2.custom_minimum_size = Vector2(60, 60)
+		s2.set_anchors_preset(Control.PRESET_CENTER_RIGHT)
+		s2.offset_left = -68
+		s2.offset_top = 0
+		s2.offset_right = -8
+		s2.offset_bottom = 60
+		if not unlocked:
+			s2.modulate = Color(0.10, 0.10, 0.15, 1.0)
+		portrait.add_child(s2)
+
+	if not unlocked:
+		var lock_lbl := Label.new()
+		lock_lbl.text = "🔒"
+		lock_lbl.add_theme_font_size_override("font_size", 36)
+		lock_lbl.set_anchors_preset(Control.PRESET_CENTER)
+		lock_lbl.offset_left = -20
+		lock_lbl.offset_top = -24
+		lock_lbl.offset_right = 20
+		lock_lbl.offset_bottom = 24
+		portrait.add_child(lock_lbl)
+
+	return portrait
+
+func _add_border(parent: Control, color: Color, thickness: float) -> void:
+	var top := ColorRect.new()
+	top.anchor_right = 1.0
+	top.offset_bottom = thickness
+	top.color = color
+	parent.add_child(top)
+	var bottom := ColorRect.new()
+	bottom.anchor_top = 1.0
+	bottom.anchor_right = 1.0
+	bottom.anchor_bottom = 1.0
+	bottom.offset_top = -thickness
+	bottom.color = color
+	parent.add_child(bottom)
+	var left := ColorRect.new()
+	left.anchor_bottom = 1.0
+	left.offset_right = thickness
+	left.color = color
+	parent.add_child(left)
+	var right := ColorRect.new()
+	right.anchor_left = 1.0
+	right.anchor_right = 1.0
+	right.anchor_bottom = 1.0
+	right.offset_left = -thickness
+	right.color = color
+	parent.add_child(right)
+
 func _setup_button(btn: Button, stage_id: String, stage: Dictionary) -> void:
 	for c in btn.pressed.get_connections():
 		btn.pressed.disconnect(c["callable"])
@@ -95,16 +197,7 @@ func _on_select_pressed(stage_id: String) -> void:
 
 func _refresh_all() -> void:
 	_refresh_gold()
-	for stage in Stages.stages:
-		if not stage is Dictionary:
-			continue
-		var stage_id := String(stage.get("id", ""))
-		var card := items_container.get_node_or_null("Card_" + stage_id)
-		if card == null:
-			continue
-		var btn: Button = card.find_child("ActionBtn", true, false)
-		if btn:
-			_setup_button(btn, stage_id, stage)
+	_build_cards()
 
 func _refresh_gold() -> void:
 	gold_label.text = Localization.tr_key("label_gold") % GameData.gold

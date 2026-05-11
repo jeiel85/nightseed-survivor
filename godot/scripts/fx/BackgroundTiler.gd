@@ -3,29 +3,33 @@ class_name BackgroundTiler
 
 ## Procedural ground for the survival arena.
 ##
-## Performance: instead of redrawing every frame (~600 draw ops, brutal on
-## WebGL), we only redraw when the player crosses a movement threshold and
-## paint a region wider than the viewport. Between redraws, Godot caches
-## the canvas item and the camera transform alone scrolls the world — zero
-## per-frame work.
+## Performance: redraws only when the camera crosses a movement threshold,
+## paints a region wider than the viewport. Between redraws the canvas
+## item is cached → zero per-frame work.
+##
+## Visual:
+##   - 3 ground tile variants randomly placed (hash-driven)
+##   - Per-tile color tint + horizontal flip variation
+##   - Scattered pebbles + soft fireflies per chunk
+##   - Large decorations (rocks + torches) sparsely placed at deterministic
+##     positions, giving the world landmarks to navigate by
 
-@export var tile_texture: Texture2D
+@export var tile_textures: Array[Texture2D] = []
 @export var tile_modulate: Color = Color(0.42, 0.36, 0.55, 1.0)
 @export var tile_size_px: float = 64.0
 @export var follow_target_path: NodePath
 @export var pebble_color_a: Color = Color(0.68, 0.62, 0.78, 0.55)
 @export var pebble_color_b: Color = Color(0.30, 0.24, 0.42, 0.55)
 @export var firefly_color: Color = Color(0.80, 0.95, 1.0, 0.9)
+@export var decor_rock_texture: Texture2D
+@export var decor_torch_texture: Texture2D
+@export var decor_modulate: Color = Color(0.55, 0.50, 0.70, 1.0)
+@export var torch_glow_color: Color = Color(1.0, 0.65, 0.30, 0.45)
 
-# How far the player can drift from the last drawn center before we
-# repaint a new ground region. Smaller = more redraws, larger = bigger
-# initial paint cost.
 const REDRAW_THRESHOLD: float = 600.0
-# Half-extent of the painted region (so each axis paints 2x this around
-# the player). Must comfortably exceed REDRAW_THRESHOLD + viewport/2 so
-# the visible area is always filled between repaints.
-const DRAW_HALF: float = 1600.0
-const CHUNK_PX: float = 256.0
+const DRAW_HALF: float = 1700.0
+const CHUNK_PX: float = 320.0
+const DECOR_CHUNK_PX: float = 640.0
 const HASH_X: int = 73856093
 const HASH_Y: int = 19349663
 
@@ -44,8 +48,8 @@ func _process(_delta: float) -> void:
 		_drawn_center = _target.global_position
 		queue_redraw()
 
-func _hash(ix: int, iy: int) -> int:
-	return ((ix * HASH_X) ^ (iy * HASH_Y)) & 0x7FFFFFFF
+func _hash(ix: int, iy: int, salt: int = 0) -> int:
+	return ((ix * HASH_X) ^ (iy * HASH_Y) ^ (salt * 982451653)) & 0x7FFFFFFF
 
 func _draw() -> void:
 	var center: Vector2 = _drawn_center if _drawn_center.x != INF else Vector2.ZERO
@@ -53,10 +57,8 @@ func _draw() -> void:
 	var min_p := center - half
 	var max_p := center + half
 
-	# 1) Tile fill with per-tile color tint + flip variation
-	if tile_texture:
-		var src_rect := Rect2(Vector2.ZERO, tile_texture.get_size())
-		var src_size: Vector2 = tile_texture.get_size()
+	# 1) Tile fill — pick from variants by hash, per-tile tint and flip.
+	if not tile_textures.is_empty():
 		var sx: float = floor(min_p.x / tile_size_px) * tile_size_px
 		var sy: float = floor(min_p.y / tile_size_px) * tile_size_px
 		var x: float = sx
@@ -66,19 +68,22 @@ func _draw() -> void:
 				var ix: int = int(round(x / tile_size_px))
 				var iy: int = int(round(y / tile_size_px))
 				var h: int = _hash(ix, iy)
+				var tex: Texture2D = tile_textures[h % tile_textures.size()]
+				var src_size: Vector2 = tex.get_size()
+				var src_rect := Rect2(Vector2.ZERO, src_size)
 				var v: float = float(h % 1000) / 1000.0
 				var tint: Color = tile_modulate.lerp(tile_modulate * 1.45, v * 0.7)
 				tint.a = 1.0
 				var dst_rect := Rect2(Vector2(x, y), Vector2(tile_size_px, tile_size_px))
 				if (h >> 8) & 1:
 					var flipped_src := Rect2(Vector2(src_size.x, 0), Vector2(-src_size.x, src_size.y))
-					draw_texture_rect_region(tile_texture, dst_rect, flipped_src, tint)
+					draw_texture_rect_region(tex, dst_rect, flipped_src, tint)
 				else:
-					draw_texture_rect_region(tile_texture, dst_rect, src_rect, tint)
+					draw_texture_rect_region(tex, dst_rect, src_rect, tint)
 				y += tile_size_px
 			x += tile_size_px
 
-	# 2) Decorative scatter — fewer than before, deterministic per chunk
+	# 2) Pebbles + fireflies — small ambient detail per chunk.
 	var csx: float = floor(min_p.x / CHUNK_PX) * CHUNK_PX
 	var csy: float = floor(min_p.y / CHUNK_PX) * CHUNK_PX
 	var cx: float = csx
@@ -87,10 +92,10 @@ func _draw() -> void:
 		while cy < max_p.y:
 			var cix: int = int(round(cx / CHUNK_PX))
 			var ciy: int = int(round(cy / CHUNK_PX))
-			var seed_val: int = _hash(cix, ciy)
+			var seed_val: int = _hash(cix, ciy, 7)
 			var rng := RandomNumberGenerator.new()
 			rng.seed = seed_val
-			var n: int = rng.randi_range(2, 4)
+			var n: int = rng.randi_range(3, 5)
 			for i in range(n):
 				var px: float = cx + rng.randf_range(8.0, CHUNK_PX - 8.0)
 				var py: float = cy + rng.randf_range(8.0, CHUNK_PX - 8.0)
@@ -110,3 +115,53 @@ func _draw() -> void:
 				draw_circle(Vector2(fx, fy), 2.5, c2)
 			cy += CHUNK_PX
 		cx += CHUNK_PX
+
+	# 3) Large decor — rocks and torches at landmark density (sparser chunks).
+	var dsx: float = floor(min_p.x / DECOR_CHUNK_PX) * DECOR_CHUNK_PX
+	var dsy: float = floor(min_p.y / DECOR_CHUNK_PX) * DECOR_CHUNK_PX
+	var dx: float = dsx
+	while dx < max_p.x:
+		var dy: float = dsy
+		while dy < max_p.y:
+			var dix: int = int(round(dx / DECOR_CHUNK_PX))
+			var diy: int = int(round(dy / DECOR_CHUNK_PX))
+			var dseed: int = _hash(dix, diy, 19)
+			var drng := RandomNumberGenerator.new()
+			drng.seed = dseed
+			var decor_n: int = drng.randi_range(0, 2)
+			for k in range(decor_n):
+				var dx_pos: float = dx + drng.randf_range(60.0, DECOR_CHUNK_PX - 60.0)
+				var dy_pos: float = dy + drng.randf_range(60.0, DECOR_CHUNK_PX - 60.0)
+				var pick: int = drng.randi_range(0, 4)
+				if pick <= 2 and decor_rock_texture:
+					_draw_decor(decor_rock_texture, dx_pos, dy_pos, drng, false)
+				elif decor_torch_texture:
+					_draw_decor(decor_torch_texture, dx_pos, dy_pos, drng, true)
+				elif decor_rock_texture:
+					_draw_decor(decor_rock_texture, dx_pos, dy_pos, drng, false)
+			dy += DECOR_CHUNK_PX
+		dx += DECOR_CHUNK_PX
+
+func _draw_decor(tex: Texture2D, px: float, py: float, rng: RandomNumberGenerator, is_torch: bool) -> void:
+	var scale: float = rng.randf_range(2.4, 3.4)
+	var size: Vector2 = tex.get_size() * scale
+	var rect := Rect2(Vector2(px - size.x * 0.5, py - size.y * 0.5), size)
+	if is_torch:
+		# Soft warm glow underneath
+		var glow_r: float = scale * 24.0
+		var glow_color := torch_glow_color
+		glow_color.a = 0.20
+		draw_circle(Vector2(px, py - size.y * 0.15), glow_r, glow_color)
+		draw_circle(Vector2(px, py - size.y * 0.15), glow_r * 0.55, torch_glow_color)
+		draw_texture_rect(tex, rect, false, decor_modulate.lerp(Color(1, 0.9, 0.7), 0.35))
+	else:
+		var src_rect := Rect2(Vector2.ZERO, tex.get_size())
+		# Subtle shadow under the rock
+		var shadow_r: float = scale * 9.0
+		draw_circle(Vector2(px, py + size.y * 0.35), shadow_r, Color(0, 0, 0, 0.30))
+		# Flip horizontally for variety
+		if rng.randi() % 2 == 0:
+			var flipped := Rect2(Vector2(src_rect.size.x, 0), Vector2(-src_rect.size.x, src_rect.size.y))
+			draw_texture_rect_region(tex, rect, flipped, decor_modulate)
+		else:
+			draw_texture_rect_region(tex, rect, src_rect, decor_modulate)

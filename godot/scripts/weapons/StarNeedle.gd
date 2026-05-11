@@ -2,6 +2,7 @@ extends WeaponBase
 class_name StarNeedle
 
 const PROJ_SCENE := preload("res://scenes/weapons/Projectile.tscn")
+const PROJ_TEX := preload("res://assets/sprites/icon_star_needle.png")
 
 var needle_count: int = 3
 var spread: float = 0.28
@@ -25,6 +26,7 @@ func fire() -> void:
 		var proj := PROJ_SCENE.instantiate() as Projectile
 		get_tree().current_scene.add_child(proj)
 		proj.global_position = player.global_position
+		proj.set_visual(PROJ_TEX, Color(0.95, 0.85, 0.4, 0.45), 1.5)
 		proj.launch(dir, get_damage(), proj_speed, 1.5, 1)
 
 func upgrade() -> void:

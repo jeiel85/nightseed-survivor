@@ -2,6 +2,7 @@ extends WeaponBase
 class_name MoonDagger
 
 const PROJ_SCENE := preload("res://scenes/weapons/Projectile.tscn")
+const PROJ_TEX := preload("res://assets/sprites/icon_moon_dagger.png")
 
 func _ready() -> void:
 	weapon_name = "Moon Dagger"
@@ -24,4 +25,5 @@ func _fire_dagger(dir: Vector2) -> void:
 	var proj := PROJ_SCENE.instantiate() as Projectile
 	get_tree().current_scene.add_child(proj)
 	proj.global_position = player.global_position
+	proj.set_visual(PROJ_TEX, Color(0.7, 0.85, 1.0, 0.5), 1.8)
 	proj.launch(dir, get_damage(), 460.0, 2.0, 1)

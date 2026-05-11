@@ -22,19 +22,20 @@ func _build_cards() -> void:
 
 func _make_card(key: String) -> PanelContainer:
 	var data: Dictionary = Characters.DATA[key]
+	var unlocked: bool = GameData.is_character_unlocked(key)
+	var selected: bool = GameData.selected_character == key
 	var card := PanelContainer.new()
 	card.name = "Card_" + key
-	card.custom_minimum_size = Vector2(0, 220)
+	card.custom_minimum_size = Vector2(0, 240)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 	var hbox := HBoxContainer.new()
 	hbox.add_theme_constant_override("separation", 14)
 	card.add_child(hbox)
 
-	var color_block := ColorRect.new()
-	color_block.custom_minimum_size = Vector2(70, 0)
-	color_block.color = data["color"]
-	hbox.add_child(color_block)
+	# Portrait
+	var portrait := _make_portrait(data, unlocked, selected)
+	hbox.add_child(portrait)
 
 	var info := VBoxContainer.new()
 	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -72,6 +73,105 @@ func _make_card(key: String) -> PanelContainer:
 
 	return card
 
+func _make_portrait(data: Dictionary, unlocked: bool, selected: bool) -> Control:
+	var portrait := Control.new()
+	portrait.name = "Portrait"
+	portrait.custom_minimum_size = Vector2(140, 0)
+
+	# Tinted background panel
+	var bg := ColorRect.new()
+	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	var bgc: Color = data["color"]
+	bgc.a = 0.30 if selected else 0.18
+	bg.color = bgc
+	portrait.add_child(bg)
+
+	# Selected glow border (subtle inner stroke via 4 thin ColorRects)
+	if selected:
+		var border_c: Color = data["color"]
+		border_c.a = 0.85
+		_add_border(portrait, border_c, 3.0)
+
+	# Centered character sprite
+	var center := CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	center.offset_top = 4
+	center.offset_bottom = -28
+	portrait.add_child(center)
+
+	var sprite := TextureRect.new()
+	sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+	sprite.custom_minimum_size = Vector2(96, 96)
+	if data.has("sprite"):
+		sprite.texture = load(String(data["sprite"]))
+	if not unlocked:
+		# Dark silhouette for locked characters
+		sprite.modulate = Color(0.10, 0.10, 0.15, 1.0)
+	center.add_child(sprite)
+
+	# Weapon icon thumb (bottom-right)
+	var wname: String = String(data.get("starting_weapon", ""))
+	if wname != "":
+		var icon_path: String = "res://assets/sprites/icon_" + wname.to_lower().replace(" ", "_") + ".png"
+		if ResourceLoader.exists(icon_path):
+			var weapon_icon := TextureRect.new()
+			weapon_icon.texture = load(icon_path)
+			weapon_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			weapon_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+			weapon_icon.custom_minimum_size = Vector2(34, 34)
+			weapon_icon.anchor_left = 1.0
+			weapon_icon.anchor_top = 1.0
+			weapon_icon.anchor_right = 1.0
+			weapon_icon.anchor_bottom = 1.0
+			weapon_icon.offset_left = -40
+			weapon_icon.offset_top = -40
+			weapon_icon.offset_right = -6
+			weapon_icon.offset_bottom = -6
+			if not unlocked:
+				weapon_icon.modulate = Color(0.5, 0.5, 0.5, 0.6)
+			portrait.add_child(weapon_icon)
+
+	# Lock indicator
+	if not unlocked:
+		var lock_lbl := Label.new()
+		lock_lbl.text = "🔒"
+		lock_lbl.add_theme_font_size_override("font_size", 36)
+		lock_lbl.set_anchors_preset(Control.PRESET_CENTER)
+		lock_lbl.offset_left = -20
+		lock_lbl.offset_top = -24
+		lock_lbl.offset_right = 20
+		lock_lbl.offset_bottom = 24
+		portrait.add_child(lock_lbl)
+
+	return portrait
+
+func _add_border(parent: Control, color: Color, thickness: float) -> void:
+	var top := ColorRect.new()
+	top.anchor_right = 1.0
+	top.offset_bottom = thickness
+	top.color = color
+	parent.add_child(top)
+	var bottom := ColorRect.new()
+	bottom.anchor_top = 1.0
+	bottom.anchor_right = 1.0
+	bottom.anchor_bottom = 1.0
+	bottom.offset_top = -thickness
+	bottom.color = color
+	parent.add_child(bottom)
+	var left := ColorRect.new()
+	left.anchor_bottom = 1.0
+	left.offset_right = thickness
+	left.color = color
+	parent.add_child(left)
+	var right := ColorRect.new()
+	right.anchor_left = 1.0
+	right.anchor_right = 1.0
+	right.anchor_bottom = 1.0
+	right.offset_left = -thickness
+	right.color = color
+	parent.add_child(right)
+
 func _setup_button(btn: Button, key: String, data: Dictionary) -> void:
 	for c in btn.pressed.get_connections():
 		btn.pressed.disconnect(c["callable"])
@@ -99,13 +199,8 @@ func _on_select_pressed(key: String) -> void:
 
 func _refresh_all() -> void:
 	_refresh_gold()
-	for key in Characters.ORDER:
-		var card := items_container.get_node_or_null("Card_" + key)
-		if card == null:
-			continue
-		var btn: Button = card.find_child("ActionBtn", true, false)
-		if btn:
-			_setup_button(btn, key, Characters.DATA[key])
+	# Rebuild all cards so portrait (border, lock icon, silhouette) reflects new state
+	_build_cards()
 
 func _refresh_gold() -> void:
 	gold_label.text = Localization.tr_key("label_gold") % GameData.gold

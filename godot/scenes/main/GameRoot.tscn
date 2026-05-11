@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/GameRoot.gd" id="1_gr"]
 [ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="2_p"]
@@ -15,6 +15,10 @@
 [ext_resource type="Script" path="res://scripts/fx/Starfield.gd" id="13_sf"]
 [ext_resource type="Script" path="res://scripts/fx/BackgroundTiler.gd" id="14_bt"]
 [ext_resource type="Texture2D" path="res://assets/sprites/ground_tile.png" id="15_gt"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ground_tile_b.png" id="15b_gt"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ground_tile_c.png" id="15c_gt"]
+[ext_resource type="Texture2D" path="res://assets/sprites/decor_rock.png" id="15d_dr"]
+[ext_resource type="Texture2D" path="res://assets/sprites/decor_torch.png" id="15e_dt"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/EnemyDasher.tscn" id="16_da"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/EnemyCaster.tscn" id="17_ca"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/EnemySplitter.tscn" id="18_sp"]
@@ -33,10 +37,12 @@ color = Color(0.07, 0.08, 0.11, 1)
 
 [node name="GroundTiler" type="Node2D" parent="."]
 script = ExtResource("14_bt")
-tile_texture = ExtResource("15_gt")
+tile_textures = [ExtResource("15_gt"), ExtResource("15b_gt"), ExtResource("15c_gt")]
 tile_modulate = Color(0.42, 0.36, 0.55, 1)
 tile_size_px = 64.0
 follow_target_path = NodePath("../Player")
+decor_rock_texture = ExtResource("15d_dr")
+decor_torch_texture = ExtResource("15e_dt")
 
 [node name="Starfield" type="Node2D" parent="."]
 script = ExtResource("13_sf")

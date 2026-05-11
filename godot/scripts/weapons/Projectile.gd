@@ -12,6 +12,7 @@ var hit_enemies: Array = []
 var _trail_points: Array = []
 
 @onready var _trail: Line2D = get_node_or_null("Trail")
+@onready var _sprite: Sprite2D = get_node_or_null("Sprite")
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
@@ -26,6 +27,13 @@ func launch(dir: Vector2, dmg: int, spd: float = 350.0, lifetime_max: float = 2.
 	max_lifetime = lifetime_max
 	pierce_count = pierce
 	rotation = direction.angle()
+
+func set_visual(texture: Texture2D, trail_color: Color = Color(0.95, 0.95, 0.5, 0.5), sprite_scale: float = 1.4) -> void:
+	if _sprite:
+		_sprite.texture = texture
+		_sprite.scale = Vector2(sprite_scale, sprite_scale)
+	if _trail:
+		_trail.default_color = trail_color
 
 func _physics_process(delta: float) -> void:
 	global_position += direction * speed * delta

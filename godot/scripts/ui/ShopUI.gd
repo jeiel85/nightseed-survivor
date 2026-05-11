@@ -18,6 +18,22 @@ const UPGRADE_DESC_KEYS: Dictionary = {
 	"power_core":   "shop_power_core_desc",
 }
 
+const UPGRADE_ICONS: Dictionary = {
+	"swift_boots":  "res://assets/sprites/shop_swift.png",
+	"magnet_charm": "res://assets/sprites/shop_magnet.png",
+	"iron_heart":   "res://assets/sprites/shop_heart.png",
+	"battle_focus": "res://assets/sprites/shop_focus.png",
+	"power_core":   "res://assets/sprites/shop_power.png",
+}
+
+const UPGRADE_COLORS: Dictionary = {
+	"swift_boots":  Color(0.5, 0.85, 0.5),
+	"magnet_charm": Color(0.75, 0.5, 0.95),
+	"iron_heart":   Color(1.0, 0.35, 0.35),
+	"battle_focus": Color(0.95, 0.85, 0.4),
+	"power_core":   Color(1.0, 0.45, 0.75),
+}
+
 @onready var gold_label: Label = $VBox/GoldLabel
 @onready var items_container: VBoxContainer = $VBox/Scroll/Items
 @onready var btn_back: Button = $VBox/BtnBack
@@ -40,12 +56,40 @@ func _build_rows() -> void:
 func _make_row(key: String) -> PanelContainer:
 	var card := PanelContainer.new()
 	card.name = "Row_" + key
-	card.custom_minimum_size = Vector2(0, 150)
+	card.custom_minimum_size = Vector2(0, 160)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
+	# Outer HBox: icon thumb on the left, info VBox on the right
+	var outer := HBoxContainer.new()
+	outer.add_theme_constant_override("separation", 12)
+	card.add_child(outer)
+
+	# Icon thumb with tinted background
+	var icon_bg := Control.new()
+	icon_bg.custom_minimum_size = Vector2(80, 0)
+	outer.add_child(icon_bg)
+	var bg_color: Color = UPGRADE_COLORS.get(key, Color.WHITE)
+	bg_color.a = 0.18
+	var bg_rect := ColorRect.new()
+	bg_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bg_rect.color = bg_color
+	icon_bg.add_child(bg_rect)
+	var icon_path: String = String(UPGRADE_ICONS.get(key, ""))
+	if icon_path != "" and ResourceLoader.exists(icon_path):
+		var center := CenterContainer.new()
+		center.set_anchors_preset(Control.PRESET_FULL_RECT)
+		icon_bg.add_child(center)
+		var icon := TextureRect.new()
+		icon.texture = load(icon_path)
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+		icon.custom_minimum_size = Vector2(54, 54)
+		center.add_child(icon)
+
 	var vbox := VBoxContainer.new()
+	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	vbox.add_theme_constant_override("separation", 6)
-	card.add_child(vbox)
+	outer.add_child(vbox)
 
 	var header := HBoxContainer.new()
 	vbox.add_child(header)
@@ -54,6 +98,7 @@ func _make_row(key: String) -> PanelContainer:
 	name_lbl.text = Localization.tr_key(UPGRADE_NAME_KEYS[key])
 	name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	name_lbl.add_theme_font_size_override("font_size", 26)
+	name_lbl.add_theme_color_override("font_color", UPGRADE_COLORS.get(key, Color.WHITE))
 	header.add_child(name_lbl)
 
 	var level_lbl := Label.new()

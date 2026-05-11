@@ -26,16 +26,25 @@ func _rebuild_orbs() -> void:
 		add_child(orb)
 		_orbs.append(orb)
 
+const ORB_TEX := preload("res://assets/sprites/proj_orb.png")
+
 func _make_orb() -> Node2D:
 	var node := Node2D.new()
-	var vis := Polygon2D.new()
-	vis.color = Color(0.4, 0.9, 1.0, 0.9)
-	var pts := PackedVector2Array()
-	for i in range(8):
-		var a := i * TAU / 8.0
-		pts.append(Vector2(cos(a) * 10.0, sin(a) * 10.0))
-	vis.polygon = pts
-	node.add_child(vis)
+	# Soft cyan glow halo
+	var halo := Polygon2D.new()
+	var hpts := PackedVector2Array()
+	for i in range(12):
+		var a := i * TAU / 12.0
+		hpts.append(Vector2(cos(a), sin(a)) * 16.0)
+	halo.polygon = hpts
+	halo.color = Color(0.4, 0.9, 1.0, 0.28)
+	node.add_child(halo)
+	# Sprite
+	var sprite := Sprite2D.new()
+	sprite.texture = ORB_TEX
+	sprite.scale = Vector2(1.6, 1.6)
+	sprite.modulate = Color(0.6, 0.95, 1.1)
+	node.add_child(sprite)
 	return node
 
 func _process(delta: float) -> void:
