@@ -19,11 +19,16 @@
 
 ## Upload Asset (release build)
 
-Use the **AAB** from the latest tag release:
+Use the **AAB** already downloaded next to this file:
 ```
-build/nightseed-survivor-release.aab
+play_store/nightseed-survivor-release.aab
 ```
-or download from [GitHub Releases](https://github.com/jeiel85/nightseed-survivor/releases/latest).
+- Built locally with `Godot_v4.2.2-stable_win64.exe --headless --path godot --export-release "Android AAB" ...`
+- Size: 42.6 MB
+- versionName=`0.15.0`, versionCode=`15`
+- SHA-256 (file): `53634abe90fbc9e13576a32b8079445636c559d443a303e63cd179c4caa7d74a`
+- Signing cert SHA-256: `b818cf6a71c8d9dee7b83078e05ef88ef1632be93c6c4d71ef07023b00e97105` (verified ✅)
+- Permissions declared: **none** (zero `<uses-permission>` entries)
 
 The signing certificate SHA-256 is `b818cf6a71c8d9dee7b83078e05ef88ef1632be93c6c4d71ef07023b00e97105`.
 Register this in Play Console under **Setup → App integrity → App signing**, or use Play App Signing.
@@ -39,17 +44,17 @@ Nightseed Survivor
 
 ### Short description (max 80)
 ```
-10분 생존 액션. 5명의 영웅으로 끝없는 야간 군단을 베어내세요.
+7분 생존 액션. 5명의 영웅으로 끝없는 야간 군단을 베어내세요.
 ```
-(38자)
+(37자)
 
 ### Full description (max 4000)
 ```
 🌙 NIGHTSEED SURVIVOR
 
-10분만 살아남으세요. 군단은 멈추지 않습니다.
+7분만 살아남으세요. 군단은 멈추지 않습니다.
 
-자동 발사 무기로 사방에서 몰려드는 적들을 베어내고, 레벨업 카드에서 운명을 골라가며 빌드를 완성하세요. 10분 끝에 보스를 쓰러뜨리면 승리. 죽으면 영구 강화로 다음 판은 더 강하게.
+자동 발사 무기로 사방에서 몰려드는 적들을 베어내고, 레벨업 카드에서 운명을 골라가며 빌드를 완성하세요. 7분 마지막 30초에 등장하는 보스를 쓰러뜨리면 승리. 죽으면 영구 강화로 다음 판은 더 강하게.
 
 ■ 게임 특징
 
@@ -60,10 +65,10 @@ Nightseed Survivor
 달의 단검, 정령구, 화염 위습, 가시 고리, 별의 침. 특정 패시브와 조합하면 진화 무기 개방 — 초승달 폭풍, 영원의 헤일로.
 
 ▶ 10종 적 + 미니보스 + 최종 보스
-슬라임·박쥐·기사·사냥개·돌격수·시전자·분열체. 미니보스가 2분마다 등장, 10분에 최종 보스.
+슬라임·박쥐·기사·사냥개·돌격수·시전자·분열체. 미니보스가 주기적으로 등장하고, 마지막에 최종 보스.
 
 ▶ 5개 스테이지
-숲의 메아리, 얼어붙은 황무지, 황혼의 성소, 화염의 협곡, 저주받은 무덤(12분 시련).
+숲의 메아리, 얼어붙은 황무지, 황혼의 성소, 화염의 협곡, 저주받은 무덤(8분 시련).
 
 ▶ 3단계 난이도
 노멀 / 하드 / 나이트메어 — 적 HP·데미지·보상 배수. 시간이 지날수록 점진적으로 강해지는 적.
@@ -72,7 +77,7 @@ Nightseed Survivor
 골드로 영구 패시브 5종 강화. 10종 업적 달성 시 보너스 골드.
 
 ▶ 모바일 최적화
-세로 화면, 다이나믹 플로팅 가상 조이스틱(왼쪽 절반 터치). 한 손 플레이 가능.
+세로 화면, 다이나믹 플로팅 가상 조이스틱 — 화면 어디든 누르면 그 자리에 생성. 한 손 플레이 가능.
 
 ■ 무료, 광고/결제 없음
 
@@ -99,17 +104,17 @@ Nightseed Survivor
 
 ### Short description
 ```
-10-minute survival action. Carve through endless night hordes with 5 heroes.
+7-minute survival action. Carve through endless night hordes with 5 heroes.
 ```
-(76 chars)
+(75 chars)
 
 ### Full description
 ```
 🌙 NIGHTSEED SURVIVOR
 
-Survive ten minutes. The horde never stops.
+Survive seven minutes. The horde never stops.
 
-Auto-firing weapons cut down swarms from every direction. Pick your fate from level-up cards, fuse builds, and slay the boss before the timer hits zero. Die, level up your meta, come back stronger.
+Auto-firing weapons cut down swarms from every direction. Pick your fate from level-up cards, fuse builds, and slay the boss in the final 30 seconds. Die, level up your meta, come back stronger.
 
 ■ Features
 
@@ -120,10 +125,10 @@ Vagrant, Spirit Sister, Hunter, Berserker, Pyromancer. Each starts with a differ
 Moon Dagger, Spirit Orb, Fire Wisp, Thorn Ring, Star Needle. Pair the right passive at max level to unlock evolved weapons: Crescent Storm, Eternal Halo.
 
 ▶ 10 Enemy Types + Mini-Bosses + Final Boss
-Slime, bat, knight, hound, dasher (telegraphed rushes), caster (ranged projectiles), splitter (spawns smaller copies on death). Mini-boss every 2 minutes, final boss at 10 minutes.
+Slime, bat, knight, hound, dasher (telegraphed rushes), caster (ranged projectiles), splitter (spawns smaller copies on death). Mini-bosses appear periodically, final boss in the last 30 seconds.
 
 ▶ 5 Stages
-Forest of Echoes, Frozen Wastes, Twilight Sanctum, Inferno Chasm, Cursed Tomb (12-min trial).
+Forest of Echoes, Frozen Wastes, Twilight Sanctum, Inferno Chasm, Cursed Tomb (8-min trial).
 
 ▶ 3 Difficulties
 Normal / Hard / Nightmare — scaling enemy HP, damage, and rewards. Enemies progressively scale with time.
@@ -132,7 +137,7 @@ Normal / Hard / Nightmare — scaling enemy HP, damage, and rewards. Enemies pro
 Spend gold on 5 permanent passives. Unlock 10 achievements for bonus rewards.
 
 ▶ Mobile-First
-Portrait orientation, dynamic floating virtual joystick (touch the left half). One-handed play.
+Portrait orientation, dynamic floating virtual joystick — touch anywhere on screen to summon it at your finger. One-handed play.
 
 ■ Free, No Ads, No IAP
 
@@ -158,7 +163,7 @@ Source: github.com/jeiel85/nightseed-survivor
 | Feature graphic | 1024×500 PNG/JPEG | `feature_graphic_1024x500.png` | ✅ |
 | Phone screenshots ×5 | 1080×1920 (9:16 portrait) | `screenshot_1..5_*.png` | ✅ |
 | Privacy policy URL | hosted URL | `https://jeiel85.github.io/nightseed-survivor/privacy.html` | ✅ |
-| App bundle (AAB) | signed release .aab | From v0.13.0+ release | ⏳ via CI |
+| App bundle (AAB) | signed release .aab | `nightseed-survivor-release.aab` (v0.15.0, 42.6 MB) | ✅ |
 | Promo video | YouTube URL | — | optional |
 | 7-inch tablet screenshots | min 1024px short edge | — | optional |
 | 10-inch tablet screenshots | min 1080px short edge | — | optional |
@@ -267,7 +272,7 @@ When filling out the IARC questionnaire in Play Console:
 
 ### 5. Release
 - [ ] Create **Internal testing** track first
-- [ ] Upload AAB: `nightseed-survivor-release.aab` (from v0.13.0+ release)
+- [ ] Upload AAB: `play_store/nightseed-survivor-release.aab` (v0.15.0, sha256 `80389aa2...`)
 - [ ] Release notes (auto-generated by CI or paste from CHANGELOG)
 - [ ] Submit for review
 

@@ -60,22 +60,42 @@
 
 ---
 
-## Step 4 — 리더보드 6개 생성
+## Step 4 — 리더보드 6개 생성 (한/영 다국어)
 
 PGS 메뉴 → **리더보드 (Leaderboards)** → **새 리더보드**
 
-각각 다음 설정으로 만들기:
+각 리더보드 생성 시:
 
-| # | 이름 (영문 권장) | Format | Sort order | 비고 |
+1. **Primary language**를 **Korean (ko-KR)** 으로 선택 → 한국어 이름·설명 입력
+2. **"+ Add translation"** → **English (United States)** 추가 → 영문 이름·설명 입력
+3. **Format**: Numeric / **Sort order**: Larger is better
+4. **저장**
+
+> 사용자 폰 언어에 따라 자동으로 한/영 전환됨. 게임 내부 i18n (`Localization.gd`의 `stage_*_name`)과 일치시킴.
+
+### 입력값 — 이름 (Name)
+
+| # | 내부 ID | 🇰🇷 Korean | 🇺🇸 English | Format |
 |---|---|---|---|---|
-| 1 | `Forest of Echoes — Best Score` | Numeric | Larger is better | 스테이지 1 |
-| 2 | `Frozen Wastes — Best Score` | Numeric | Larger is better | 스테이지 2 |
-| 3 | `Twilight Sanctum — Best Score` | Numeric | Larger is better | 스테이지 3 |
-| 4 | `Inferno Chasm — Best Score` | Numeric | Larger is better | 스테이지 4 |
-| 5 | `Cursed Tomb — Best Score` | Numeric | Larger is better | 스테이지 5 (12분) |
-| 6 | `Total Kills — All Time` | Numeric (cumulative) | Larger is better | 누적 처치수 |
+| 1 | `forest` | 메아리의 숲 — 최고 점수 | Forest of Echoes — Best Score | Numeric |
+| 2 | `frozen_wastes` | 얼어붙은 황무지 — 최고 점수 | Frozen Wastes — Best Score | Numeric |
+| 3 | `twilight_sanctum` | 황혼의 성소 — 최고 점수 | Twilight Sanctum — Best Score | Numeric |
+| 4 | `inferno_chasm` | 화염의 협곡 — 최고 점수 | Inferno Chasm — Best Score | Numeric |
+| 5 | `cursed_tomb` | 저주받은 무덤 — 최고 점수 | Cursed Tomb — Best Score | Numeric |
+| 6 | `total_kills` | 누적 처치 수 | Total Kills — All Time | Numeric **Cumulative** |
 
-각 리더보드 만들면 **Leaderboard ID** 값이 발급됩니다 (예: `CgkI...AQ`).
+### 입력값 — 설명 (Description, 선택)
+
+| # | 🇰🇷 설명 | 🇺🇸 Description |
+|---|---|---|
+| 1 | 모든 것이 시작된 곳 | Where it all began |
+| 2 | 박쥐와 사냥개가 추위를 지배한다 | Bats and hounds dominate the cold |
+| 3 | 모든 적의 균형잡힌 시련 | Balanced trial of all foes |
+| 4 | 기사와 사냥개가 불의 파도로 | Knights and hounds in waves of fire |
+| 5 | 끝없는 언데드의 파도. 두려움 없는 자에게. | Endless undead tide. For the fearless. |
+| 6 | 모든 판에서 처치한 적의 합산 | Sum of enemies defeated across all runs |
+
+각 리더보드 저장하면 **Leaderboard ID** 값이 발급됩니다 (예: `CgkI...AQ`).
 
 > 🔔 **각 리더보드 ID를 한 곳에 복사해두세요** — 마지막에 저한테 보내주실 6개 ID 입니다.
 
