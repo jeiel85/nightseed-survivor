@@ -11,7 +11,7 @@
 | Content rating | Everyone 10+ (cartoon violence, no gore/text) |
 | Pricing | Free, no ads, no IAP |
 | Min Android | 5.0 (API 21) |
-| Target Android | 14 (API 34) |
+| Target Android | 15 (API 35) |
 | Architectures | arm64-v8a + armeabi-v7a |
 | Build format | **AAB** (Android App Bundle) — preferred by Play Store |
 
@@ -26,7 +26,8 @@ play_store/nightseed-survivor-release.aab
 - Built locally with `Godot_v4.2.2-stable_win64.exe --headless --path godot --export-release "Android AAB" ...`
 - Size: 42.6 MB
 - versionName=`0.15.0`, versionCode=`15`
-- SHA-256 (file): `53634abe90fbc9e13576a32b8079445636c559d443a303e63cd179c4caa7d74a`
+- minSdkVersion=`21`, targetSdkVersion=`35` (compileSdk 35, Play Console 2025+ 정책 충족)
+- SHA-256 (file): `8ffd88c6f498d1be5ee388e82352e7c27df715a9359addb12854e1a1f37484cd`
 - Signing cert SHA-256: `b818cf6a71c8d9dee7b83078e05ef88ef1632be93c6c4d71ef07023b00e97105` (verified ✅)
 - Permissions declared: **none** (zero `<uses-permission>` entries)
 
