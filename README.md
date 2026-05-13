@@ -1,10 +1,10 @@
 # 밤의 씨앗: 서바이버 (Nightseed Survivor)
 
-10분 생존 액션 — Vampire Survivors 스타일 모바일 게임 (Godot 4.2).
+7분 생존 액션 — Vampire Survivors 스타일 모바일 게임 (Godot 4.2).
 
 [![Build](https://github.com/jeiel85/nightseed-survivor/actions/workflows/android-build.yml/badge.svg)](https://github.com/jeiel85/nightseed-survivor/actions/workflows/android-build.yml)
 
-> 밤의 씨앗이 깨어난 세계. 자동 발사 무기로 사방에서 몰려드는 군단을 베어내고, 레벨업 카드로 빌드를 골라가며 10분 끝의 보스를 처치하세요. 죽으면 메타 영구 패시브로 더 강해져서 돌아옵니다.
+> 밤의 씨앗이 깨어난 세계. 자동 발사 무기로 사방에서 몰려드는 군단을 베어내고, 레벨업 카드로 빌드를 골라가며 7분 끝의 보스를 처치하세요. 죽으면 메타 영구 패시브로 더 강해져서 돌아옵니다.
 
 ## 다운로드
 
