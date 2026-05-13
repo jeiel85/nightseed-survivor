@@ -1,0 +1,22 @@
+<ko-KR>
+🌙 밤의 씨앗이 말을 걸기 시작했다
+
+새로 추가
+• 인게임 스토리 자막: 스테이지 시작 / 보스 등장 / 클리어에 짧은 대사가 흐릅니다 (게임은 멈추지 않습니다)
+• 용어집(CODEX): 메인 메뉴에서 세계관 용어를 따로 확인할 수 있어요
+• 메인/결과 화면 버튼 색상 개편: PLAY는 앰버, CODEX는 인디고 등 메뉴별 컬러로 한눈에
+
+다듬기
+• 빌드 전 헤드리스 자동 검증 단계 추가로 더 안정적인 출시
+</ko-KR>
+<en-US>
+🌙 The Nightseed begins to speak
+
+What's new
+• In-game story captions on stage start, boss spawn, and clear (non-blocking — the fight keeps going)
+• Codex: read the world's terms from a new entry in the main menu
+• Menu and result button colors redesigned — PLAY is amber, CODEX indigo, and each entry has its own tone
+
+Polish
+• Headless smoke test runs before every build for safer releases
+</en-US>

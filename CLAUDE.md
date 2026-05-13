@@ -9,10 +9,21 @@
 
 **규칙: 모든 릴리즈는 손으로 쓴 노트를 가진다. 빈 본문 금지.**
 
+릴리즈 노트는 **두 군데**를 따로 유지한다:
+
+| 위치 | 용도 | 형식 |
+|---|---|---|
+| `docs/releases/vX.Y.Z.md` | GitHub Release 본문 | 마크다운, 한국어 |
+| `play_store/release_notes/vX.Y.Z.txt` | Play Console 본문 | 평문 + BCP-47 다국어 태그 (`<ko-KR>`, `<en-US>`), 언어당 500자 제한, 마크다운/HTML 미지원 |
+
+세부 규약은 각 폴더의 README 참고: [docs/releases/README.md](docs/releases/README.md), [play_store/release_notes/README.md](play_store/release_notes/README.md).
+
 흐름:
-1. 릴리즈 전에 `docs/releases/vX.Y.Z.md` 파일을 먼저 작성 (한국어, [docs/releases/README.md](docs/releases/README.md) 템플릿 따름)
-2. 태그 푸시 (`git tag -a vX.Y.Z -m "..." && git push origin vX.Y.Z`)
-3. CI가 자동으로 파일을 본문으로 사용해 릴리즈 생성
+1. 릴리즈 전에 `docs/releases/vX.Y.Z.md` 파일을 먼저 작성 (한국어, 템플릿 따름)
+2. AAB 빌드 / 업로드용이면 `play_store/release_notes/vX.Y.Z.txt` 도 함께 작성 (다국어 태그 필수)
+3. 태그 푸시 (`git tag -a vX.Y.Z -m "..." && git push origin vX.Y.Z`)
+4. CI가 자동으로 `docs/releases/` 파일을 GitHub Release 본문으로 사용
+5. Play Console에 AAB 업로드 시 `play_store/release_notes/` 파일 내용을 통째로 복사 (Play Console이 언어 태그를 자동 분리)
 
 만약 파일을 깜빡하고 푸시했다면:
 - 자동 생성된 `Full Changelog: ...` 한 줄짜리 빈 노트가 됨
