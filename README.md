@@ -10,8 +10,9 @@
 
 | 플랫폼 | 자산 / 링크 |
 |---|---|
+| **▶️ Google Play** | [Play 스토어에서 받기](https://play.google.com/store/apps/details?id=com.nightseed.survivor) |
 | **🌐 웹** | https://jeiel85.github.io/nightseed-survivor/ — 브라우저에서 즉시 플레이 |
-| **🤖 Android** | [APK 다운로드](https://github.com/jeiel85/nightseed-survivor/releases/latest) |
+| **🤖 Android (APK)** | [APK 다운로드](https://github.com/jeiel85/nightseed-survivor/releases/latest) |
 | **🪟 Windows** | [.exe 다운로드](https://github.com/jeiel85/nightseed-survivor/releases/latest) |
 | **🐧 Linux** | [.x86_64 다운로드](https://github.com/jeiel85/nightseed-survivor/releases/latest) |
 
