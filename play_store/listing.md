@@ -1,10 +1,10 @@
-# Google Play Store Listing — Nightseed Survivor
+# Google Play Store Listing — 밤의 씨앗: 서바이버 (Nightseed Survivor)
 
 ## App Identity
 
 | Field | Value |
 |---|---|
-| App name | Nightseed Survivor |
+| App name | 밤의 씨앗: 서바이버 |
 | Package | com.nightseed.survivor |
 | Category | Games → Action |
 | Tags | Survival, Roguelite, Action, Casual |
@@ -40,22 +40,22 @@ Register this in Play Console under **Setup → App integrity → App signing**,
 
 ### Title (max 30)
 ```
-Nightseed Survivor
+밤의 씨앗: 서바이버
 ```
 
 ### Short description (max 80)
 ```
-7분 생존 액션. 5명의 영웅으로 끝없는 야간 군단을 베어내세요.
+10분 생존 액션. 5명의 영웅으로 끝없는 야간 군단을 베어내세요.
 ```
-(37자)
+(36자)
 
 ### Full description (max 4000)
 ```
-🌙 NIGHTSEED SURVIVOR
+🌙 밤의 씨앗: 서바이버
 
-7분만 살아남으세요. 군단은 멈추지 않습니다.
+10분만 살아남으세요. 군단은 멈추지 않습니다.
 
-자동 발사 무기로 사방에서 몰려드는 적들을 베어내고, 레벨업 카드에서 운명을 골라가며 빌드를 완성하세요. 7분 마지막 30초에 등장하는 보스를 쓰러뜨리면 승리. 죽으면 영구 강화로 다음 판은 더 강하게.
+자동 발사 무기로 사방에서 몰려드는 적들을 베어내고, 레벨업 카드에서 운명을 골라가며 빌드를 완성하세요. 10분 마지막에 등장하는 보스를 쓰러뜨리면 승리. 죽으면 영구 강화로 다음 판은 더 강하게.
 
 ■ 게임 특징
 
@@ -105,7 +105,7 @@ Nightseed Survivor
 
 ### Short description
 ```
-7-minute survival action. Carve through endless night hordes with 5 heroes.
+10-minute survival action. Carve through endless night hordes with 5 heroes.
 ```
 (75 chars)
 
@@ -113,7 +113,7 @@ Nightseed Survivor
 ```
 🌙 NIGHTSEED SURVIVOR
 
-Survive seven minutes. The horde never stops.
+Survive ten minutes. The horde never stops.
 
 Auto-firing weapons cut down swarms from every direction. Pick your fate from level-up cards, fuse builds, and slay the boss in the final 30 seconds. Die, level up your meta, come back stronger.
 
@@ -237,7 +237,7 @@ When filling out the IARC questionnaire in Play Console:
 
 ### 1. App setup (one-time)
 - [ ] Create new app in Play Console
-- [ ] App name: `Nightseed Survivor`
+- [ ] App name: `밤의 씨앗: 서바이버`
 - [ ] Default language: Korean (ko-KR)
 - [ ] App or game: Game
 - [ ] Free or paid: Free

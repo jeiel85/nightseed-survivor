@@ -14,7 +14,7 @@ const DEFAULT_LANG: String = "en"
 
 const STRINGS: Dictionary = {
 	# --- Main menu ---
-	"app_title":           {"en": "NIGHTSEED\nSURVIVOR", "ko": "나이트시드\n서바이버"},
+	"app_title":           {"en": "NIGHTSEED\nSURVIVOR", "ko": "밤의 씨앗\n서바이버"},
 	"app_subtitle":        {"en": "10-Minute Survival Action", "ko": "10분 생존 액션"},
 	"label_gold":          {"en": "Gold:  %d", "ko": "골드:  %d"},
 	"label_status":        {"en": "%s  ·  %s  ·  %s", "ko": "%s  ·  %s  ·  %s"},
