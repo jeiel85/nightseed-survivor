@@ -107,6 +107,32 @@ jobs:
           ~/godot-bin/godot --headless --path godot --editor --quit-after 200 || true
           ~/godot-bin/godot --headless --path godot --editor --quit-after 200 || true
 
+      - name: Headless smoke (boot menu + game scene; fail on runtime errors)
+        run: |
+          set -e
+          mkdir -p smoke
+
+          # 1. Main menu boot (default scene) — verifies autoloads + main UI
+          ~/godot-bin/godot --headless --path godot --quit-after 120 \
+            2>&1 | tee smoke/menu.log
+
+          # 2. GameRoot scene — verifies WaveManager, StoryBanner intro, HUD, signals
+          ~/godot-bin/godot --headless --path godot \
+            res://scenes/main/GameRoot.tscn --quit-after 600 \
+            2>&1 | tee smoke/game.log
+
+          # Filter known-harmless lines, fail if any real runtime error remains.
+          FAIL='SCRIPT ERROR|USER ERROR|^ERROR: |Failed to load|Failed to instantiate|Invalid get index|Invalid call|Nonexistent function|Cannot call method|attempt to call'
+          IGNORE='ObjectDB instances leaked|Custom cursor shape|Blend file import|Game Services'
+
+          FILTERED=$(grep -E "$FAIL" smoke/*.log 2>/dev/null | grep -vE "$IGNORE" || true)
+          if [ -n "$FILTERED" ]; then
+            echo "::error::Headless smoke detected runtime errors:"
+            echo "$FILTERED"
+            exit 1
+          fi
+          echo "✓ Headless smoke passed (no runtime errors)."
+
       - name: Build release APK
         env:
           GODOT_ANDROID_KEYSTORE_RELEASE_PATH: ${{ github.workspace }}/secrets/release.keystore
