@@ -49,8 +49,16 @@ Polish
 ## 업로드 방법
 
 1. Play Console → 앱 → **Production** (또는 internal/closed) → 새 릴리즈 만들기
-2. **What's new in this release** 입력란에 이 파일 내용을 통째로 복사 (태그 포함)
-3. Play Console이 자동으로 언어별로 분리해서 저장
+2. **App bundles** 에 GitHub Release의 `nightseed-survivor-release.aab` 업로드
+3. ⚠️ **같은 화면에서 `nightseed-survivor-release.mapping.txt` 도 함께 업로드**
+   (AAB 옆 ⋮ 메뉴 → "Upload deobfuscation file" — Play Console의 R8/ProGuard 경고 해소용)
+4. **What's new in this release** 입력란에 `vX.Y.Z.txt` 내용을 통째로 복사 (태그 포함)
+5. Play Console이 언어 태그를 자동으로 분리해서 저장
+
+체크리스트:
+- [ ] AAB 업로드
+- [ ] mapping.txt 업로드 (= R8 deobfuscation 파일)
+- [ ] 릴리즈 노트 붙여넣기 (`<ko-KR>` + `<en-US>` 블록 모두 포함됐는지 확인)
 
 ## GitHub Release 노트와의 관계
 
