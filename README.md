@@ -1,10 +1,10 @@
 # Nightseed Survivor
 
-10분 생존 액션 — Vampire Survivors 스타일 모바일 게임 (Godot 4.2.2).
+7분 생존 액션 — Vampire Survivors 스타일 모바일 게임 (Godot 4.2).
 
 [![Build](https://github.com/jeiel85/nightseed-survivor/actions/workflows/android-build.yml/badge.svg)](https://github.com/jeiel85/nightseed-survivor/actions/workflows/android-build.yml)
 
-> 자동 발사 무기로 사방에서 몰려드는 군단을 베어내고, 레벨업 카드로 빌드를 골라가며 10분 끝의 보스를 처치하세요. 죽으면 메타 영구 패시브로 더 강해져서 돌아옵니다.
+> 자동 발사 무기로 사방에서 몰려드는 군단을 베어내고, 레벨업 카드로 빌드를 골라가며 7분 끝의 보스를 처치하세요. 죽으면 메타 영구 패시브로 더 강해져서 돌아옵니다.
 
 ## 다운로드
 
@@ -38,17 +38,17 @@
 ### 적 (10종 + 보스)
 - **기본형**: Slime / Bat / Knight / Hound
 - **패턴형**: Dasher (텔레그래프 후 돌진) / Caster (원거리 핑크 투사체) / Splitter (사망 시 3마리 분열)
-- **보스**: MiniBoss (2분 간격 4회 자동 출현) / 최종 보스 (10분 시점)
+- **보스**: MiniBoss (80초 간격 4회 자동 출현) / 최종 보스 (6분 30초 시점)
 
 ### 스테이지 (5종, JSON 정의)
-Forest of Echoes / Frozen Wastes / Twilight Sanctum / Inferno Chasm / Cursed Tomb (12분)
+Forest of Echoes / Frozen Wastes / Twilight Sanctum / Inferno Chasm / Cursed Tomb (8분)
 
 스테이지 데이터는 [`godot/data/stages.json`](godot/data/stages.json)에 정의 — 향후 서버 업데이트 가능 구조.
 
 ### 난이도 (3단계)
-Normal x1.0 / Hard (HP x1.5, DMG x1.3) / Nightmare (HP x2.5, DMG x1.7)
+Normal HP 0.85x / Hard (HP x1.5, DMG x1.3) / Nightmare (HP x2.5, DMG x1.7)
 
-**시간 경과 스케일링**: 적이 분 단위로 강해짐. 10분차에 HP x3, 속도 x1.4, 데미지 x2 → 자동 사냥 방지.
+**시간 경과 스케일링**: 적이 분 단위로 강해짐. 7분차에 HP ~2.4x, 속도 ~1.28x, 데미지 ~1.7x → 자동 사냥 방지.
 
 ### 영구 패시브 (5종, 골드로 강화)
 Swift Boots (이속) / Magnet Charm (자석) / Iron Heart (HP) / Battle Focus (쿨다운) / Power Core (데미지) — 각 10레벨
