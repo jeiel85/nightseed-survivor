@@ -1,5 +1,19 @@
 # Progress
 
+## 2026-05-13
+
+### Status
+
+GitHub Pages 배포 구조 개편 완료.
+
+### Completed
+
+- 브랜딩 페이지용 HTML/CSS 작성 (`branding/index.html`)
+- GitHub Actions 워크플로우(`android-build.yml`) 수정
+- 루트(`/`) 배포 디렉토리에 브랜딩 페이지 및 자산 배치 로직 추가
+- 게임 실행 경로를 `/live/` 폴더로 이동하여 웹 플레이 환경 분리
+- `play_store` 자산을 브랜딩 페이지에서 사용하도록 복사 자동화
+
 ## 2026-05-07
 
 ### Status

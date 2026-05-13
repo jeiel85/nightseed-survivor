@@ -2,6 +2,11 @@
 
 ## Current Priority
 
+### Infrastructure & Deployment
+- [x] Refactor GitHub Pages structure (Branding page at root, game at `/live/`)
+- [x] Add branding page source in `branding/`
+- [x] Update CI/CD workflow for organized deployment
+
 ### Milestone 1: Playable Prototype
 
 - [x] Create Godot 4 project under `godot/`
