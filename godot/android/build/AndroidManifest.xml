@@ -40,6 +40,7 @@
             android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
             android:resizeableActivity="false"
+            android:windowLayoutInDisplayCutoutMode="shortEdges"
             tools:ignore="UnusedAttribute" >
 
             <intent-filter>

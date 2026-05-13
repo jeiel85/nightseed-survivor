@@ -56,13 +56,14 @@ position = Vector2(0, 0)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 enabled = true
+zoom = Vector2(1.5, 1.5)
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 
 [node name="EnemySpawner" type="Node2D" parent="."]
 script = ExtResource("4_es")
 max_enemies = 200
-spawn_radius = 750.0
+spawn_radius = 520.0
 
 [node name="SpawnTimer" type="Timer" parent="EnemySpawner"]
 wait_time = 1.5

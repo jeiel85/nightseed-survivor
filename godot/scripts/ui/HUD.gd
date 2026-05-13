@@ -1,6 +1,7 @@
 extends CanvasLayer
 class_name HUD
 
+@onready var top_bar: Control = $TopBar
 @onready var hp_bar: ProgressBar = $TopBar/HPBar
 @onready var hp_label: Label = $TopBar/HPLabel
 @onready var xp_bar: ProgressBar = $TopBar/XPBar
@@ -18,6 +19,26 @@ var _last_gold: int = 0
 func _ready() -> void:
 	if Localization:
 		Localization.language_changed.connect(_on_language_changed)
+	_apply_safe_area()
+	get_viewport().size_changed.connect(_apply_safe_area)
+
+# Push HUD away from display cutouts (notch / punch-hole) so the in-game
+# time/HP do not collide with the system clock. On devices without a cutout
+# the safe area equals the window, so the offsets resolve to zero.
+func _apply_safe_area() -> void:
+	if not is_instance_valid(top_bar):
+		return
+	var win: Vector2i = DisplayServer.window_get_size()
+	var safe: Rect2i = DisplayServer.get_display_safe_area()
+	# Some desktop platforms return a screen-space rect; clamp to the window
+	# so the offsets never go negative or larger than the viewport.
+	var top_inset: float = clamp(float(safe.position.y), 0.0, float(win.y) * 0.25)
+	var left_inset: float = clamp(float(safe.position.x), 0.0, float(win.x) * 0.25)
+	var right_inset: float = clamp(float(win.x) - float(safe.position.x + safe.size.x), 0.0, float(win.x) * 0.25)
+	top_bar.offset_top = top_inset
+	top_bar.offset_bottom = 168.0 + top_inset
+	top_bar.offset_left = left_inset
+	top_bar.offset_right = -right_inset
 
 func _on_language_changed(_lang: String) -> void:
 	set_hp(_last_hp, _last_max)

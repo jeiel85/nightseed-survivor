@@ -1,0 +1,25 @@
+<ko-KR>
+🌙 한 손으로 5분, 더 잘 보이는 전장
+
+새로 추가
+• 스테이지 5분으로 압축, 보스 4분 30초 등장 — 난이도 곡선은 가파르게, 막판 절정은 그대로
+• 카메라 1.5배 줌인 — 캐릭터·몬스터·아이템이 모두 커 보입니다
+• 픽업 새 단장: XP 보석은 시안 글로우와 바운싱, 골드 동전은 황금 글로우와 회전 — 적과 한눈에 구분
+• 펀치홀·노치 단말 자동 대응 — HUD가 시스템 시계를 비켜갑니다
+
+다듬기
+• 미니보스 60·120·180·240초로 재배치
+• 메뉴 부제 "5분 생존 액션"으로 갱신
+</ko-KR>
+<en-US>
+🌙 Five minutes, sharper battlefield
+
+What's new
+• Stages compressed to 5 minutes, boss at 4:30 — steeper curve keeps the late-game peak intact
+• Camera zoomed 1.5× — characters, enemies, and pickups all look bigger
+• Pickups refreshed: XP gems glow cyan and bob, gold coins glow gold and spin — clearly distinct from enemies
+• Punch-hole / notched phones auto-adjust — the HUD steps around the cutout
+
+Polish
+• Mini-boss spawns at 60 / 120 / 180 / 240s
+</en-US>

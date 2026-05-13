@@ -16,10 +16,11 @@
 
 | Stat | Value |
 |---|---:|
-| Duration | 600 seconds |
-| Boss Spawn | 570 seconds |
-| Clear Time | 600 seconds |
-| First Level-Up Target | 30 seconds |
+| Duration | 300 seconds (Cursed Tomb: 330) |
+| Boss Spawn | 270 seconds (Cursed Tomb: 300) |
+| Clear Time | 300 seconds (Cursed Tomb: 330) |
+| First Level-Up Target | 25 seconds |
+| MiniBoss Spawns | 60 / 120 / 180 / 240 s |
 
 ---
 
@@ -123,5 +124,5 @@ cost = base_cost * current_level * current_level
 - 첫 레벨업이 30초보다 늦으면 초반 적 XP 또는 스폰 수를 올린다.
 - 2분 전에 사망이 잦으면 초기 적 피해량 또는 스폰 간격을 완화한다.
 - 6분 이후 위기감이 약하면 spawn_count 또는 Rot Hound 비중을 올린다.
-- 10분 클리어율이 너무 낮으면 보스 체력보다 일반 적 밀도를 먼저 조정한다.
+- 5분 클리어율이 너무 낮으면 보스 체력보다 일반 적 밀도를 먼저 조정한다.
 - 모바일 프레임 저하가 있으면 적 수, 픽업 수, 투사체 수 순으로 제한한다.

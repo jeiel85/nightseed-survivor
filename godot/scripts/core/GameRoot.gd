@@ -17,7 +17,7 @@ const GOLD_COIN_SCENE := preload("res://scenes/pickups/GoldCoin.tscn")
 @onready var btn_menu: Button = $ResultPanel/Panel/VBox/BtnMenu
 
 var _survival_time: float = 0.0
-var _total_time: float = 420.0
+var _total_time: float = 300.0
 var _is_game_over: bool = false
 var _is_victory: bool = false
 
