@@ -1,0 +1,34 @@
+<ko-KR>
+🌙 메뉴부터 결과까지, 손에 잘 잡히는 화면
+
+화면 위계 정리
+• 메인 메뉴 — PLAY 단일 강조, 1차/2차/푸터 행으로 분리
+• 골드 옆에 "다음 강화까지 N 골드" 힌트
+• 인게임 HUD 상단 168→112픽셀, 생존 시간 중앙 강조
+
+레벨업 카드
+• 신규 / 강화 Lv.X / ★ 진화 태그
+• 무기별 실제 DMG·CD 변화 수치 (공통 문구 제거)
+• 역할 칩 — 추적/근접/광역/화력/생존/기동/수집/편의
+
+결과 화면
+• 승/패 배경 톤, 타이틀 팝, 골드 카운트업
+• "다음 강화까지 N 골드" 라인, 신규 업적 강조
+</ko-KR>
+<en-US>
+🌙 Menu, HUD, level-up and results refined
+
+Layout
+• Main menu — PLAY emphasized; primary/secondary rows split
+• "Next upgrade in N gold" hint next to gold
+• HUD top 168→112px, survival time centered
+
+Level-up cards
+• Tags: NEW / UP Lv.X / ★ EVOLVE
+• Real DMG·CD change per weapon (no generic +25%)
+• Role chips: SEEK / MELEE / AOE / POWER / SURVIVE / MOBILITY / PICKUP / UTILITY
+
+Results
+• Victory/defeat tint, title pop, gold count-up
+• "Next upgrade in N gold", new achievements highlighted
+</en-US>
