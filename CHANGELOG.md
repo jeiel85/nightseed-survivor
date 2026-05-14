@@ -23,7 +23,7 @@
 - `.agent/tasks.md` 를 실제 구현 상태에 맞게 재정리 (v0.18.0 시점 항목 통합, Phase 3+ 후보 정리)
 
 ### Fixed
-- `LeaderboardManager.LEADERBOARD_IDS` 와 `game_services_ids.xml` 의 placeholder 주석 강화 — 정확한 Play Console 경로와 형식 명시
+- Play Games Services 활성화 — Play Console PGS 프로젝트 출시 완료(2026-05-14), App ID `442399975649` 와 리더보드 6종 실제 ID를 `game_services_ids.xml` / `LeaderboardManager.LEADERBOARD_IDS` 에 주입. OAuth 동의 화면은 테스트 모드(등록된 테스터만 로그인 가능)
 
 ### Verification
 - 코드 변경만 수행, 실기 플레이 검증은 GitHub Actions 산출물로 확인 예정

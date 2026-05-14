@@ -12,12 +12,7 @@ const SignInClientScript = preload("res://addons/GodotPlayGameServices/scripts/s
 const LeaderboardsClientScript = preload("res://addons/GodotPlayGameServices/scripts/leaderboards/leaderboards_client.gd")
 
 # Map our internal stage IDs (data/stages.json) → Play Console leaderboard IDs.
-#
-# Wiring point — replace each "REPLACE_ME_*" with the Leaderboard ID from
-# Play Console (Grow → Play Games Services → Leaderboards → row → ID column,
-# format "CgkI...AQ"). _resolve_id() treats any string starting with
-# "REPLACE_ME" as unset, so the game stays safe to ship until all six are
-# filled. See docs/PLAY_GAMES_SERVICES_SETUP.md for the full bring-up.
+# Wired 2026-05-14 — see docs/PLAY_GAMES_SERVICES_SETUP.md.
 const LEADERBOARD_IDS: Dictionary = {
 	"forest":            "CgkI4dHfiPAMEAIQAQ",
 	"frozen_wastes":     "CgkI4dHfiPAMEAIQAg",
