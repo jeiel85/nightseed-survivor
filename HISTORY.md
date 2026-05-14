@@ -1,5 +1,26 @@
 # HISTORY.md
 
+## 2026-05-14 (v0.20.0: UI 폴리시 — 외부 리뷰 반영)
+
+- 날짜: 2026-05-14
+- 작업: 비공개 테스트 첫 외부 리뷰("UI 좀 손봤으면")에 대응한 짧은 UI 디테일 폴리시
+- 변경 파일:
+  - godot/scenes/ui/MainMenu.tscn, godot/scripts/ui/MainMenu.gd (Language/Credits를 상단 우측 코너로 이동, 푸터 행 제거)
+  - godot/scripts/ui/HUD.gd (HP 바 채움 색 동적 변경 + 30% 이하 알파 펄스)
+  - godot/scripts/ui/LevelUpUI.gd (카드 탭 시 scale 0.96 → 1.0 시각 피드백)
+  - godot/export_presets.cfg (version 0.19.0 → 0.20.0, versionCode 20 → 21)
+  - CHANGELOG.md, docs/releases/v0.20.0.md, play_store/release_notes/v0.20.0.txt
+- 검증:
+  - `godot --headless` MainMenu / HUD / LevelUpUI 씬 로드 에러 없음
+  - 실기 체감 검증은 GitHub Actions 산출물 / 폰 빌드로 확인 예정
+- 결과:
+  - 메인 메뉴 첫 화면 버튼 9개 → 7개(PLAY + 6) + 코너 미니 2개로 시각 밀도 감소
+  - HP 위험 상태가 색·펄스로 즉시 알아챌 수 있게 됨
+  - 레벨업 카드 탭이 "진짜 눌렸나" 의심되지 않게 됨
+- 후속 작업:
+  - 폰에서 실기 검증
+  - 추가 리뷰가 더 구체적으로 들어오면 2차 패스(카드 배경 그라데이션, 메뉴 분위기 배경)
+
 ## 2026-05-14 (Phase 1: 제품감 정리)
 
 - 날짜: 2026-05-14

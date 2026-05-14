@@ -1,5 +1,24 @@
 # Progress
 
+## 2026-05-14 — v0.20.0 UI 폴리시 (외부 리뷰 반영)
+
+### Status
+
+비공개 테스트 첫 외부 리뷰("UI 좀 손봤으면")에 대응한 짧은 폴리시 라운드. 게임플레이는 건드리지 않고, 사용자가 가장 자주 보는 메인 메뉴 / 인게임 HUD / 레벨업 카드 세 화면의 디테일만 다듬었다.
+
+### Completed
+
+- 메인 메뉴 — 푸터 행(Language/Credits) 제거, 상단 우측 코너의 작은 행으로 이동 (`MainMenu.tscn`, `MainMenu.gd`). Language 라벨도 "Language: English" → "English"로 단축
+- 인게임 HUD — HP 바 채움 색을 잔여 비율에 따라 동적 변경 (초록 / 호박 / 빨강+펄스), ProgressBar fill·background 스타일박스 직접 오버라이드 (`HUD.gd`)
+- 레벨업 카드 — 카드 탭 시 scale 0.96 → 1.0 트윈으로 시각 피드백 추가, 터치/마우스 양쪽 (`LevelUpUI.gd`)
+- `godot --headless` MainMenu / HUD / LevelUpUI 씬 로드 에러 없음
+
+### Not Yet Done
+
+- 실기 체감 검증 (폰 빌드 / GitHub Actions 산출물)
+- AdMob SDK 통합 (v0.19.0 인프라만 들어감, ID 수급 후)
+- 추후 외부 리뷰가 더 구체적으로 들어오면 카드 배경 그라데이션 / 메뉴 분위기 배경 등 2차 패스 후보
+
 ## 2026-05-14 — Phase 1 제품감 정리
 
 ### Status

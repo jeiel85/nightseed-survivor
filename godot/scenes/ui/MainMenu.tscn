@@ -119,18 +119,22 @@ size_flags_vertical = 3
 text = "★ LEADERS"
 theme_override_font_sizes/font_size = 18
 
-[node name="FooterRow" type="HBoxContainer" parent="VBox"]
-custom_minimum_size = Vector2(0, 48)
-theme_override_constants/separation = 10
+[node name="TopRightRow" type="HBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -220.0
+offset_top = 14.0
+offset_right = -16.0
+offset_bottom = 50.0
+theme_override_constants/separation = 8
 
-[node name="BtnLanguage" type="Button" parent="VBox/FooterRow"]
+[node name="BtnLanguage" type="Button" parent="TopRightRow"]
 size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Language:  English"
-theme_override_font_sizes/font_size = 15
+text = "English"
+theme_override_font_sizes/font_size = 13
 
-[node name="BtnCredits" type="Button" parent="VBox/FooterRow"]
+[node name="BtnCredits" type="Button" parent="TopRightRow"]
 size_flags_horizontal = 3
-size_flags_vertical = 3
 text = "Credits"
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 13
+

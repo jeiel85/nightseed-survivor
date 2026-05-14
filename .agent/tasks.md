@@ -2,24 +2,31 @@
 
 > 이 파일은 [docs/COMMERCIALIZATION_ANALYSIS.md](../docs/COMMERCIALIZATION_ANALYSIS.md)의
 > Phase 1~4 로드맵을 작업 단위로 풀어 놓은 운영 목록입니다. 코드 상태를
-> 기준으로 한 마지막 동기화는 v0.19.0 작업 시작 시점입니다.
+> 기준으로 한 마지막 동기화는 v0.20.0 작업 시작 시점입니다.
 
-## v0.19.0 진행 중
+## v0.20.0 완료
+
+### UI 폴리시 — 외부 리뷰 반영
+- [x] 메인 메뉴 푸터(Language/Credits)를 상단 우측 코너 작은 행으로 이동
+- [x] 인게임 HUD HP 바 동적 색상 (초록 / 호박 / 빨강+펄스)
+- [x] 레벨업 카드 탭 시각 피드백 (scale 0.96 → 1.0)
+
+## v0.19.0 완료
 
 ### Phase 1 잔여 — 제품감 정리 마무리
 - [x] 스테이지별 배경 톤 정리 (`stages.json` bg 블록 → BackgroundTiler.apply_tone)
 - [x] `.agent/tasks.md` 실제 구현 상태로 재정리
 
 ### Phase 2 — 전투 체감 강화
-- [ ] Fire Wisp 타깃팅을 적 밀집도 기반으로 변경
-- [ ] Star Needle 방향성 개선 (이동 방향 + 밀집 방향, 넓은 부채꼴)
-- [ ] 돌진/캐스터/스플리터 텔레그래프 강화
-- [ ] 미니보스 패턴 1개 추가 (방사형 펄스)
-- [ ] 보스전 마지막 구간(HP 30% 이하) 격노 연출
+- [x] Fire Wisp 타깃팅을 적 밀집도 기반으로 변경
+- [x] Star Needle 방향성 개선 (이동 방향 + 밀집 방향, 넓은 부채꼴)
+- [x] 돌진/캐스터/스플리터 텔레그래프 강화
+- [x] 미니보스 패턴 1개 추가 (방사형 충격파)
+- [x] 보스전 마지막 구간(HP 30% 이하) 격노 연출
 
 ### 상용화 인프라
-- [ ] Play Games Services placeholder 정리 + 사용자 ID 수급 후 wiring
-- [ ] AdMob 보상형 광고 SDK 통합 (placeholder ID, 부활/골드 2배 훅)
+- [x] Play Games Services 활성화 — App ID + 리더보드 6종 실제 ID 주입
+- [ ] AdMob 보상형 광고 SDK 통합 — 인터페이스/UI 훅까지 완료, SDK + ID 수급 대기
 
 ---
 

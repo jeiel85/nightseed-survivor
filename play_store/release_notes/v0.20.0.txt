@@ -1,0 +1,34 @@
+<ko-KR>
+✨ UI 디테일 다듬기 — 외부 리뷰 반영
+
+비공개 테스트 첫 리뷰의 "UI 좀 손봤으면" 의견에 대응한 폴리시 라운드.
+
+메인 메뉴
+• 언어/크레딧 버튼을 상단 우측 코너의 작은 행으로 이동
+• PLAY 아래 영역은 6 버튼으로 정리, 메인 화면 밀도 ↓
+
+인게임 HUD
+• HP 바 색이 잔여 비율에 따라 동적 변경
+• 55% 초과 초록, 30~55% 호박→빨강, 30% 이하 빨강 + 펄스
+
+레벨업 카드
+• 카드 탭 시 살짝 눌리는 스케일 피드백 추가
+• 터치/마우스 양쪽 지원
+</ko-KR>
+<en-US>
+✨ UI polish — first external review
+
+Polish round in response to the first private-test review ("UI could use a little overhaul").
+
+Main menu
+• Language / Credits moved to a small top-right corner row
+• Main area cleaned down to 6 buttons under PLAY
+
+In-game HUD
+• HP bar fill color now reflects remaining HP
+• Green > 55%, amber→red 30–55%, red + alpha pulse below 30%
+
+Level-up cards
+• Card tap now has a press-down scale feedback
+• Works for both touch and mouse
+</en-US>

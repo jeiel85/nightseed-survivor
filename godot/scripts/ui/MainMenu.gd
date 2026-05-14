@@ -13,8 +13,8 @@ extends Control
 @onready var btn_shop: Button = $VBox/SecondaryRow/BtnShop
 @onready var btn_codex: Button = $VBox/SecondaryRow/BtnCodex
 @onready var btn_leaderboard: Button = $VBox/SecondaryRow/BtnLeaderboard
-@onready var btn_language: Button = $VBox/FooterRow/BtnLanguage
-@onready var btn_credits: Button = $VBox/FooterRow/BtnCredits
+@onready var btn_language: Button = $TopRightRow/BtnLanguage
+@onready var btn_credits: Button = $TopRightRow/BtnCredits
 
 func _ready() -> void:
 	AudioManager.play_bgm("menu")
@@ -76,7 +76,7 @@ func _refresh() -> void:
 	btn_difficulty.add_theme_color_override("font_color", df["color"])
 	btn_leaderboard.text = Localization.tr_key("btn_leaderboard_short")
 	btn_codex.text = Localization.tr_key("btn_codex")
-	btn_language.text = Localization.tr_key("btn_language_fmt") % Localization.current_label()
+	btn_language.text = Localization.current_label()
 	btn_credits.text = Localization.tr_key("btn_credits_short")
 
 # Show "next upgrade ready" if any shop upgrade is affordable now, otherwise

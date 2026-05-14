@@ -326,11 +326,32 @@ func _format_role_tags(roles: Array) -> String:
 	return "· " + " · ".join(parts) + " ·"
 
 func _on_card_gui_input(event: InputEvent, idx: int) -> void:
-	# Fire on release so a stray drag-out doesn't lock in a choice.
-	if event is InputEventScreenTouch and not event.pressed:
-		_on_card_selected(idx)
-	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
-		_on_card_selected(idx)
+	# Fire on release so a stray drag-out doesn't lock in a choice. On press
+	# we play a tiny scale-down so the card visibly responds to touch — the
+	# whole card is the tap target, but without feedback it felt dead.
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			_animate_card_press(idx, true)
+		else:
+			_animate_card_press(idx, false)
+			_on_card_selected(idx)
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			_animate_card_press(idx, true)
+		else:
+			_animate_card_press(idx, false)
+			_on_card_selected(idx)
+
+func _animate_card_press(idx: int, pressed: bool) -> void:
+	if idx >= _cards.size():
+		return
+	var card: PanelContainer = _cards[idx]
+	if not is_instance_valid(card):
+		return
+	var target: Vector2 = Vector2(0.96, 0.96) if pressed else Vector2.ONE
+	var tw := create_tween()
+	tw.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	tw.tween_property(card, "scale", target, 0.08).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 func _on_card_selected(idx: int) -> void:
 	if idx >= _options.size():
