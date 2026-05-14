@@ -258,6 +258,10 @@ func _setup_card(card: PanelContainer, opt: Dictionary, idx: int) -> void:
 		if icon_path != "":
 			icon_rect.texture = load(icon_path)
 			icon_rect.visible = true
+			# Brighten + tint with weapon color so weapon icons are clearly
+			# distinct from raw XP pickup icons (Kenney tile reuse — base
+			# sprites are all small potions, differentiated only by hue).
+			icon_rect.self_modulate = color.lightened(0.25)
 		else:
 			icon_rect.texture = null
 			icon_rect.visible = false

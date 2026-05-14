@@ -1,5 +1,31 @@
 # HISTORY.md
 
+## 2026-05-14 (v0.22.0: 폰트 가독성 + HUD 아이콘 + 스토리 메뉴)
+
+- 날짜: 2026-05-14
+- 작업: v0.21.0 폰 빌드 후 사용자 피드백 4건 일괄 대응 — 폰트 너무 작음, HUD 밋밋함, Spirit Orb 아이콘이 XP 픽업과 동일, 스토리 다시 읽기 메뉴 부재
+- 변경 파일:
+  - godot/scenes/ui/MainMenu.tscn (폰트 +4 일괄)
+  - godot/scenes/main/HUD.tscn (top bar 112→140, 폰트 +4, Lv/Kills/Gold 아이콘 셀 추가, 하단 슬레이트 경계선, HP 라벨 외곽선)
+  - godot/scripts/ui/HUD.gd (TOP_BAR_BASE_HEIGHT 112→140, 라벨 노드 경로 갱신)
+  - godot/scenes/ui/LevelUpUI.tscn (카드 high 320→380, 아이콘 70→96, 헤더 32→40, 폰트 +4)
+  - godot/scripts/ui/LevelUpUI.gd (아이콘 self_modulate 무기 컬러 tint)
+  - godot/scenes/ui/StoryUI.tscn + godot/scripts/ui/StoryUI.gd (신규 — 스토리 다시 읽기 화면)
+  - godot/scripts/ui/MainMenu.gd (btn_codex 라우트 → StoryUI, 라벨 키 btn_story)
+  - godot/scripts/core/Localization.gd (9개 키 추가)
+  - godot/export_presets.cfg (0.21.0 → 0.22.0, code 22 → 23)
+  - CHANGELOG.md, docs/releases/v0.22.0.md, play_store/release_notes/v0.22.0.txt
+- 검증:
+  - `godot --headless` MainMenu / HUD / LevelUpUI / StoryUI 네 씬 로드 에러 없음
+- 결과:
+  - 모바일에서 글씨 가독성 회복
+  - HUD가 텍스트 일색에서 아이콘+경계선 있는 정보 패널로
+  - 레벨업 카드 아이콘이 픽업과 시각 구분 (컬러 tint + 큰 사이즈 + 카드 보더)
+  - 새 스토리 메뉴로 잠금/해금 별 대사 다시 보기 가능
+- 후속 작업:
+  - 폰 실기 검증 (v0.22.0 AAB Play Console 업로드 후)
+  - 추후 무기 스프라이트 셋 자체 교체 (Kenney 외 후보 탐색 필요)
+
 ## 2026-05-14 (v0.21.0: 모바일 레이아웃 수정 — 빈 공간 메우기)
 
 - 날짜: 2026-05-14

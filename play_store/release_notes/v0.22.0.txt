@@ -1,0 +1,39 @@
+<ko-KR>
+📚 폰트 키움 + HUD 아이콘 + 스토리 메뉴
+
+가독성
+• 메인/HUD/레벨업 전반 폰트 +4 정도 확대
+• HUD top bar 높이 확장, 레벨업 카드 380px
+
+HUD 아이콘
+• Lv/Kills/Gold 앞에 각각 아이콘 추가
+• HP 라벨 외곽선으로 어떤 색에서도 읽힘
+• 하단 슬레이트 경계선으로 게임 영역과 분리
+
+레벨업 카드
+• 아이콘 96×96 확대 + 무기 컬러로 강한 채색
+• 픽업과 시각 구분 명확화
+
+스토리 메뉴 (신규)
+• CODEX 버튼이 STORY로 — 해금된 스테이지 대사 전부 다시 읽기
+• 미해금은 🔒 표시, 우상단 용어집 → 으로 코덱스 진입
+</ko-KR>
+<en-US>
+📚 Bigger fonts + HUD icons + Story menu
+
+Readability
+• Menu / HUD / level-up fonts all bumped ~+4
+• HUD top bar taller, level-up cards 380px
+
+HUD
+• Lv / Kills / Gold each get an icon
+• HP label outlined, slate divider below the bar
+
+Level-up cards
+• Icons 96×96 + heavy weapon-color tint
+• Clearly distinct from raw XP pickups now
+
+Story menu (new)
+• CODEX button is now STORY — replay dialogue from unlocked stages
+• Locked stages show 🔒; reach glossary via Codex →
+</en-US>

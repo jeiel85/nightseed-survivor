@@ -75,7 +75,7 @@ func _refresh() -> void:
 	btn_difficulty.text = Localization.tr_key("btn_difficulty_short_fmt") % df_name
 	btn_difficulty.add_theme_color_override("font_color", df["color"])
 	btn_leaderboard.text = Localization.tr_key("btn_leaderboard_short")
-	btn_codex.text = Localization.tr_key("btn_codex")
+	btn_codex.text = Localization.tr_key("btn_story")
 	btn_language.text = Localization.current_label()
 	btn_credits.text = Localization.tr_key("btn_credits_short")
 
@@ -122,7 +122,10 @@ func _on_credits_pressed() -> void:
 	Transition.change_scene("res://scenes/ui/CreditsUI.tscn")
 
 func _on_codex_pressed() -> void:
-	Transition.change_scene("res://scenes/ui/CodexUI.tscn")
+	# Button keeps the codex variable name for layout stability, but the
+	# main-menu route now opens StoryUI (which hosts a "용어집 →" link to
+	# CodexUI inside it). User-facing label is "스토리".
+	Transition.change_scene("res://scenes/ui/StoryUI.tscn")
 
 func _on_leaderboard_pressed() -> void:
 	if not LeaderboardManager.is_signed_in():

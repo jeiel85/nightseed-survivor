@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/StoryUI.gd" id="1_s"]
+
+[node name="StoryUI" type="Control"]
+script = ExtResource("1_s")
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.06, 0.06, 0.1, 1)
+
+[node name="VBox" type="VBoxContainer" parent="."]
+offset_left = 32.0
+offset_top = 32.0
+offset_right = -32.0
+offset_bottom = -32.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 16
+
+[node name="HeaderRow" type="HBoxContainer" parent="VBox"]
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="VBox/HeaderRow"]
+size_flags_horizontal = 3
+text = "스토리"
+horizontal_alignment = 0
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 38
+
+[node name="BtnCodex" type="Button" parent="VBox/HeaderRow"]
+custom_minimum_size = Vector2(160, 56)
+text = "용어집 →"
+theme_override_font_sizes/font_size = 20
+
+[node name="Hint" type="Label" parent="VBox"]
+text = "해금한 스테이지의 이야기를 다시 읽을 수 있습니다."
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.78, 0.84, 1, 0.85)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBox"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="StageList" type="VBoxContainer" parent="VBox/ScrollContainer"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 18
+
+[node name="BtnBack" type="Button" parent="VBox"]
+custom_minimum_size = Vector2(0, 72)
+text = "← 메뉴로"
+theme_override_font_sizes/font_size = 26

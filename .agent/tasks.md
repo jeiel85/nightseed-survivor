@@ -2,7 +2,15 @@
 
 > 이 파일은 [docs/COMMERCIALIZATION_ANALYSIS.md](../docs/COMMERCIALIZATION_ANALYSIS.md)의
 > Phase 1~4 로드맵을 작업 단위로 풀어 놓은 운영 목록입니다. 코드 상태를
-> 기준으로 한 마지막 동기화는 v0.21.0 작업 시작 시점입니다.
+> 기준으로 한 마지막 동기화는 v0.22.0 작업 시작 시점입니다.
+
+## v0.22.0 완료
+
+### 폰트 / HUD 폴리시 (외부 리뷰 2차)
+- [x] 메인 메뉴 / HUD / 레벨업 폰트 전반 +4 (외부 리뷰 "글씨가 너무 작아서 안보여" 대응)
+- [x] HUD top bar 112→140px, Lv/Kills/Gold 아이콘 셀 + 하단 경계선 + HP 라벨 외곽선
+- [x] 레벨업 카드 아이콘 70→96px + 무기 컬러 self_modulate (XP 픽업과 시각 구분)
+- [x] 스토리 화면 신규 — StoryUI (해금 상태별 대사 표시, 코덱스 진입점 유지)
 
 ## v0.21.0 완료
 

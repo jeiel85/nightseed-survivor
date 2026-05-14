@@ -1,5 +1,28 @@
 # CHANGELOG.md
 
+## v0.22.0 - 2026-05-14 (폰트 가독성 + HUD 아이콘 + 스토리 메뉴)
+
+### Added
+- `scenes/ui/StoryUI.tscn` + `scripts/ui/StoryUI.gd` — 스토리 다시 읽기 화면. `Stages.stages` 순회하며 해금된 스테이지는 intro/boss_intro/clear 대사 전부 표시, 미해금은 🔒 + "이 스테이지를 해금하면 이야기가 열립니다." 안내. 우상단 `용어집 →` 버튼으로 CodexUI 이동
+- HUD `StatsRow`에 아이콘 셀 — Lv 라벨 앞 pickup_xp 아이콘(청색 tint), Kills 라벨 앞 icon_moon_dagger(주황 tint), Gold 라벨 앞 pickup_gold. 26×26 텍스처 + 6px gap
+- HUD `BackdropBorder` — top bar 하단 2px 슬레이트 경계선으로 게임 영역과 분리
+- HP 라벨에 검은 외곽선(outline_size=4) — HP 바 위 텍스트가 어떤 fill 색에서도 읽힘
+- Localization 신규 키 9개 — `btn_story`, `btn_to_codex`, `btn_back_to_menu`, `story_title`, `story_hint`, `story_locked_long`, `story_section_intro` / `_boss` / `_clear`
+
+### Changed
+- 폰트 전반 +4 — 외부 리뷰 "글씨가 너무 작아서 안보여" 대응
+  - 메인 메뉴 PLAY 44→48, 1차/2차 행 18→22, 코너 13→17, 부제 20→24, 골드 26→30, 상태 16→20
+  - HUD 시간 30→34, 스탯 16→20, HP 라벨 14→18
+  - 레벨업 카드 — 타이틀 32→36, 무기명 24→28, select 22→26, stats 16→20, desc 15→19, tags 13→17
+- HUD top bar 높이 112 → 140px (확장된 폰트/아이콘 수용)
+- 레벨업 카드 — `custom_minimum_size` 320 → 380px, 아이콘 70×70 → 96×96px, header bar 32 → 40px
+- 레벨업 카드 아이콘에 무기 컬러 `self_modulate` 적용 — Kenney 베이스 스프라이트(전부 작은 물약)가 XP 픽업과 시각 구분되도록 강한 컬러 틴트
+- 메인 메뉴 `btn_codex`(원래 CODEX 라벨) 라우트를 CodexUI → StoryUI 로 변경, 라벨 키 `btn_codex` → `btn_story`. 코덱스는 StoryUI 안의 `용어집 →` 버튼으로 진입
+
+### Verification
+- `godot --headless` MainMenu / HUD / LevelUpUI / StoryUI 씬 로드 에러 없음
+- 실기 체감 검증: 사용자 폰에서 v0.22.0 빌드로 확인 예정
+
 ## v0.21.0 - 2026-05-14 (모바일 레이아웃 수정 — 빈 공간 메우기)
 
 ### Changed

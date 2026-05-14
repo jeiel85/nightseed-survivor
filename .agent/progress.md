@@ -1,5 +1,25 @@
 # Progress
 
+## 2026-05-14 — v0.22.0 폰트/HUD/스토리 메뉴
+
+### Status
+
+v0.21.0 폰 빌드 후 사용자 피드백 4건 일괄 대응. 외부 리뷰의 "UI overhaul"이 사실 폰트 사이즈 얘기였음이 확인됨.
+
+### Completed
+
+- 폰트 전반 +4: 메인 메뉴 PLAY 44→48, 1차/2차 18→22, 코너 13→17, HUD 시간 30→34, 스탯 16→20, 레벨업 타이틀 32→36, 무기명 24→28, desc 15→19 등
+- HUD: top bar 112→140px, Lv/Kills/Gold 아이콘 셀 (pickup_xp/icon_moon_dagger/pickup_gold, 26×26 tint), 하단 2px 슬레이트 경계선, HP 라벨 외곽선
+- 레벨업 카드: 최소 높이 320→380, 아이콘 70→96, 무기 컬러 self_modulate로 XP 픽업과 시각 구분
+- StoryUI 신규: 스테이지별 intro/boss_intro/clear 대사 표시, 미해금은 🔒 + 안내, 우상단 용어집 → 버튼
+- 메인 메뉴 btn_codex 라우트 → StoryUI, 라벨 키 btn_story로 변경
+- Localization 9개 키 추가 (스토리 화면 + 백버튼)
+
+### Not Yet Done
+
+- 실기 검증 (v0.22.0 AAB 폰 설치 후)
+- 무기 스프라이트 셋 자체 교체 (현재는 색만 다른 같은 물약 — 컬러 tint로 우회)
+
 ## 2026-05-14 — v0.21.0 모바일 레이아웃 수정
 
 ### Status
