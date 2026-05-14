@@ -14,12 +14,12 @@ const LeaderboardsClientScript = preload("res://addons/GodotPlayGameServices/scr
 # Map our internal stage IDs (data/stages.json) → Play Console leaderboard IDs.
 # Filled in once Play Console PGS setup is complete (see docs/PLAY_GAMES_SERVICES_SETUP.md).
 const LEADERBOARD_IDS: Dictionary = {
-	"forest":            "REPLACE_ME_FOREST",
-	"frozen_wastes":     "REPLACE_ME_FROZEN_WASTES",
-	"twilight_sanctum":  "REPLACE_ME_TWILIGHT_SANCTUM",
-	"inferno_chasm":     "REPLACE_ME_INFERNO_CHASM",
-	"cursed_tomb":       "REPLACE_ME_CURSED_TOMB",
-	"total_kills":       "REPLACE_ME_TOTAL_KILLS",
+	"forest":            "CgkI4dHfiPAMEAIQAQ",
+	"frozen_wastes":     "CgkI4dHfiPAMEAIQAg",
+	"twilight_sanctum":  "CgkI4dHfiPAMEAIQAw",
+	"inferno_chasm":     "CgkI4dHfiPAMEAIQBA",
+	"cursed_tomb":       "CgkI4dHfiPAMEAIQBQ",
+	"total_kills":       "CgkI4dHfiPAMEAIQBg",
 }
 
 signal sign_in_changed(signed_in: bool)

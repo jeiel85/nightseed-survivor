@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- TODO: Replace this placeholder with the App ID from Play Console PGS configuration. -->
-	<!-- See docs/PLAY_GAMES_SERVICES_SETUP.md Step 5. -->
-	<string translatable="false" name="game_services_project_id">000000000000</string>
+	<string translatable="false" name="game_services_project_id">442399975649</string>
 </resources>

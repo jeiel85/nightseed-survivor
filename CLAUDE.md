@@ -63,7 +63,7 @@
 
 ## 미해결/대기 항목
 
-- **Play Games Services**: 코드는 완비, placeholder ID 상태. 사용자가 [docs/PLAY_GAMES_SERVICES_SETUP.md](docs/PLAY_GAMES_SERVICES_SETUP.md) 따라 Play Console 설정 + APP_ID/6 leaderboard ID 회수하면 활성화
+- **Play Games Services**: 2026-05-14 활성화 완료. App ID `442399975649`, 6개 리더보드 ID 코드 반영됨 ([godot/scripts/core/LeaderboardManager.gd](godot/scripts/core/LeaderboardManager.gd), [godot/android/build/res/values/game_services_ids.xml](godot/android/build/res/values/game_services_ids.xml)). Play App Signing 사용 — OAuth client 등록 SHA-1은 `DA:65:E3:75:98:2B:4D:6D:B2:26:7C:D5:A8:E7:89:15:F2:AB:EF:FB`. OAuth 동의 화면은 테스트 모드 (jeiel85@gmail.com 테스터 등록). 다음 빌드(v0.19.0+)부터 폰에서 PGS 로그인/리더보드 동작 검증 필요.
 - **AdMob**: 사용자가 계정만 있음. 광고 SDK 통합 미시작. ad unit ID 받으면 진행
 - **iOS**: 안 함 (Mac + Apple Dev 계정 필요)
 
