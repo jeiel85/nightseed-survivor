@@ -5,10 +5,12 @@ class_name HUD
 @onready var hp_bar: ProgressBar = $TopBar/HPBar
 @onready var hp_label: Label = $TopBar/HPLabel
 @onready var xp_bar: ProgressBar = $TopBar/XPBar
-@onready var time_label: Label = $TopBar/StatsRow/TimeLabel
+@onready var time_label: Label = $TopBar/TimeLabel
 @onready var level_label: Label = $TopBar/StatsRow/LevelLabel
 @onready var kill_label: Label = $TopBar/StatsRow/KillLabel
 @onready var gold_label: Label = $TopBar/StatsRow/GoldLabel
+
+const TOP_BAR_BASE_HEIGHT: float = 112.0
 
 var _last_hp: int = 0
 var _last_max: int = 0
@@ -36,7 +38,7 @@ func _apply_safe_area() -> void:
 	var left_inset: float = clamp(float(safe.position.x), 0.0, float(win.x) * 0.25)
 	var right_inset: float = clamp(float(win.x) - float(safe.position.x + safe.size.x), 0.0, float(win.x) * 0.25)
 	top_bar.offset_top = top_inset
-	top_bar.offset_bottom = 168.0 + top_inset
+	top_bar.offset_bottom = TOP_BAR_BASE_HEIGHT + top_inset
 	top_bar.offset_left = left_inset
 	top_bar.offset_right = -right_inset
 

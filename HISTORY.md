@@ -1,5 +1,30 @@
 # HISTORY.md
 
+## 2026-05-14 (Phase 1: 제품감 정리)
+
+- 날짜: 2026-05-14
+- 작업: 상용화 분석 Phase 1 — 메인 메뉴/HUD/레벨업 카드/결과 화면 가독성과 정보 위계 개선
+- 변경 파일:
+  - godot/scenes/ui/MainMenu.tscn, godot/scripts/ui/MainMenu.gd (정보 카드 + 1차/2차 행 분리, 다음 강화 힌트)
+  - godot/scenes/main/HUD.tscn, godot/scripts/ui/HUD.gd (상단 영역 168→112px 축소, Time 강조)
+  - godot/scenes/ui/LevelUpUI.tscn, godot/scripts/ui/LevelUpUI.gd (태그 + 현재 레벨 + 실제 수치 변화 + 역할 칩)
+  - godot/scenes/main/GameRoot.tscn, godot/scripts/core/GameRoot.gd (결과 화면 배경 톤·타이틀 팝·골드 카운트업·다음 강화 힌트)
+  - godot/scripts/core/Localization.gd (메뉴/레벨업/결과 화면용 신규 키)
+  - CHANGELOG.md, .agent/tasks.md, .agent/progress.md (이력 갱신)
+- 검증:
+  - `godot --headless --path godot --quit` 통과 (스크립트 파싱 OK)
+  - `godot --headless --path godot --editor --quit-after 400` 1회 import 성공
+  - 인게임 실기 검증은 GitHub Actions의 export·릴리즈 단계에서 진행
+- 결과:
+  - 첫 화면(메인 메뉴)에서 1차 행동(시작/캐릭터/스테이지/난이도)이 시각적으로 분리됨
+  - HUD 상단 점유 면적 약 33% 축소
+  - 레벨업 카드가 "DMG +25%" 같은 일반 문구 대신 무기별 실제 수치 변화와 역할 태그를 표시
+  - 결과 화면에 골드 카운트업, 다음 강화까지 남은 골드, 신규 업적 강조 추가
+- 후속 작업:
+  - Phase 2 전투 체감 (무기별 실제 레벨업 설명, Fire Wisp 타깃팅 등)
+  - 스테이지별 배경 톤 정리
+  - 저장 데이터 schema_version 도입 여부 결정
+
 ## 2026-05-14
 
 - 날짜: 2026-05-14

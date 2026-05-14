@@ -4,20 +4,24 @@ class_name LevelUpUI
 signal upgrade_chosen(upgrade_id: String)
 
 const WEAPON_DATA: Dictionary = {
-	"Moon Dagger":  {"name_key": "weapon_moon_dagger", "desc_key": "weapon_desc_moon_dagger", "color": Color(0.5, 0.8, 1.0),  "icon": "res://assets/sprites/icon_moon_dagger.png"},
-	"Spirit Orb":   {"name_key": "weapon_spirit_orb",  "desc_key": "weapon_desc_spirit_orb",  "color": Color(0.3, 0.9, 1.0),  "icon": "res://assets/sprites/icon_spirit_orb.png"},
-	"Fire Wisp":    {"name_key": "weapon_fire_wisp",   "desc_key": "weapon_desc_fire_wisp",   "color": Color(1.0, 0.5, 0.15), "icon": "res://assets/sprites/icon_fire_wisp.png"},
-	"Thorn Ring":   {"name_key": "weapon_thorn_ring",  "desc_key": "weapon_desc_thorn_ring",  "color": Color(0.3, 0.9, 0.3),  "icon": "res://assets/sprites/icon_thorn_ring.png"},
-	"Star Needle":  {"name_key": "weapon_star_needle", "desc_key": "weapon_desc_star_needle", "color": Color(0.95, 0.9, 0.2), "icon": "res://assets/sprites/icon_star_needle.png"},
+	"Moon Dagger":  {"name_key": "weapon_moon_dagger", "desc_key": "weapon_desc_moon_dagger", "color": Color(0.5, 0.8, 1.0),  "icon": "res://assets/sprites/icon_moon_dagger.png",  "roles": ["tag_seek", "tag_power"]},
+	"Spirit Orb":   {"name_key": "weapon_spirit_orb",  "desc_key": "weapon_desc_spirit_orb",  "color": Color(0.3, 0.9, 1.0),  "icon": "res://assets/sprites/icon_spirit_orb.png",   "roles": ["tag_melee", "tag_defense"]},
+	"Fire Wisp":    {"name_key": "weapon_fire_wisp",   "desc_key": "weapon_desc_fire_wisp",   "color": Color(1.0, 0.5, 0.15), "icon": "res://assets/sprites/icon_fire_wisp.png",    "roles": ["tag_aoe", "tag_power"]},
+	"Thorn Ring":   {"name_key": "weapon_thorn_ring",  "desc_key": "weapon_desc_thorn_ring",  "color": Color(0.3, 0.9, 0.3),  "icon": "res://assets/sprites/icon_thorn_ring.png",   "roles": ["tag_melee", "tag_aoe"]},
+	"Star Needle":  {"name_key": "weapon_star_needle", "desc_key": "weapon_desc_star_needle", "color": Color(0.95, 0.9, 0.2), "icon": "res://assets/sprites/icon_star_needle.png",  "roles": ["tag_ranged", "tag_aoe"]},
 }
 
 const PASSIVE_DATA: Dictionary = {
-	"swift_boots":  {"name_key": "passive_swift_boots_name",  "desc_key": "passive_swift_boots_desc",  "color": Color(0.5, 0.85, 0.5),  "icon": "res://assets/sprites/shop_swift.png"},
-	"magnet_charm": {"name_key": "passive_magnet_charm_name", "desc_key": "passive_magnet_charm_desc", "color": Color(0.75, 0.5, 0.95), "icon": "res://assets/sprites/shop_magnet.png"},
-	"iron_heart":   {"name_key": "passive_iron_heart_name",   "desc_key": "passive_iron_heart_desc",   "color": Color(1.0, 0.35, 0.35), "icon": "res://assets/sprites/shop_heart.png"},
-	"battle_focus": {"name_key": "passive_battle_focus_name", "desc_key": "passive_battle_focus_desc", "color": Color(0.9, 0.7, 0.2),   "icon": "res://assets/sprites/shop_focus.png"},
-	"power_core":   {"name_key": "passive_power_core_name",   "desc_key": "passive_power_core_desc",   "color": Color(1.0, 0.3, 0.65),  "icon": "res://assets/sprites/shop_power.png"},
+	"swift_boots":  {"name_key": "passive_swift_boots_name",  "desc_key": "passive_swift_boots_desc",  "color": Color(0.5, 0.85, 0.5),  "icon": "res://assets/sprites/shop_swift.png",  "roles": ["tag_mobility"],   "per_level": "+20 SPD"},
+	"magnet_charm": {"name_key": "passive_magnet_charm_name", "desc_key": "passive_magnet_charm_desc", "color": Color(0.75, 0.5, 0.95), "icon": "res://assets/sprites/shop_magnet.png", "roles": ["tag_pickup"],     "per_level": "+40 XP radius"},
+	"iron_heart":   {"name_key": "passive_iron_heart_name",   "desc_key": "passive_iron_heart_desc",   "color": Color(1.0, 0.35, 0.35), "icon": "res://assets/sprites/shop_heart.png",  "roles": ["tag_survive"],    "per_level": "+20 Max HP"},
+	"battle_focus": {"name_key": "passive_battle_focus_name", "desc_key": "passive_battle_focus_desc", "color": Color(0.9, 0.7, 0.2),   "icon": "res://assets/sprites/shop_focus.png",  "roles": ["tag_utility"],    "per_level": "-8% CD"},
+	"power_core":   {"name_key": "passive_power_core_name",   "desc_key": "passive_power_core_desc",   "color": Color(1.0, 0.3, 0.65),  "icon": "res://assets/sprites/shop_power.png",  "roles": ["tag_power"],      "per_level": "+15% DMG"},
 }
+
+const TAG_NEW_COLOR := Color(0.4, 0.85, 1.0, 1.0)
+const TAG_UP_COLOR := Color(1.0, 0.85, 0.45, 1.0)
+const TAG_EVOLVE_COLOR := Color(1.0, 0.6, 0.95, 1.0)
 
 var _options: Array = []
 var _player: Player
@@ -82,25 +86,41 @@ func _generate_options() -> void:
 		if Evolutions.can_evolve(w.weapon_name, w.level, Callable(wm, "get_passive_level")):
 			var rule: Dictionary = Evolutions.RULES[w.weapon_name]
 			var base_icon: String = ""
+			var roles: Array = ["tag_evolve"]
 			if WEAPON_DATA.has(w.weapon_name):
 				base_icon = String(WEAPON_DATA[w.weapon_name].get("icon", ""))
+				roles = (WEAPON_DATA[w.weapon_name].get("roles", []) as Array).duplicate()
+				roles.push_front("tag_evolve")
 			priority.append({
 				"id": "evolve:" + w.weapon_name,
-				"title": "★ EVOLVE: " + String(rule["evolved_name"]),
+				"kind": "evolve",
+				"title": String(rule["evolved_name"]),
 				"desc": String(rule["desc"]),
 				"color": rule["color"],
 				"icon": base_icon,
+				"level_line": Localization.tr_key("levelup_evolve_base_fmt") % Localization.tr_key(String(WEAPON_DATA[w.weapon_name]["name_key"]), w.weapon_name),
+				"stats": Localization.tr_key("levelup_evolve_stats"),
+				"roles": roles,
+				"tag_text": Localization.tr_key("levelup_tag_evolve"),
+				"tag_color": TAG_EVOLVE_COLOR,
 			})
 
 	for wname in WEAPON_DATA:
 		if not wm.has_weapon(wname):
 			var wd: Dictionary = WEAPON_DATA[wname]
+			var sample := _sample_weapon_stats(wname)
 			pool.append({
 				"id": "new:" + wname,
+				"kind": "new",
 				"title": Localization.tr_key(String(wd["name_key"]), wname),
 				"desc": Localization.tr_key(String(wd["desc_key"]), ""),
 				"color": wd["color"],
 				"icon": wd.get("icon", ""),
+				"level_line": Localization.tr_key("levelup_new_weapon"),
+				"stats": Localization.tr_key("levelup_stats_start_fmt") % [sample["dmg"], sample["cd"]],
+				"roles": (wd.get("roles", []) as Array).duplicate(),
+				"tag_text": Localization.tr_key("levelup_tag_new"),
+				"tag_color": TAG_NEW_COLOR,
 			})
 
 	for w in wm.weapons:
@@ -109,23 +129,41 @@ func _generate_options() -> void:
 		var wname: String = w.weapon_name
 		if WEAPON_DATA.has(wname):
 			var wd2: Dictionary = WEAPON_DATA[wname]
+			var current_dmg: int = w.get_damage()
+			var next_dmg: int = int(int(w.base_damage * 1.25) * w.damage_multiplier)
+			var current_cd: float = maxf(w.base_cooldown * w.cooldown_multiplier, 0.15)
+			var next_cd: float = maxf(maxf(w.base_cooldown * 0.88, 0.2) * w.cooldown_multiplier, 0.15)
 			pool.append({
 				"id": "up:" + wname,
-				"title": Localization.tr_key(String(wd2["name_key"]), wname) + "  Lv." + str(w.level + 1),
-				"desc": Localization.tr_key("upgrade_desc_default", "DMG +25% / CD -12%"),
-				"color": wd2["color"].lightened(0.2),
+				"kind": "up",
+				"title": Localization.tr_key(String(wd2["name_key"]), wname),
+				"desc": Localization.tr_key(String(wd2["desc_key"]), ""),
+				"color": wd2["color"].lightened(0.18),
 				"icon": wd2.get("icon", ""),
+				"level_line": Localization.tr_key("levelup_lv_change_fmt") % [w.level, w.level + 1],
+				"stats": Localization.tr_key("levelup_stats_up_fmt") % [current_dmg, next_dmg, current_cd, next_cd],
+				"roles": (wd2.get("roles", []) as Array).duplicate(),
+				"tag_text": Localization.tr_key("levelup_tag_up_fmt") % (w.level + 1),
+				"tag_color": TAG_UP_COLOR,
 			})
 
 	for pkey in PASSIVE_DATA:
-		if wm.get_passive_level(pkey) < 5:
+		var p_level: int = wm.get_passive_level(pkey)
+		if p_level < 5:
 			var pd: Dictionary = PASSIVE_DATA[pkey]
+			var is_new: bool = p_level == 0
 			pool.append({
 				"id": "passive:" + pkey,
+				"kind": "passive_new" if is_new else "passive_up",
 				"title": Localization.tr_key(String(pd["name_key"]), pkey),
 				"desc": Localization.tr_key(String(pd["desc_key"]), ""),
 				"color": pd["color"],
 				"icon": pd.get("icon", ""),
+				"level_line": (Localization.tr_key("levelup_new_passive") if is_new else (Localization.tr_key("levelup_passive_level_fmt") % [p_level, p_level + 1])),
+				"stats": String(pd.get("per_level", "")),
+				"roles": (pd.get("roles", []) as Array).duplicate(),
+				"tag_text": (Localization.tr_key("levelup_tag_new") if is_new else (Localization.tr_key("levelup_tag_up_fmt") % (p_level + 1))),
+				"tag_color": TAG_NEW_COLOR if is_new else TAG_UP_COLOR,
 			})
 
 	pool.shuffle()
@@ -134,13 +172,38 @@ func _generate_options() -> void:
 
 	var fallback := {
 		"id": "passive:iron_heart",
+		"kind": "passive_new",
 		"title": Localization.tr_key("passive_iron_heart_name", "Iron Heart"),
 		"desc": Localization.tr_key("passive_iron_heart_desc", "Max HP +20"),
 		"color": Color(1.0, 0.35, 0.35),
 		"icon": "res://assets/sprites/shop_heart.png",
+		"level_line": Localization.tr_key("levelup_new_passive"),
+		"stats": "+20 Max HP",
+		"roles": ["tag_survive"],
+		"tag_text": Localization.tr_key("levelup_tag_new"),
+		"tag_color": TAG_NEW_COLOR,
 	}
 	while _options.size() < 3:
 		_options.append(fallback)
+
+# Returns the "starting" damage and cooldown shown when offering a brand-new
+# weapon. Pulls per-weapon base stats from a small lookup so the player sees
+# concrete numbers before committing.
+func _sample_weapon_stats(wname: String) -> Dictionary:
+	var passive_dmg_mult: float = 1.0 + _player.weapon_manager.get_passive_level("power_core") * 0.15
+	var passive_cd_mult: float = maxf(1.0 - _player.weapon_manager.get_passive_level("battle_focus") * 0.08, 0.3)
+	var base := {
+		"Moon Dagger": {"dmg": 12, "cd": 1.2},
+		"Spirit Orb":  {"dmg": 8,  "cd": 0.35},
+		"Fire Wisp":   {"dmg": 22, "cd": 2.8},
+		"Thorn Ring":  {"dmg": 10, "cd": 3.5},
+		"Star Needle": {"dmg": 8,  "cd": 0.75},
+	}
+	var b: Dictionary = base.get(wname, {"dmg": 10, "cd": 1.0})
+	return {
+		"dmg": int(b["dmg"] * passive_dmg_mult),
+		"cd": maxf(b["cd"] * passive_cd_mult, 0.15),
+	}
 
 func _update_cards() -> void:
 	for i in range(3):
@@ -150,9 +213,13 @@ func _update_cards() -> void:
 
 func _setup_card(card: PanelContainer, opt: Dictionary, idx: int) -> void:
 	var header: ColorRect = card.get_node_or_null("VBox/Header")
-	var icon_rect: TextureRect = card.get_node_or_null("VBox/Icon")
-	var title_lbl: Label = card.get_node_or_null("VBox/Title")
+	var tag_lbl: Label = card.get_node_or_null("VBox/Header/Tag")
+	var icon_rect: TextureRect = card.get_node_or_null("VBox/HBox/Icon")
+	var title_lbl: Label = card.get_node_or_null("VBox/HBox/TitleBox/Title")
+	var level_lbl: Label = card.get_node_or_null("VBox/HBox/TitleBox/LevelLine")
+	var stats_lbl: Label = card.get_node_or_null("VBox/Stats")
 	var desc_lbl: Label = card.get_node_or_null("VBox/Desc")
+	var tags_lbl: Label = card.get_node_or_null("VBox/Tags")
 	var btn: Button = card.get_node_or_null("VBox/SelectBtn")
 	var color: Color = opt["color"]
 	var captured_idx := idx
@@ -175,17 +242,17 @@ func _setup_card(card: PanelContainer, opt: Dictionary, idx: int) -> void:
 	var inner_vbox: VBoxContainer = card.get_node_or_null("VBox")
 	if inner_vbox:
 		inner_vbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		for child in inner_vbox.get_children():
-			if child is Button:
-				continue
-			if child is Control:
-				(child as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_propagate_mouse_ignore(inner_vbox)
 	for connection in card.gui_input.get_connections():
 		card.gui_input.disconnect(connection["callable"])
 	card.gui_input.connect(func(event): _on_card_gui_input(event, captured_idx))
 
 	if header:
 		header.color = color
+	if tag_lbl:
+		tag_lbl.text = String(opt.get("tag_text", ""))
+		var tc: Color = opt.get("tag_color", Color.WHITE)
+		tag_lbl.add_theme_color_override("font_color", tc.lightened(0.25))
 	if icon_rect:
 		var icon_path: String = String(opt.get("icon", ""))
 		if icon_path != "":
@@ -195,10 +262,21 @@ func _setup_card(card: PanelContainer, opt: Dictionary, idx: int) -> void:
 			icon_rect.texture = null
 			icon_rect.visible = false
 	if title_lbl:
-		title_lbl.text = opt["title"]
+		title_lbl.text = String(opt.get("title", ""))
 		title_lbl.add_theme_color_override("font_color", color.lightened(0.35))
+	if level_lbl:
+		var line: String = String(opt.get("level_line", ""))
+		level_lbl.text = line
+		level_lbl.visible = line != ""
+	if stats_lbl:
+		var st: String = String(opt.get("stats", ""))
+		stats_lbl.text = st
+		stats_lbl.visible = st != ""
 	if desc_lbl:
-		desc_lbl.text = opt["desc"]
+		desc_lbl.text = String(opt.get("desc", ""))
+	if tags_lbl:
+		tags_lbl.text = _format_role_tags(opt.get("roles", []))
+		tags_lbl.visible = tags_lbl.text != ""
 	if btn:
 		btn.text = "▶  " + Localization.tr_key("btn_select")
 		for connection in btn.pressed.get_connections():
@@ -224,6 +302,28 @@ func _setup_card(card: PanelContainer, opt: Dictionary, idx: int) -> void:
 		btn.add_theme_color_override("font_hover_color", Color.WHITE)
 		btn.add_theme_color_override("font_pressed_color", Color.WHITE)
 		btn.add_theme_color_override("font_focus_color", Color.WHITE)
+
+func _propagate_mouse_ignore(node: Node) -> void:
+	for child in node.get_children():
+		if child is Button:
+			continue
+		if child is Control:
+			(child as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
+		if child.get_child_count() > 0:
+			_propagate_mouse_ignore(child)
+
+func _format_role_tags(roles: Array) -> String:
+	if roles.is_empty():
+		return ""
+	var parts: Array = []
+	for r in roles:
+		var key: String = String(r)
+		if key == "":
+			continue
+		parts.append(Localization.tr_key(key, key))
+	if parts.is_empty():
+		return ""
+	return "· " + " · ".join(parts) + " ·"
 
 func _on_card_gui_input(event: InputEvent, idx: int) -> void:
 	# Fire on release so a stray drag-out doesn't lock in a choice.

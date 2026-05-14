@@ -1,5 +1,22 @@
 # CHANGELOG.md
 
+## Unreleased - 2026-05-14 (Phase 1: 제품감 정리)
+
+### Changed
+- 메인 메뉴 — PLAY 버튼을 시각적 단일 1차 액션으로 강조, 캐릭터/스테이지/난이도를 1차 행, 상점/용어집/순위표를 2차 행, 언어/크레딧을 푸터로 정리
+- 메인 메뉴 — 골드 옆에 "다음 강화까지 N 골드 / ★ 강화 가능" 힌트 표시
+- 인게임 HUD — 상단 점유 영역을 168→112px로 축소, 시간(생존)을 상단 중앙 강조, HP/XP 바와 폰트 크기 모바일 1손 가독성 기준으로 조정
+- 레벨업 카드 — 헤더에 신규/강화/진화 태그, 무기별 실제 DMG·CD 현재값과 다음값, 역할 칩(추적/근접/광역/화력/생존/기동/수집/편의) 표시
+- 결과 화면 — 승리/패배에 따른 배경 톤 분리, 타이틀 스케일 팝 애니메이션, 획득 골드 카운트업, "다음 강화까지 N 골드 · ★ 강화 가능" 라인, 신규 업적 강조 라인 추가
+
+### Added
+- Localization 신규 키 — `menu_next_goal_fmt`, `menu_next_goal_ready`, `menu_next_goal_maxed`, `btn_difficulty_short_fmt`, `btn_leaderboard_short`, `btn_credits_short`, `levelup_tag_*`, `levelup_new_*`, `levelup_lv_change_fmt`, `levelup_passive_level_fmt`, `levelup_evolve_*`, `levelup_stats_*`, `tag_seek/melee/aoe/ranged/power/defense/survive/mobility/pickup/utility/evolve`, `result_next_goal_fmt`, `result_next_goal_ready`
+
+### Verification
+- `godot --headless --path godot --quit` 통과
+- `godot --headless --path godot --editor --quit-after 400` 1회 import 성공 (스크립트 파싱 OK)
+- 실기 플레이 검증은 GitHub Actions의 export·릴리즈 산출물로 확인 예정
+
 ## Unreleased - 2026-05-14 (상용화 개선 분석)
 
 ### Documentation

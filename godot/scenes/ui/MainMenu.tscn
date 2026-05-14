@@ -13,86 +13,124 @@ anchor_bottom = 1.0
 color = Color(0.06, 0.06, 0.1, 1)
 
 [node name="VBox" type="VBoxContainer" parent="."]
-offset_left = 50.0
-offset_top = 110.0
-offset_right = -50.0
-offset_bottom = -50.0
+offset_left = 40.0
+offset_top = 80.0
+offset_right = -40.0
+offset_bottom = -32.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_constants/separation = 14
+theme_override_constants/separation = 12
 
 [node name="TitleLabel" type="Label" parent="VBox"]
-custom_minimum_size = Vector2(0, 100)
+custom_minimum_size = Vector2(0, 110)
 text = "NIGHTSEED
 SURVIVOR"
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 56
+theme_override_font_sizes/font_size = 58
 
 [node name="Subtitle" type="Label" parent="VBox"]
-custom_minimum_size = Vector2(0, 36)
-text = "10-Minute Survival Action"
+custom_minimum_size = Vector2(0, 30)
+text = "5-Minute Survival Action"
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.74, 0.76, 0.92, 1)
 
-[node name="GoldLabel" type="Label" parent="VBox"]
-custom_minimum_size = Vector2(0, 50)
+[node name="StatusCard" type="PanelContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 96)
+
+[node name="StatusVBox" type="VBoxContainer" parent="VBox/StatusCard"]
+theme_override_constants/separation = 4
+
+[node name="GoldRow" type="HBoxContainer" parent="VBox/StatusCard/StatusVBox"]
+theme_override_constants/separation = 12
+
+[node name="GoldLabel" type="Label" parent="VBox/StatusCard/StatusVBox/GoldRow"]
+size_flags_horizontal = 3
 text = "Gold: 0"
-horizontal_alignment = 1
+horizontal_alignment = 0
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 26
 
-[node name="StatusLabel" type="Label" parent="VBox"]
-custom_minimum_size = Vector2(0, 36)
+[node name="NextGoalLabel" type="Label" parent="VBox/StatusCard/StatusVBox/GoldRow"]
+size_flags_horizontal = 3
+text = ""
+horizontal_alignment = 2
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.78, 0.84, 1, 1)
+
+[node name="StatusLabel" type="Label" parent="VBox/StatusCard/StatusVBox"]
+custom_minimum_size = Vector2(0, 28)
 text = "Vagrant  ·  Forest of Echoes  ·  Normal"
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 
 [node name="Spacer" type="Control" parent="VBox"]
-custom_minimum_size = Vector2(0, 18)
+custom_minimum_size = Vector2(0, 6)
 
 [node name="BtnPlay" type="Button" parent="VBox"]
-custom_minimum_size = Vector2(0, 110)
+custom_minimum_size = Vector2(0, 122)
 text = "PLAY"
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 44
 
-[node name="BtnCharacter" type="Button" parent="VBox"]
-custom_minimum_size = Vector2(0, 72)
+[node name="PrimaryRow" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 76)
+theme_override_constants/separation = 10
+
+[node name="BtnCharacter" type="Button" parent="VBox/PrimaryRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "CHARACTERS"
-theme_override_font_sizes/font_size = 22
-
-[node name="BtnStage" type="Button" parent="VBox"]
-custom_minimum_size = Vector2(0, 72)
-text = "STAGES"
-theme_override_font_sizes/font_size = 22
-
-[node name="BtnShop" type="Button" parent="VBox"]
-custom_minimum_size = Vector2(0, 72)
-text = "SHOP"
-theme_override_font_sizes/font_size = 22
-
-[node name="BtnDifficulty" type="Button" parent="VBox"]
-custom_minimum_size = Vector2(0, 64)
-text = "DIFFICULTY:  Normal"
-theme_override_font_sizes/font_size = 22
-
-[node name="BtnLeaderboard" type="Button" parent="VBox"]
-custom_minimum_size = Vector2(0, 64)
-text = "★ LEADERBOARDS"
-theme_override_font_sizes/font_size = 22
-
-[node name="BtnCodex" type="Button" parent="VBox"]
-custom_minimum_size = Vector2(0, 64)
-text = "CODEX"
-theme_override_font_sizes/font_size = 22
-
-[node name="BtnLanguage" type="Button" parent="VBox"]
-custom_minimum_size = Vector2(0, 56)
-text = "Language:  English"
-theme_override_font_sizes/font_size = 20
-
-[node name="BtnCredits" type="Button" parent="VBox"]
-custom_minimum_size = Vector2(0, 56)
-text = "Credits & Licenses"
 theme_override_font_sizes/font_size = 18
+
+[node name="BtnStage" type="Button" parent="VBox/PrimaryRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "STAGES"
+theme_override_font_sizes/font_size = 18
+
+[node name="BtnDifficulty" type="Button" parent="VBox/PrimaryRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "DIFFICULTY"
+theme_override_font_sizes/font_size = 18
+
+[node name="SecondaryRow" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 64)
+theme_override_constants/separation = 10
+
+[node name="BtnShop" type="Button" parent="VBox/SecondaryRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "SHOP"
+theme_override_font_sizes/font_size = 18
+
+[node name="BtnCodex" type="Button" parent="VBox/SecondaryRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "CODEX"
+theme_override_font_sizes/font_size = 18
+
+[node name="BtnLeaderboard" type="Button" parent="VBox/SecondaryRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "★ LEADERS"
+theme_override_font_sizes/font_size = 18
+
+[node name="FooterRow" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 48)
+theme_override_constants/separation = 10
+
+[node name="BtnLanguage" type="Button" parent="VBox/FooterRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Language:  English"
+theme_override_font_sizes/font_size = 15
+
+[node name="BtnCredits" type="Button" parent="VBox/FooterRow"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Credits"
+theme_override_font_sizes/font_size = 15

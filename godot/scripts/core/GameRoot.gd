@@ -10,9 +10,12 @@ const GOLD_COIN_SCENE := preload("res://scenes/pickups/GoldCoin.tscn")
 @onready var level_up_ui: LevelUpUI = $LevelUpUI
 @onready var story_banner: StoryBanner = $StoryBanner
 @onready var result_panel: CanvasLayer = $ResultPanel
+@onready var result_backdrop: ColorRect = $ResultPanel/Backdrop
 @onready var result_title: Label = $ResultPanel/Panel/VBox/Title
 @onready var result_subtitle: Label = $ResultPanel/Panel/VBox/Subtitle
 @onready var result_stats: Label = $ResultPanel/Panel/VBox/Stats
+@onready var result_next_goal: Label = $ResultPanel/Panel/VBox/NextGoal
+@onready var result_achievements: Label = $ResultPanel/Panel/VBox/Achievements
 @onready var btn_restart: Button = $ResultPanel/Panel/VBox/BtnRestart
 @onready var btn_menu: Button = $ResultPanel/Panel/VBox/BtnMenu
 
@@ -160,10 +163,13 @@ func _show_result(victory: bool) -> void:
 		GameData.difficulty,
 	)
 	result_panel.visible = true
+	if is_instance_valid(result_backdrop):
+		result_backdrop.color = Color(0.22, 0.12, 0.04, 0.82) if victory else Color(0.18, 0.04, 0.04, 0.84)
 	if victory:
 		result_title.text = Localization.tr_key("result_victory")
 		result_title.modulate = Color(0.95, 0.9, 0.2)
 		result_subtitle.text = Localization.tr_key("result_fragment_recovered")
+		result_subtitle.modulate = Color(1, 1, 1, 1)
 		AudioManager.play("victory", 0.0)
 		var clear_lines: Array = Story.get_stage_lines(GameData.selected_stage, "clear")
 		if is_instance_valid(story_banner) and not clear_lines.is_empty():
@@ -173,24 +179,83 @@ func _show_result(victory: bool) -> void:
 		result_title.modulate = Color(1.0, 0.3, 0.3)
 		result_subtitle.text = ""
 		AudioManager.play("defeat", 0.0)
+	_play_title_pop()
 	var tm := int(_survival_time)
-	var lines: Array = [
+	var base_lines: Array = [
 		Localization.tr_key("result_survived_fmt") % [tm / 60, tm % 60],
 		Localization.tr_key("result_kills_fmt") % player.kill_count,
-		Localization.tr_key("result_gold_fmt") % player.session_gold,
+		Localization.tr_key("result_gold_fmt") % 0,
 	]
-	if not _newly_unlocked_achievements.is_empty():
-		lines.append("")
-		lines.append(Localization.tr_key("result_new_ach"))
-		for key in _newly_unlocked_achievements:
-			var ach_name: String = Achievements.display_name(key)
-			var ach_gold: int = int(Achievements.DATA[key]["gold"])
-			lines.append(Localization.tr_key("result_ach_line") % [ach_name, ach_gold])
-	result_stats.text = "\n".join(lines)
+	result_stats.text = "\n".join(base_lines)
+	_start_gold_count_up(player.session_gold, tm)
+	result_next_goal.text = _result_next_goal_text()
+	result_achievements.text = _format_new_achievements()
+	result_achievements.visible = result_achievements.text != ""
 	btn_restart.text = Localization.tr_key("btn_play_again") if victory else Localization.tr_key("btn_retry")
 	btn_menu.text = Localization.tr_key("btn_main_menu")
 	ButtonStyles.apply(btn_restart, ButtonStyles.VICTORY if victory else ButtonStyles.DEFEAT)
 	ButtonStyles.apply(btn_menu, ButtonStyles.NEUTRAL)
+
+# Quick scale-pop on the result title so victory/defeat reads as an event, not
+# a static label. Runs even while the tree is paused.
+func _play_title_pop() -> void:
+	if not is_instance_valid(result_title):
+		return
+	result_title.pivot_offset = result_title.size * 0.5
+	result_title.scale = Vector2(0.7, 0.7)
+	var tw := create_tween()
+	tw.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	tw.tween_property(result_title, "scale", Vector2(1.06, 1.06), 0.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_property(result_title, "scale", Vector2.ONE, 0.14).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+# Count up "Gold earned" from 0 → session_gold over ~0.9s so the reward feels
+# earned. The other two stat lines stay static while the third re-renders.
+func _start_gold_count_up(target: int, time_seconds: int) -> void:
+	if target <= 0:
+		_render_stats_with_gold(0, time_seconds)
+		return
+	var duration: float = 0.9 if target < 300 else 1.2
+	var tw := create_tween()
+	tw.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	tw.tween_method(
+		func(val: float) -> void: _render_stats_with_gold(int(val), time_seconds),
+		0.0, float(target), duration
+	).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tw.tween_callback(func() -> void: _render_stats_with_gold(target, time_seconds))
+
+func _render_stats_with_gold(g: int, time_seconds: int) -> void:
+	var lines: Array = [
+		Localization.tr_key("result_survived_fmt") % [time_seconds / 60, time_seconds % 60],
+		Localization.tr_key("result_kills_fmt") % player.kill_count,
+		Localization.tr_key("result_gold_fmt") % g,
+	]
+	result_stats.text = "\n".join(lines)
+
+# After banking the session gold, show how much more is needed for the next
+# permanent upgrade — or "all upgrades maxed" if every track is at 10.
+func _result_next_goal_text() -> String:
+	var cheapest: int = -1
+	for key in GameData.permanent_upgrades.keys():
+		var cost: int = GameData.get_upgrade_cost(key)
+		if cost <= 0:
+			continue
+		if cheapest < 0 or cost < cheapest:
+			cheapest = cost
+	if cheapest < 0:
+		return Localization.tr_key("menu_next_goal_maxed")
+	if GameData.gold >= cheapest:
+		return Localization.tr_key("result_next_goal_ready")
+	return Localization.tr_key("result_next_goal_fmt") % (cheapest - GameData.gold)
+
+func _format_new_achievements() -> String:
+	if _newly_unlocked_achievements.is_empty():
+		return ""
+	var parts: Array = [Localization.tr_key("result_new_ach")]
+	for key in _newly_unlocked_achievements:
+		var ach_name: String = Achievements.display_name(key)
+		var ach_gold: int = int(Achievements.DATA[key]["gold"])
+		parts.append(Localization.tr_key("result_ach_line") % [ach_name, ach_gold])
+	return "  ·  ".join(parts)
 
 func _on_restart_pressed() -> void:
 	get_tree().paused = false
