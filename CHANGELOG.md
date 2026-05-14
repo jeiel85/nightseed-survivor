@@ -1,5 +1,34 @@
 # CHANGELOG.md
 
+## v0.19.0 - 2026-05-14 (Phase 1 마무리 + Phase 2: 전투 체감 + 인프라)
+
+### Added
+- 스테이지별 배경 톤 — `stages.json` 에 `bg` 블록 추가, `BackgroundTiler.apply_tone()`이 타일·자갈·반딧불·장식·횃불 색상을 스테이지마다 다르게 적용 (Forest는 깊은 청록, Frozen Wastes는 차가운 청회색, Twilight Sanctum은 자보라, Inferno Chasm은 진홍, Cursed Tomb은 검적-자색)
+- `EnemyDasher` 돌진 텔레그래프 라인 — 발사 직전 0.55초 동안 플레이어 방향으로 주황 라인이 점점 길어짐
+- `EnemyCaster` 발사 텔레그래프 — 발사 전 0.45초 마젠타 조준선, 플레이어 이동에 따라 실시간 갱신
+- `EnemySplitter` 분열 임박 펄스 — HP 35% 이하부터 마젠타 펄스, 사망 시 분열과 함께 외향 링 버스트
+- `EnemyMiniBoss` 새 패턴 — 6.5초마다 방사형 충격파, 안쪽 영역은 안전하고 외향 링 두께(±36px) 안에 있을 때만 12 피해 + 시각 링 확장
+- `EnemyBoss` 격노 페이즈 — HP 30% 이하 진입 시 오라가 진홍으로 변하고, 스파이크 회전이 2.6배 빨라지며 본체가 펄스. 접촉 피해 ×1.45, 이동 속도 ×1.35, 3.2초마다 8발 방사형 탄막. 진입 순간 외향 버스트와 사운드 큐로 이벤트화
+- `AdManager` autoload — 보상형 광고 SDK 통합용 인터페이스 (rewarded_granted/dismissed/failed 시그널, 1회/run 한도)
+- 결과 화면 광고 버튼 2개 — "부활하기 (광고 시청)" (사망 시, 1회/run, HP 50% + 무적 3초 + 가까운 적 제거), "골드 2배 (광고 시청)" (승리/사망 모두, 1회/run, count-up과 다음 목표 라인을 즉시 갱신)
+- Localization 신규 키 — `btn_revive_ad`, `btn_double_gold_ad` (KO/EN)
+- `Player.revive(hp_ratio, invincibility_seconds)` 메서드
+- `ButtonStyles.REWARD_AD` — 보상형 광고 CTA 전용 보라 톤
+- 문서 — `docs/ADMOB_SETUP.md` (콘솔 단계, 플러그인 설치, ID 수급 가이드)
+
+### Changed
+- Fire Wisp — 랜덤 위치 폭발 폐기, 화면 안 적 중 K=8개 후보 위치에 대해 폭발 반경 안의 적 수를 점수화해 가장 많이 덮는 위치 선택. 폭발 여러 개일 때는 이미 맞은 적을 제외하고 다음 군집 선택
+- Star Needle — 가장 가까운 적 방향 좁은 부채꼴 폐기, 근거리 적 무게중심 방향 우선, 단일 적이면 그 방향, 적이 없으면 플레이어 이동 방향. 부채꼴 폭은 needle_count 에 따라 0.32~1.1 라디안으로 확장
+- 게임오버/승리 시 골드 적립과 리더보드 제출 시점을 결과 화면 표시 직후가 아니라 Restart/Menu 누를 때로 이동 — 보상형 광고 "골드 2배" CTA가 적립 직전에 끼어들 수 있게
+- `.agent/tasks.md` 를 실제 구현 상태에 맞게 재정리 (v0.18.0 시점 항목 통합, Phase 3+ 후보 정리)
+
+### Fixed
+- `LeaderboardManager.LEADERBOARD_IDS` 와 `game_services_ids.xml` 의 placeholder 주석 강화 — 정확한 Play Console 경로와 형식 명시
+
+### Verification
+- 코드 변경만 수행, 실기 플레이 검증은 GitHub Actions 산출물로 확인 예정
+- `AdManager.ENABLED = false` 상태로 출시 — SDK + ID 수급 전까지는 광고 CTA가 빌드에 나타나지 않음
+
 ## v0.18.0 - 2026-05-14 (Phase 1: 제품감 정리)
 
 ### Changed
