@@ -1,0 +1,34 @@
+<ko-KR>
+📐 모바일 레이아웃 수정
+
+키 큰 폰에서 화면 일부에만 콘텐츠가 몰리고 나머지가 검은 공간으로 남던 문제 수정.
+
+메인 메뉴
+• 시작 + 6 버튼 블록이 화면 중앙 아래(엄지 위치)로 이동
+• 하단 빈 검은 공간 제거
+
+레벨업 카드
+• 카드 높이가 자연 크기로 축소
+• 카드 안쪽 빈 공간 제거, 세 카드가 화면 중앙에 클러스터링
+
+인게임 HUD
+• HP/XP 바 간격 좁히고 XP 바 두께 증가
+• XP 바에 파란 색상 적용 — HP와 한 묶음으로 보이도록
+</ko-KR>
+<en-US>
+📐 Mobile layout fixes
+
+Fixed on-screen content clustering at the top half on tall phones, leaving the bottom as black void.
+
+Main menu
+• Play + 6 buttons block now sits at lower-center (thumb position)
+• Bottom black void gone
+
+Level-up cards
+• Cards shrunk to natural height
+• No more empty space inside each card; three cards now cluster mid-screen
+
+In-game HUD
+• HP/XP bar gap tightened, XP bar made thicker
+• XP bar now blue — HP and XP read as one info unit
+</en-US>

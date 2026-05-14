@@ -69,6 +69,8 @@ theme_override_font_sizes/font_size = 16
 
 [node name="Spacer" type="Control" parent="VBox"]
 custom_minimum_size = Vector2(0, 6)
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
 
 [node name="BtnPlay" type="Button" parent="VBox"]
 custom_minimum_size = Vector2(0, 122)
@@ -118,6 +120,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "★ LEADERS"
 theme_override_font_sizes/font_size = 18
+
+[node name="BottomSpacer" type="Control" parent="VBox"]
+custom_minimum_size = Vector2(0, 6)
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.0
 
 [node name="TopRightRow" type="HBoxContainer" parent="."]
 anchor_left = 1.0

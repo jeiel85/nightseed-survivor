@@ -85,9 +85,9 @@ theme_override_font_sizes/font_size = 14
 
 [node name="XPBar" type="ProgressBar" parent="TopBar"]
 offset_left = 16.0
-offset_top = 96.0
+offset_top = 94.0
 offset_right = -16.0
-offset_bottom = 108.0
+offset_bottom = 110.0
 anchor_right = 1.0
 max_value = 9.0
 value = 0.0

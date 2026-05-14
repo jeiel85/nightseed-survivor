@@ -2,7 +2,14 @@
 
 > 이 파일은 [docs/COMMERCIALIZATION_ANALYSIS.md](../docs/COMMERCIALIZATION_ANALYSIS.md)의
 > Phase 1~4 로드맵을 작업 단위로 풀어 놓은 운영 목록입니다. 코드 상태를
-> 기준으로 한 마지막 동기화는 v0.20.0 작업 시작 시점입니다.
+> 기준으로 한 마지막 동기화는 v0.21.0 작업 시작 시점입니다.
+
+## v0.21.0 완료
+
+### 모바일 레이아웃 수정 (v0.20.0 폰 검증 후)
+- [x] 메인 메뉴 하단 빈 공간 제거 (Spacer EXPAND + BottomSpacer)
+- [x] 레벨업 카드 자연 높이 + 중앙 클러스터링
+- [x] HUD HP/XP 바 그룹화 (간격 조이고 XP 스타일박스)
 
 ## v0.20.0 완료
 

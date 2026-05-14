@@ -1,5 +1,26 @@
 # HISTORY.md
 
+## 2026-05-14 (v0.21.0: 모바일 레이아웃 수정 — 빈 공간 메우기)
+
+- 날짜: 2026-05-14
+- 작업: v0.20.0 빌드를 폰에서 돌려본 뒤 발견한 모바일 레이아웃 결함 3개 수정. 게임플레이는 손대지 않음
+- 변경 파일:
+  - godot/scenes/ui/MainMenu.tscn (Spacer EXPAND + BottomSpacer 추가)
+  - godot/scenes/ui/LevelUpUI.tscn (카드 size_flags_vertical=3 제거, custom_minimum_size 296→320, VBox alignment=1)
+  - godot/scenes/main/HUD.tscn (XP 바 위치 96→94, 높이 12→16)
+  - godot/scripts/ui/HUD.gd (`_init_xp_bar_style` 추가 — XP 바 파란 fill + 어두운 배경)
+  - godot/export_presets.cfg (version 0.20.0 → 0.21.0, versionCode 21 → 22)
+  - CHANGELOG.md, docs/releases/v0.21.0.md, play_store/release_notes/v0.21.0.txt
+- 검증:
+  - `godot --headless` MainMenu / LevelUpUI / HUD 씬 로드 에러 없음
+  - 실기 체감 검증: 사용자 폰에서 v0.21.0 빌드로 재확인 예정
+- 결과:
+  - 메인 메뉴: 액션 블록이 화면 중앙 아래(엄지 위치)로 이동, 하단 빈 공간 사라짐
+  - 레벨업 카드: 자연 높이로 클러스터링, 카드 안쪽 빈 공간 사라짐
+  - HUD: HP/XP 두 바가 한 정보 단위로 보임
+- 후속 작업:
+  - v0.21.0 AAB Play Console 업로드 + PGS 실기 검증
+
 ## 2026-05-14 (v0.20.0: UI 폴리시 — 외부 리뷰 반영)
 
 - 날짜: 2026-05-14

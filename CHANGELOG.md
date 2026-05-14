@@ -1,6 +1,11 @@
 # CHANGELOG.md
 
-## v0.20.0 - 2026-05-14 (UI 디테일 다듬기 — 외부 리뷰 반영)
+## v0.21.0 - 2026-05-14 (모바일 레이아웃 수정 — 빈 공간 메우기)
+
+### Changed
+- 메인 메뉴 — VBox 안의 기존 6px Spacer를 `size_flags_vertical = 3` + `stretch_ratio = 2.0`로 변경하고 SecondaryRow 뒤에 `stretch_ratio = 1.0` BottomSpacer 추가. 키 큰 폰에서 액션 블록(시작 + 6 버튼)이 화면 상단 절반에 몰리지 않고 ~2/3 지점 (자연스러운 엄지 위치)으로 내려옴. v0.20.0까지는 1080×2340 폰 기준 하단 ~1100px가 빈 검은 공간이었음
+- 레벨업 카드 — 카드의 `size_flags_vertical = 3` 제거하고 `custom_minimum_size`를 296→320으로 조정. VBox에 `alignment = 1` (CENTER) 추가. 카드가 화면 높이로 늘어나며 내부 콘텐츠 아래 ~440px 빈 공간이 생기던 문제 해결 — 세 카드가 자연 높이로 화면 중앙에 클러스터링
+- 인게임 HUD — XP 바를 HP 바와 더 가까이 (gap 4 → 2px), XP 바 높이 12 → 16px, XP 바에 파란 fill + 어두운 배경 스타일박스 적용 (`HUD.gd._init_xp_bar_style`). HP/XP가 하나의 정보 단위로 묶여 보임
 
 ### Changed
 - 메인 메뉴 — 푸터 행(Language/Credits) 폐기, 상단 우측 코너의 작은 행으로 이동. PLAY 아래 영역은 6 버튼(캐릭터/스테이지/난이도 + 상점/용어집/순위표)으로 정리되어 시각적 무게 감소. Language 버튼 라벨도 "Language: English" → "English"로 단축

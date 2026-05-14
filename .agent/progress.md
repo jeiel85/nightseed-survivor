@@ -1,5 +1,23 @@
 # Progress
 
+## 2026-05-14 — v0.21.0 모바일 레이아웃 수정
+
+### Status
+
+v0.20.0 빌드를 폰에서 돌려본 뒤 사용자가 발견한 결함 3개 수정. 키 큰 폰에서 콘텐츠가 화면 일부에만 몰리고 나머지가 검은 공간으로 남던 컨테이너 레이아웃 결함.
+
+### Completed
+
+- 메인 메뉴 — 기존 6px Spacer를 size_flags_vertical=3 + stretch_ratio=2.0로 변경, SecondaryRow 뒤에 stretch_ratio=1.0 BottomSpacer 추가. 액션 블록이 화면 2:1 비율로 중앙 아래에 자리잡음
+- 레벨업 카드 — size_flags_vertical=3 제거, custom_minimum_size 296→320, VBox alignment=1 (CENTER). 카드 안쪽 빈 공간 사라지고 세 카드가 중앙에 클러스터링
+- 인게임 HUD — XP 바 위치 96→94, 높이 12→16, 파란 fill + 어두운 배경 스타일박스 추가 (`_init_xp_bar_style`). HP/XP가 한 정보 단위로 묶여 보임
+- `godot --headless` 세 씬 로드 에러 없음
+
+### Not Yet Done
+
+- 실기 검증 (v0.21.0 AAB 폰 설치 후 확인)
+- AdMob SDK 통합 (ID 수급 후)
+
 ## 2026-05-14 — v0.20.0 UI 폴리시 (외부 리뷰 반영)
 
 ### Status

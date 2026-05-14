@@ -31,6 +31,7 @@ func _ready() -> void:
 	if Localization:
 		Localization.language_changed.connect(_on_language_changed)
 	_init_hp_bar_style()
+	_init_xp_bar_style()
 	_apply_safe_area()
 	get_viewport().size_changed.connect(_apply_safe_area)
 
@@ -47,6 +48,20 @@ func _init_hp_bar_style() -> void:
 	_hp_fill_style.bg_color = HP_COLOR_FULL
 	_hp_fill_style.set_corner_radius_all(4)
 	hp_bar.add_theme_stylebox_override("fill", _hp_fill_style)
+
+func _init_xp_bar_style() -> void:
+	if not is_instance_valid(xp_bar):
+		return
+	var bg := StyleBoxFlat.new()
+	bg.bg_color = Color(0.08, 0.10, 0.16, 0.85)
+	bg.border_color = Color(0, 0, 0, 0.45)
+	bg.set_border_width_all(1)
+	bg.set_corner_radius_all(3)
+	xp_bar.add_theme_stylebox_override("background", bg)
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = Color(0.45, 0.72, 1.0, 1.0)  # XP blue, distinct from HP red/green
+	fill.set_corner_radius_all(3)
+	xp_bar.add_theme_stylebox_override("fill", fill)
 
 # Push HUD away from display cutouts (notch / punch-hole) so the in-game
 # time/HP do not collide with the system clock. On devices without a cutout
