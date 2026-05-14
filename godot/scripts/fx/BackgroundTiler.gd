@@ -41,6 +41,36 @@ func _ready() -> void:
 	if not follow_target_path.is_empty():
 		_target = get_node_or_null(follow_target_path)
 
+# Stage tone palette. GameRoot calls this once on _ready() with the active
+# stage's "bg" block from stages.json. Any missing key keeps its scene default.
+func apply_tone(tone: Dictionary) -> void:
+	if tone.is_empty():
+		return
+	if tone.has("tile"):
+		tile_modulate = _to_color(tone["tile"], tile_modulate)
+	if tone.has("pebble_a"):
+		pebble_color_a = _to_color(tone["pebble_a"], pebble_color_a)
+	if tone.has("pebble_b"):
+		pebble_color_b = _to_color(tone["pebble_b"], pebble_color_b)
+	if tone.has("firefly"):
+		firefly_color = _to_color(tone["firefly"], firefly_color)
+	if tone.has("decor"):
+		decor_modulate = _to_color(tone["decor"], decor_modulate)
+	if tone.has("torch_glow"):
+		torch_glow_color = _to_color(tone["torch_glow"], torch_glow_color)
+	# Force a redraw the next time the camera ticks past the threshold.
+	_drawn_center = Vector2(INF, INF)
+	queue_redraw()
+
+func _to_color(arr_val, fallback: Color) -> Color:
+	if not (arr_val is Array) or arr_val.size() < 3:
+		return fallback
+	var r := float(arr_val[0])
+	var g := float(arr_val[1])
+	var b := float(arr_val[2])
+	var a: float = float(arr_val[3]) if arr_val.size() >= 4 else 1.0
+	return Color(r, g, b, a)
+
 func _process(_delta: float) -> void:
 	if not is_instance_valid(_target):
 		return
