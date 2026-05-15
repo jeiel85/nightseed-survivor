@@ -10,6 +10,20 @@
 
 ChatGPT/DALL-E는 **그냥 두면 일러스트풍으로 흘러간다**. 픽셀아트 결과를 안정적으로 받으려면 다음 순서를 지킨다:
 
+### 자동 생성 스크립트
+
+P0 자산을 덮어쓰지 않고, 현재 저장소에 없는 P1/P2 자산만 OpenAI Images API로 생성하려면:
+
+```powershell
+python scripts\generate_missing_ui_assets.py --dry-run
+python scripts\generate_missing_ui_assets.py
+```
+
+- 기본 모델은 `gpt-image-2`이며, 필요 시 `OPENAI_IMAGE_MODEL` 환경 변수로 바꿀 수 있다.
+- `OPENAI_API_KEY`는 프로세스 환경 변수 또는 Windows 사용자 환경 변수에서 읽는다.
+- 이미 존재하는 파일은 우선순위와 관계없이 건너뛰며, P0 ID는 항상 제외한다.
+- 생성 결과는 표의 원본 크기로 nearest-neighbor 리사이즈해 저장한다.
+
 ### 0. 세션 첫 메시지 — 톤 앵커링 (반드시)
 
 새 ChatGPT 채팅을 시작하고 **첫 메시지에 참조 이미지 1~2장을 업로드**한다. 추천:

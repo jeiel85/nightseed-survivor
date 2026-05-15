@@ -1,5 +1,22 @@
 # HISTORY.md
 
+## 2026-05-15 (P1/P2 UI 자산 생성 자동화)
+
+- 날짜: 2026-05-15
+- 작업: `docs/ASSETS_TO_GENERATE.md` 기준으로 기존 P0 자산을 보호하고, 없는 P1/P2 자산만 OpenAI Images API로 생성하는 자동화 스크립트 추가.
+- 변경 파일:
+  - scripts/generate_missing_ui_assets.py (신규)
+  - docs/ASSETS_TO_GENERATE.md
+  - CHANGELOG.md, HISTORY.md, .agent/progress.md, .agent/tasks.md
+- 검증:
+  - `python scripts\generate_missing_ui_assets.py --dry-run` 통과 — 누락 P1/P2 20개 확인, P0 및 기존 BG-02/BG-03 제외 확인
+  - 실제 API 호출 시 `billing_hard_limit_reached`로 OpenAI 요청 중단. 자산 PNG는 생성되지 않음
+- 결과:
+  - 결제 한도 해제 후 같은 스크립트로 누락 자산 생성 재시도 가능
+- 후속 작업:
+  - OpenAI billing hard limit 해제 후 `python scripts\generate_missing_ui_assets.py` 재실행
+  - 생성 완료 후 Godot import 및 headless 검증
+
 ## 2026-05-15 (v0.24.0 릴리즈 준비 — UI 리워크 1차 + AdMob SDK)
 
 - 날짜: 2026-05-15

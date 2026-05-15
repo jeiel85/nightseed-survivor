@@ -1,5 +1,23 @@
 # CHANGELOG.md
 
+## Unreleased - 2026-05-15 (P1/P2 UI 자산 생성 자동화)
+
+### Added
+- `scripts/generate_missing_ui_assets.py` 추가
+  - `docs/ASSETS_TO_GENERATE.md` 기준 P1/P2 누락 자산만 생성
+  - P0 ID는 항상 제외하고, 이미 존재하는 파일은 덮어쓰지 않음
+  - 기본 모델 `gpt-image-2`, `OPENAI_IMAGE_MODEL`로 모델명 오버라이드 가능
+  - Windows 사용자 환경 변수의 `OPENAI_API_KEY`도 자동 확인
+  - `--dry-run`으로 생성 대상 확인 가능
+  - 생성 PNG를 표의 원본 크기로 nearest-neighbor 리사이즈
+
+### Documentation
+- `docs/ASSETS_TO_GENERATE.md`에 자동 생성 스크립트 실행 방법 추가
+
+### Verification
+- `python scripts\generate_missing_ui_assets.py --dry-run` 통과 — P0와 기존 파일을 제외한 P1/P2 누락 20개 확인
+- 실제 생성 호출은 OpenAI `billing_hard_limit_reached` 응답으로 중단되어 PNG 자산은 생성되지 않음
+
 ## v0.24.0 - 2026-05-15 (메인 메뉴 Nightseed 비주얼 리워크 1차 + AdMob 보상형 광고 SDK)
 
 ### Added

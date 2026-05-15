@@ -77,6 +77,7 @@
   - PLAY 달빛 CTA / 1차 행 강조 석판 / 2차 행 + 코너 조용한 석판으로 위계 재정리
 - [x] 1차 리워크 후 실제 추가 애셋 필요성 산출 — `docs/UI_REDESIGN_SPEC.md` + `docs/ASSETS_TO_GENERATE.md`로 확정 (6화면 × 30여 자산, 우선순위 P0/P1/P2)
 - [x] Phase UI-3 메인 메뉴 1차 자산 통합 — BG-01/PN-01/PN-03/IC-TOP-01,02/IC-NAV-01~06 (총 10장 P0) + BG-02/BG-03 보너스 2장. `ButtonStyles.apply_stone_texture`/`apply_amber_texture` 추가, `MainMenu.tscn`에 `BackgroundImage`+`GoldCoinIcon` 노드, 모든 텍스처는 `ResourceLoader.exists()` 가드로 fallback.
+- [x] P1/P2 누락 자산 생성 자동화 — `scripts/generate_missing_ui_assets.py` 추가. P0 보호/기존 파일 skip/dry-run 확인 완료. 실제 생성은 OpenAI `billing_hard_limit_reached` 해제 후 재시도 필요.
 - [ ] **다음 세션(빌드 가능 PC)에서**: `.import` 자동 생성 커밋 → 헤드리스 검증 → 로컬 AAB 빌드 → 폰 실기 검증 → 9-slice margin(96/140/36) 시각 검수 후 필요시 조정 → 통과시 Play Console 비공개 트랙 업로드
 - [ ] P4: 나머지 5화면 자산 통합 — LevelUp → Results → CharSelect → Shop → BattleHUD (P3 폰 검증 통과 후 진입)
 - [ ] Phase UI-3 캐릭터 쇼케이스 고도화 (Characters.DATA에 `portrait` 키 추가 + 실제 큰 이미지 도입)

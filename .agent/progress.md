@@ -1,5 +1,28 @@
 # Progress
 
+## 2026-05-15 — P1/P2 UI 자산 생성 자동화
+
+### Status
+
+`docs/ASSETS_TO_GENERATE.md`의 P1/P2 누락 자산만 생성하는 스크립트를 추가했다. 실제 OpenAI API 호출은 키 인증 이후 billing hard limit에 막혀 중단됐다.
+
+### Completed
+
+- `scripts/generate_missing_ui_assets.py` 신규
+  - 기본 모델 `gpt-image-2`
+  - `OPENAI_API_KEY`를 프로세스 환경 변수 또는 Windows 사용자 환경 변수에서 읽음
+  - P0 ID는 항상 제외
+  - 이미 존재하는 파일은 덮어쓰지 않음
+  - 생성 이미지를 표의 원본 크기로 nearest-neighbor 리사이즈
+  - `--dry-run`으로 생성 대상만 확인 가능
+- `docs/ASSETS_TO_GENERATE.md`에 자동 생성 실행 방법 추가
+- dry-run 확인: 누락 P1/P2 20개 대상, 기존 P0 및 BG-02/BG-03 제외
+
+### Not Yet Done
+
+- OpenAI API 실제 생성 — `billing_hard_limit_reached`로 중단
+- 생성된 PNG의 Godot import 및 headless 검증
+
 ## 2026-05-15 — 메인 메뉴 Phase UI-3 (AI 자산 1차 통합)
 
 ### Status
