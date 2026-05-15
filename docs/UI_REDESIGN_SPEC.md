@@ -4,7 +4,7 @@
 
 - 시안 위치: `docs/stitch_nightseed_survivor_main_menu_redesign/` (6장)
 - 아트 톤: **전부 픽셀아트**로 통일 (현재 Kenney Tiny Dungeon 인게임 자산과 일관)
-- AI 도구: Google **Nano Banana** (Gemini 2.5 Flash Image)
+- AI 도구: **ChatGPT** (GPT-4o 이미지 생성 / DALL-E 3)
 
 ---
 

@@ -1,18 +1,53 @@
 # ASSETS_TO_GENERATE
 
-`docs/UI_REDESIGN_SPEC.md` §5 컴포넌트 카탈로그를 **Nano Banana로 바로 생성할 수 있는 프롬프트 표**로 풀어놓은 문서. 사용자가 한 줄씩 복사해 Gemini 2.5 Flash Image에 던지면 된다.
+`docs/UI_REDESIGN_SPEC.md` §5 컴포넌트 카탈로그를 **ChatGPT(GPT-4o 이미지 생성)로 바로 생성할 수 있는 프롬프트 표**로 풀어놓은 문서. 사용자가 한 줄씩 복사해 ChatGPT에 던지면 된다.
 
 `docs/ASSET_GUIDE.md`는 MVP placeholder(도형) 정책이고, 이 문서는 시안 기반 신규 UI 자산 생성용 — 별개 문서다.
 
 ---
 
-## 사용법
+## ChatGPT 사용 전략 (중요)
 
-1. 각 행의 **"Prompt 본문"** 을 복사
-2. 뒤에 **§ "공통 접미사"** 를 그대로 붙임 (반드시)
-3. Nano Banana에 입력 → 1장 생성 → 마음에 들 때까지 시드 변경하며 재생성
-4. 결과를 **"파일 경로"** 그대로 저장 (확장자 .png, 투명 배경)
-5. 같은 카테고리 안 여러 자산은 같은 세션에서 연속 생성 → 톤 일관성 유지
+ChatGPT/DALL-E는 **그냥 두면 일러스트풍으로 흘러간다**. 픽셀아트 결과를 안정적으로 받으려면 다음 순서를 지킨다:
+
+### 0. 세션 첫 메시지 — 톤 앵커링 (반드시)
+
+새 ChatGPT 채팅을 시작하고 **첫 메시지에 참조 이미지 1~2장을 업로드**한다. 추천:
+
+- `godot/assets/sprites/char_vagrant.png` (16×16 캐릭터 스프라이트)
+- `godot/assets/sprites/icon_moon_dagger.png` 또는 무기 아이콘 1개
+- 또는 `docs/stitch_nightseed_survivor_main_menu_redesign/nightseed_survivor_main_menu_redesign/screen.png` (시안 1장)
+
+첫 메시지 예시:
+
+```
+이 이미지들과 동일한 픽셀아트 톤으로 UI 자산을 만들 거야.
+- 16x16 또는 32x32 픽셀 기준 픽셀아트
+- 안티에일리어싱 없음, 픽셀 가장자리 선명
+- Kenney Tiny Dungeon 미학
+- 색 팔레트: 짙은 남색 #0B0E17, 창백한 달빛 #DDEBFF, 호박색 #F2C66A
+- 항상 단일 피사체, 글자/숫자 없음
+- 배경은 가능한 투명 (체크무늬)
+
+이 톤을 기준으로 앞으로 내가 요청하는 자산들을 만들어줘.
+첫 번째 요청 보낼게.
+```
+
+### 1. 자산별 요청
+참조 톤이 잡힌 뒤 한 번에 1개씩 아래 표의 **Prompt 본문**을 보낸다.
+
+### 2. 결과가 마음에 안 들면
+같은 채팅 안에서 자연어로 보정: "더 어둡게 / 안티에일리어싱 빼고 / 모서리 더 각지게 / 색을 더 푸르게 / 글자 빼고 다시" 등.
+
+### 3. 같은 시리즈는 같은 채팅에서 연속 생성
+특히 **메뉴 네비 아이콘 6개는 한 세션에서 연속**해야 톤이 흩어지지 않는다.
+
+### 4. 후처리 (거의 항상 필요)
+- ChatGPT 출력은 보통 1024×1024 또는 1024×1792 정사각/세로 → **picpick / Pixel Perfect / nearest 모드 리사이즈**로 표의 원본 크기로 다운샘플
+- 배경이 투명이 아니면 [remove.bg](https://remove.bg) 또는 GIMP/Photopea 알파 처리
+- 파일명/경로 정확히 맞춰 저장
+
+---
 
 ## 우선순위
 
@@ -29,10 +64,11 @@ pixel art style, crisp pixel edges, no anti-aliasing, no text, no letters,
 no border frame, transparent background, dark fantasy mobile game UI,
 moonlit color palette (deep navy #0B0E17, pale moonlight #DDEBFF,
 ember gold #F2C66A), Kenney Tiny Dungeon aesthetic, flat front view,
-centered subject, single subject only
+centered subject, single subject only, 32x32 native pixel grid feel,
+no painterly shading, no illustration style
 ```
 
-> Nano Banana는 같은 채팅 세션 안에서 톤을 잘 유지한다. **같은 카테고리는 한 세션에서 연속 생성** 권장.
+> 마지막 두 줄(`32x32 native pixel grid feel`, `no painterly shading, no illustration style`)이 ChatGPT가 일러스트로 드리프트하는 걸 막는 핵심이다. **빼지 말 것**.
 
 ---
 
@@ -161,19 +197,26 @@ centered subject, single subject only
 
 ## 10. 생성 후 체크리스트 (자산 1개당)
 
+- [ ] **픽셀아트 톤 확인** — 일러스트/그라데이션/안티에일리어싱이 강하면 재생성
 - [ ] 글자/숫자 없는지 확인 (있으면 재생성)
-- [ ] 배경 투명 (체크무늬 보이는지) — 안 그러면 [remove.bg](https://remove.bg) 같은 도구로 알파 처리
-- [ ] 위 §1 표의 정확한 픽셀 크기로 resize (PixelPerfect 또는 nearest 모드)
+- [ ] 배경 투명 (체크무늬 보이는지) — 안 그러면 [remove.bg](https://remove.bg) / Photopea / GIMP 알파 처리
+- [ ] **원본 크기로 다운샘플** — ChatGPT는 보통 1024px 출력 → §1~8 표의 정확한 픽셀 크기로 nearest 모드 리사이즈
 - [ ] 파일 경로대로 저장
 - [ ] Godot에서 import 후 filter=Nearest 확인
 - [ ] 다른 자산 옆에 놓고 톤 일관성 시각 확인
 
 톤이 1개라도 튀면 그 자산만 재생성. 다 끝나면 P2 단계로 클로한테 검수 요청.
 
+### ChatGPT가 자주 틀리는 것 (재생성 트리거)
+- 글자를 만들어 넣는다 ("Heroes", "Shop" 등) → "글자/숫자 빼고 다시"
+- 부드러운 일러스트풍으로 만든다 → "안티에일리어싱 빼고 도트 픽셀로"
+- 배경에 잎/별/배경 디테일을 채운다 → "투명 배경, 단일 피사체만"
+- 카메라 각도가 비스듬하다 → "정면 평면도, flat front view"
+
 ---
 
 ## 11. 라이선스
 
-- Nano Banana / Gemini 생성 이미지의 상용 사용 정책 확인 후 사용
+- ChatGPT/OpenAI 생성 이미지의 상용 사용 정책 확인 후 사용 (현재 ChatGPT Plus/Pro 기준 상용 사용 허용 — 정책 변경 가능성 있으니 출시 직전 재확인)
 - 사용한 정확한 프롬프트는 이 파일에 그대로 남아 있으므로 추후 추적 가능
-- 생성 이미지 사용 사실은 `HISTORY.md`의 해당 릴리즈 노트에 한 줄로 기록 (예: `UI 자산: Nano Banana 생성 (프롬프트는 docs/ASSETS_TO_GENERATE.md)`)
+- 생성 이미지 사용 사실은 `HISTORY.md`의 해당 릴리즈 노트에 한 줄로 기록 (예: `UI 자산: ChatGPT 생성 (프롬프트는 docs/ASSETS_TO_GENERATE.md)`)
