@@ -61,10 +61,30 @@
 - Play Console 업로드 시: **Release dashboard → 해당 AAB → "Add deobfuscation file"** 에 `mapping.txt` 업로드 (또는 App bundle explorer → Native debug symbols/ProGuard 탭). AAB 업로드 직후 한 번만 하면 됨
 - proguard-rules.pro는 Godot 엔진 + PGS + Google Play Services를 전부 keep하는 보수적 룰. 빌드 후 게임이 실제 단말에서 안 켜지면 1) 이 룰에 클래스 추가 또는 2) `minifyEnabled=false`로 잠시 롤백
 
+## Android minSdk 정책 (v0.24.0~ )
+
+- `gradle_build/min_sdk="24"` ([godot/export_presets.cfg](godot/export_presets.cfg)). **21로 되돌리지 말 것.**
+- 이유: Poing Studios AdMob aar (`poing-godot-admob-ads-release.aar`)가 `minSdk 24` 요구. 21에서 빌드하면 Manifest merger가 "uses-sdk:minSdkVersion 21 cannot be smaller than version 24" 로 실패함
+- 영향: Android 5.0(API 21) / 5.1(API 22) / 6.0(API 23) 단말 제외. 2026년 한국 시장 점유율 < 1%
+- 만약 minSdk를 다시 낮추려면 AdMob 통합부터 빼야 함 (보상형 광고 기능 손실)
+
+## Play Console 업로드 시 흔한 경고 (v0.24.0에서 확인됨)
+
+업로드 후 두 경고가 나오는 게 정상이고 **그대로 진행하면 됨**:
+
+1. **"이 출시 버전은 이전 버전에서 지원되던 기기 N개를 더 이상 지원하지 않습니다"**
+   - 원인: minSdk 24 정책의 트레이드오프 (위 항목 참고)
+   - 대응: 무시. 의도된 결정
+
+2. **"네이티브 코드 디버그 기호가 업로드되지 않았습니다"**
+   - 원인: Godot 엔진의 stripped `.so` 라이브러리. Godot 4.2 공식 export는 native symbols zip을 자동 생성하지 않음
+   - 대응: 무시. 우리는 Crashlytics 등 native crash 분석 도구를 안 쓰고, `mapping.txt`만 deobfuscation에 올리면 됨
+   - 만약 native crash가 Play Console에 자주 보이면 그때 대응 (Godot 엔진 디버그 심볼 보존 빌드 필요)
+
 ## 미해결/대기 항목
 
 - **Play Games Services**: 2026-05-14 활성화 완료. App ID `442399975649`, 6개 리더보드 ID 코드 반영됨 ([godot/scripts/core/LeaderboardManager.gd](godot/scripts/core/LeaderboardManager.gd), [godot/android/build/res/values/game_services_ids.xml](godot/android/build/res/values/game_services_ids.xml)). Play App Signing 사용 — OAuth client 등록 SHA-1은 `DA:65:E3:75:98:2B:4D:6D:B2:26:7C:D5:A8:E7:89:15:F2:AB:EF:FB`. OAuth 동의 화면은 테스트 모드 (jeiel85@gmail.com 테스터 등록). 다음 빌드(v0.19.0+)부터 폰에서 PGS 로그인/리더보드 동작 검증 필요.
-- **AdMob**: 사용자가 계정만 있음. 광고 SDK 통합 미시작. ad unit ID 받으면 진행
+- **AdMob**: v0.24.0(2026-05-15)에서 SDK 통합 완료, Google 공식 **테스트 광고 ID**로 빌드 중. 실제 광고 ID 수급 후 두 상수만 교체 — `addons/admob/android/config.gd`의 `APPLICATION_ID`, `scripts/core/AdManager.gd`의 `REWARDED_UNIT_ID`. 전제: Play Console 공개 트랙 출시 후 AdMob 콘솔 검색에 앱이 잡힘
 - **iOS**: 안 함 (Mac + Apple Dev 계정 필요)
 
 ## 자산 라이선스 (커밋 메시지/릴리즈 노트 작성 시 참고)
