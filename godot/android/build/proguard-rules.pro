@@ -31,11 +31,15 @@
 -keep public class * extends android.app.Activity
 -keep class com.godot.game.** { *; }
 
-# --- Google Play Services / Play Games SDK ---------------------------------
+# --- Google Play Services / Play Games SDK / AdMob ------------------------
 # Most rules ship as consumer rules inside the AARs, but keep the public
-# surface as belt-and-suspenders.
+# surface as belt-and-suspenders. The `com.google.android.gms.**` rule below
+# also covers the AdMob SDK (com.google.android.gms.ads.**), which is pulled
+# in by the Poing Studios plugin under addons/admob/.
 -keep class com.google.android.gms.** { *; }
 -dontwarn com.google.android.gms.**
+-keep class com.google.ads.** { *; }
+-dontwarn com.google.ads.**
 
 # --- AndroidX --------------------------------------------------------------
 -keep class androidx.fragment.app.** { *; }

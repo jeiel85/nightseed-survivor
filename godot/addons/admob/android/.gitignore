@@ -1,0 +1,2 @@
+# Backend .aar bundle committed (see /bin) — required for CI to build without
+# fetching the plugin separately. Replaced default ignore with this note.

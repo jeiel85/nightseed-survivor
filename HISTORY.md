@@ -1,5 +1,63 @@
 # HISTORY.md
 
+## 2026-05-15 (메인 메뉴 Nightseed 비주얼 리워크 1차)
+
+- 날짜: 2026-05-15
+- 작업: docs/UI_ART_DIRECTION_ROADMAP.md §4.1·§5 기준으로 Phase UI-1 공통 버튼 키트 + Phase UI-2 메인 메뉴 1차 리워크를 함께 진행. 신규 이미지 애셋 없이 ButtonStyles 확장 + 절차 배경 + 기존 캐릭터 스프라이트 기반 쇼케이스로 구현.
+- 변경 파일:
+  - godot/scripts/ui/ButtonStyles.gd (Moon/Stone 스타일 추가)
+  - godot/scripts/ui/MenuBackdrop.gd (신규)
+  - godot/scripts/ui/CharacterShowcase.gd (신규)
+  - godot/scenes/ui/MainMenu.tscn (MenuBackdrop / CharacterShowcase 노드 추가, 새 스타일 연결)
+  - godot/scripts/ui/MainMenu.gd (타이틀 외곽선, 새 버튼 스타일, 쇼케이스 갱신)
+  - CHANGELOG.md, .agent/tasks.md, .agent/progress.md, HISTORY.md
+- 검증:
+  - `godot --headless --path godot --quit` 통과 (GDScript 파싱 에러 0)
+  - 2-pass 에디터 임포트로 `CharacterShowcase`/`MenuBackdrop` 글로벌 클래스 캐시 등록 확인
+  - `godot --headless --path godot --quit-after 30` 부트 + MainMenu 30프레임 실행 — 스크립트 에러 0
+  - 720x1280 / 540x960 디자인 좌표에서 CharacterShowcase 사각형(360×180, y=480~660)이 StatusCard(y≤480)·BtnPlay(y≥672)와 겹치지 않음을 좌표 정적 확인
+- 결과:
+  - 메인 메뉴가 단색 ColorRect + 사각 버튼 모음에서 "달빛 밤숲 앞에 선 캐릭터 + Moon CTA + Stone 보조 메뉴" 구성으로 전환
+  - 새 일러스트/리소스 추가 없음 — 모두 절차 묘사 + 기존 16×16 스프라이트
+- 후속 작업:
+  - 폰 실기 빌드(AAB)에서 가독성/겹침 최종 확인
+  - 1차 리워크 후 실제 필요한 애셋(메뉴 배경 일러스트, 캐릭터 큰 portrait, 9-slice, 출정/상점/도감/설정/업적 아이콘) 목록을 다음 세션에서 산출
+  - Phase UI-3 캐릭터 쇼케이스 고도화 (큰 portrait 도입), Phase UI-4 레벨업 카드 리워크
+
+## 2026-05-15 (다음 UI 리워크 착수 판단)
+
+- 날짜: 2026-05-15
+- 작업: 다음 세션에서 메인 메뉴 Nightseed 비주얼 리워크를 바로 시작할 수 있도록 착수 순서와 애셋 판단 기록
+- 변경 파일:
+  - docs/UI_ART_DIRECTION_ROADMAP.md
+  - .agent/tasks.md
+  - .agent/progress.md
+  - CHANGELOG.md
+- 검증:
+  - 문서 변경만 수행하여 Godot 실행/빌드 검증은 생략
+- 결과:
+  - 이미지 애셋 선제작이 아니라 공통 UI 키트와 메인 메뉴 구조 개선부터 진행하도록 기록 완료
+- 후속 작업:
+  - `ButtonStyles.gd` Moon/Stone 스타일 추가 후 메인 메뉴 Nightseed 비주얼 리워크 1차 진행
+
+## 2026-05-15 (AdMob 보상형 광고 SDK 통합 — 테스트 광고 ID로)
+
+- 날짜: 2026-05-15
+- 작업: 사용자 AdMob ID 수급 전 단계에서 가능한 모든 통합 작업 진행. SDK + 플러그인 배치, AdManager 새 API로 재작성, 에디터 임포트 검증까지 완료. 실제 ID 교체는 사용자가 Play Console에서 공개 트랙으로 전환 후 AdMob 콘솔에 앱 등록할 때.
+- 변경 파일:
+  - godot/addons/admob/ (신규, 전체)
+  - godot/scripts/core/AdManager.gd
+  - godot/project.godot (editor_plugins)
+  - godot/android/build/proguard-rules.pro
+  - docs/ADMOB_SETUP.md
+  - CHANGELOG.md, .agent/tasks.md, .agent/progress.md
+- 검증:
+  - Godot 4.2.2 헤드리스 에디터 임포트 통과 (GDScript 파싱 에러 0)
+  - 글로벌 클래스 캐시 2-pass 후 `MobileAds`, `RewardedAdLoader`, `RewardedAd`, `AdRequest`, `OnInitializationCompleteListener`, `OnUserEarnedRewardListener`, `RewardedAdLoadCallback`, `FullScreenContentCallback`, `LoadAdError`, `AdError`, `RewardedItem` 인식
+- 후속 작업:
+  - 비공개 테스트 트랙용 AAB 빌드 + 폰 검증 — 부활/골드 2배 CTA 표시, 광고 재생, 보상 적용 확인
+  - 사용자 AdMob 콘솔 등록 (공개 트랙 출시 후) → 실제 App ID와 광고 단위 ID 수급 → `config.gd`, `AdManager.gd` 두 상수 교체
+
 ## 2026-05-15 (UI 아트 디렉션 로드맵 작성)
 
 - 날짜: 2026-05-15

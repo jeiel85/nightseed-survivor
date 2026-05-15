@@ -19,6 +19,11 @@
         tools:ignore="GoogleAppIndexingWarning">
 
 <meta-data android:name="com.google.android.gms.games.APP_ID" android:value="@string/game_services_project_id"/>
+
+	<meta-data
+		android:name="com.google.android.gms.ads.APPLICATION_ID"
+		android:value="ca-app-pub-3940256099942544~3347511713"/>
+	
         <activity android:name="com.godot.game.GodotApp" tools:replace="android:screenOrientation,android:excludeFromRecents,android:resizeableActivity" tools:node="mergeOnlyAttributes" android:excludeFromRecents="false" android:screenOrientation="portrait" android:resizeableActivity="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

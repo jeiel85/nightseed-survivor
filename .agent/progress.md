@@ -1,5 +1,122 @@
 # Progress
 
+## 2026-05-15 — 메인 메뉴 Nightseed 비주얼 리워크 1차 (Phase UI-1 + UI-2)
+
+### Status
+
+`docs/UI_ART_DIRECTION_ROADMAP.md` §4.1·§5의 방침대로 새 이미지 애셋을 추가하지 않고 ButtonStyles 확장 + 절차 배경 + 기존 캐릭터 스프라이트 기반 쇼케이스로 1차 리워크를 진행했다. PLAY 버튼은 달빛 CTA, 1차 행은 강조색 석판, 2차 행/코너는 조용한 석판으로 시각 위계가 정리됐다.
+
+### Completed
+
+- `ButtonStyles.gd` 확장
+  - `MOON_PRIMARY`/`MOON_TEXT`/`MOON_BORDER` 상수 (창백한 달빛 CTA용)
+  - `STONE_PRIMARY`/`STONE_SECONDARY`/`STONE_TEXT`/`STONE_BORDER` 상수
+  - `apply_moon(button)` — 달빛 배경 + 짙은 남색 텍스트 + 외곽 글로우 (shadow_size 8)
+  - `apply_stone(button, accent)` — 어두운 청회색 패널 + 강조색 상단 룬 라인 (border_top 3, 나머지 2)
+  - `apply_stone_secondary(button, accent)` — 더 어두운 패널 + 얇은 프레임
+  - 기존 `apply(button, base)` 함수는 다른 화면(레벨업/결과 등) 호환을 위해 유지
+- `scripts/ui/MenuBackdrop.gd` 신규 — 절차 야경 배경 (이미지 0)
+  - 깊은 남색 → 숲 녹색 32단 수직 그라데이션
+  - 상단 영역에 별 80개 (deterministic seed)
+  - 우상단 달 + 6단 푸른 헤일로
+  - 지평선 근처 안개 가로 띠 14장 (sin 기반 알파)
+  - 뒤쪽 옅은 트리 라인 + 앞쪽 진한 트리 라인 (사각형 삼각형 polygon)
+  - 지평선 아래 검은 흙 + 달빛 라인
+  - 반딧불 16개 (작은 글로우 + 점)
+- `scripts/ui/CharacterShowcase.gd` 신규
+  - GameData.selected_character 기준으로 `Characters.DATA[key].sprite` 로드 → TextureRect (`stretch_mode = KEEP_ASPECT_CENTERED`, NEAREST 필터)
+  - 후광 6단 외곽 + 5단 코어 + 봉인 링 2줄 + 발판 그림자 ellipse
+  - 스프라이트 누락/로드 실패 시 둥근 머리 + 사다리꼴 몸통 fallback silhouette
+  - `refresh()`를 외부에서 호출하면 캐릭터 변경 후 즉시 갱신
+- `MainMenu.tscn` 노드 추가/연결
+  - `MenuBackdrop` (anchor full rect, mouse_filter=IGNORE) — 가장 뒷 레이어
+  - `CharacterShowcase` (360×180, screen y=480~660, anchor=0.5) — StatusCard와 BtnPlay 사이 Spacer 영역
+  - Portrait 96×96 (16×16 스프라이트 6× 업스케일), NameLabel 36px (하단 코너)
+- `MainMenu.gd` 갱신
+  - `_apply_title_styles()` — 타이틀/부제에 짙은 남색 외곽선 추가
+  - `_apply_button_styles()` — PLAY → apply_moon, 1차 행 → apply_stone, 2차 행 + 코너 → apply_stone_secondary
+  - `_apply_status_card_style()` — 카드 톤 더 어둡게, 상단 룬 라인, 모서리 12→6
+  - `_refresh()` 끝에 `character_showcase.refresh()` 호출 (난이도 사이클/언어 변경 시도 갱신)
+- 문서 갱신
+  - CHANGELOG.md Unreleased 섹션 추가
+  - HISTORY.md 항목 추가
+  - .agent/tasks.md Phase UI-1/UI-2 체크 + 후속 항목 분리
+
+### Verification
+
+- `godot --headless --path godot --quit` 통과 (GDScript 파싱 에러 0)
+- 2-pass 에디터 임포트(`--editor --quit-after 30` × 2)로 `CharacterShowcase`/`MenuBackdrop` 글로벌 클래스 캐시 등록 — 이후 MainMenu.gd의 `@onready var character_showcase: CharacterShowcase` 타입 인식 OK
+- `godot --headless --path godot --quit-after 30` (autoload 포함 부트 + MainMenu 30프레임) 통과 — 스크립트 에러 0, ObjectDB leak 경고만 (headless `--quit-after`에서 흔히 보이는 비치명)
+- 720x1280 / 540x960 디자인 좌표 정적 확인:
+  - VBox children 누적: Title 0–184 → 196 Subtitle 196–248 → 260 StatusCard 260–400 → 412 Spacer(flex 2.0) 412–580 → 592 BtnPlay 592–788 → 800 PrimaryRow 800–928 → 940 SecondaryRow 940–1060 → 1072 BottomSpacer(flex 1.0) 1072–1156
+  - 스크린 좌표(+80): StatusCard 끝 y=480, BtnPlay 시작 y=672, 그 사이 Spacer 영역 y=492~660
+  - CharacterShowcase y=480~660: StatusCard와 BtnPlay 어디와도 겹치지 않음
+  - Halo center y=70 (showcase local), radius 61 → halo top=9, bottom=131. 모두 showcase 내부 또는 알파 0.18 이하의 외곽 헤일로만 미세 bleed (시각적 손상 없음)
+
+### Not Yet Done
+
+- 폰 실기 검증 — 다음 AAB 빌드에서 가독성/겹침 최종 확인
+- 실제 필요한 추가 애셋 목록 최종 산출 (메뉴 배경 일러스트 / 캐릭터 큰 portrait / 9-slice / 출정·상점·도감·설정·업적 아이콘)
+- Phase UI-3 portrait 도입, Phase UI-4 레벨업 카드, Phase UI-5 결과 화면, Phase UI-6 하위 화면 톤 통일
+
+## 2026-05-15 — 다음 UI 리워크 착수 판단 기록
+
+### Status
+
+메인 메뉴 Nightseed 비주얼 리워크는 새 이미지 애셋 제작보다 공통 UI 키트와 메인 메뉴 구조 개선을 먼저 진행하기로 정리했다.
+
+### Completed
+
+- `docs/UI_ART_DIRECTION_ROADMAP.md`에 다음 세션 착수 판단 추가
+- `ButtonStyles.gd` Moon/Stone 스타일 → 메인 메뉴 버튼 위계 → 절차 배경 → 기존 스프라이트 기반 CharacterShowcase 순서로 진행하도록 정리
+- 1차 리워크 후 필요한 배경, portrait, 9-slice, 아이콘 애셋 후보를 다시 산출하는 흐름으로 기록
+
+### Not Yet Done
+
+- 실제 UI 스타일/씬 구현
+- 메인 메뉴 720x1280, 540x960 레이아웃 검증
+- 추가 이미지 애셋 필요 여부 최종 확정
+
+## 2026-05-15 — AdMob 보상형 광고 SDK 통합 (테스트 ID 단계)
+
+### Status
+
+비공개 테스트 트랙이라 AdMob 콘솔 앱 검색이 안 잡히는 상태. 사용자 실제 ID
+없이 SDK 통합 + 빌드 검증 가능한 데까지 모두 진행 (옵션 A). 실제 ID는
+Play Console 공개 트랙 출시 후 두 상수만 교체.
+
+### Completed
+
+- Poing Studios godot-admob-plugin v4.3.1 + godot-admob-android v4.2.0
+  (Godot 4.2 호환 백엔드) 다운로드 및 배치
+  - 메인 플러그인: `godot/addons/admob/` (csharp/sample/donate/docs 폴더는 제거)
+  - Android 백엔드 ads/ .aar 4개: `godot/addons/admob/android/bin/ads/libs/`
+  - 다른 mediation (adcolony/meta/vungle)은 config에서 비활성, 백엔드 .aar
+    포함 안 함
+- `project.godot` [editor_plugins]에 `res://addons/admob/plugin.cfg` 활성화
+- `godot/addons/admob/admob.gd` 외부 플러그인 원본 수정:
+  - iOS exporter 등록 제거 (Godot 4.3+ 전용 GDScript 패턴이라 4.2 파싱 실패)
+  - AdMob Manager 에디터 메뉴 제거 (메뉴 진입 시 iOS 백엔드 zip을 GitHub에서
+    자동 다운로드)
+- `godot/addons/admob/internal/exporters/ios/`에 `.gdignore` (4.2 파싱 스킵)
+- `godot/scripts/core/AdManager.gd` 전면 재작성 — 외부 시그널/메서드
+  인터페이스(`rewarded_granted`/`rewarded_dismissed`/`rewarded_failed`,
+  `is_supported`/`is_rewarded_ready`/`show_rewarded(tag)`) 유지하여 GameRoot
+  호출부 변경 없음. 내부 구현은 `MobileAds.initialize()` →
+  `RewardedAdLoader` + 콜백 람다 + `OnUserEarnedRewardListener`
+- `godot/android/build/proguard-rules.pro`에 Google Mobile Ads keep 룰 추가
+- `docs/ADMOB_SETUP.md` 새 SDK API에 맞게 전면 재작성 — 실제 ID 수급 후
+  교체할 두 상수 경로 명시
+- Godot 4.2.2 헤드리스 에디터 임포트 통과: GDScript 파싱 에러 0, 글로벌
+  클래스 캐시 2-pass 후 모든 플러그인 클래스 인식
+
+### Not Yet Done
+
+- AAB 빌드 검증 — Gradle이 `com.google.android.gms:play-services-ads:24.9.0`
+  처음 다운로드, R8 stripping이 새 .aar 의존성을 깨지 않는지 확인
+- 비공개 테스트 트랙 업로드 + 폰에서 부활/골드 2배 CTA 표시·재생·보상 적용
+- 사용자 AdMob 콘솔 등록(공개 트랙 출시 이후) → 실제 ID로 두 상수 교체
+
 ## 2026-05-15 — UI 아트 디렉션 로드맵 작성
 
 ### Status

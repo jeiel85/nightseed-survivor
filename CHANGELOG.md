@@ -1,10 +1,77 @@
 # CHANGELOG.md
 
+## Unreleased - 2026-05-15 (메인 메뉴 Nightseed 비주얼 리워크 1차)
+
+### Added
+- `ButtonStyles.gd`에 Nightseed 톤 Moon/Stone 스타일 추가
+  - `apply_moon(button)` — 창백한 달빛 배경(`#DDEBFF`) + 짙은 남색 텍스트 CTA. PLAY 버튼 전용
+  - `apply_stone(button, accent)` — 어두운 청회색 패널 + 강조색 상단 테두리. 캐릭터/스테이지/난이도 주요 메뉴
+  - `apply_stone_secondary(button, accent)` — 더 어두운 패널 + 얇은 프레임. 스토리/리더보드/언어/크레딧
+  - 코너 반경 ≤6, 테두리 2~3px로 봉인석/석판 느낌 강화 (docs/UI_ART_DIRECTION_ROADMAP.md §2 형태 언어)
+- `scripts/ui/MenuBackdrop.gd` — 절차 배경 레이어 (이미지 애셋 0)
+  - 깊은 남색→숲 녹색 32단 수직 그라데이션 + 별 80개 + 달빛 헤일로 + 안개 띠 + 앞/뒤 2단 트리 실루엣 + 반딧불 16개
+  - deterministic RNG seed 사용 (프레임마다 흔들리지 않음)
+- `scripts/ui/CharacterShowcase.gd` + `MainMenu.tscn`의 `CharacterShowcase` 노드
+  - 현재 선택 캐릭터 스프라이트(16×16)를 6× 업스케일 TextureRect로 표시 + 달빛 후광/봉인 링 절차 묘사
+  - 스프라이트 누락 시 둥근 머리 + 사다리꼴 몸통 fallback 실루엣
+  - 캐릭터 이름 라벨 (`Vagrant` 등)을 후광 아래 배치
+  - 메인 메뉴 진입/언어 변경/난이도 사이클 시 갱신
+
+### Changed
+- 메인 메뉴 시각 위계 재정리 (Phase UI-1 + UI-2 1차)
+  - PLAY 버튼 → 달빛 CTA (가장 강한 액션, 외곽 글로우)
+  - 1차 행(CHARACTERS / STAGES / DIFFICULTY) → 강조색 테두리 석판 버튼
+  - 2차 행(SHOP / STORY / LEADERS) → 조용한 석판 버튼
+  - 상단 우측 코너(Language / Credits) → 더 작은 석판 보조 버튼
+  - 타이틀/부제에 짙은 남색 외곽선 추가 (배경과 분리)
+- 상태 카드 톤 보정 — 더 어두운 청회색 + 상단 룬 라인 + 모서리 반경 12→6
+
+### Documentation
+- `.agent/tasks.md` 1차 리워크 항목 체크
+- `.agent/progress.md` 작업 기록
+- `HISTORY.md` 항목 추가
+
+### Verification
+- `godot --headless --path godot --quit` 통과 (GDScript 파싱 에러 0)
+- 2-pass 에디터 임포트 후 `--quit-after 30`로 부트 + MainMenu 30프레임 실행 — 스크립트 에러 0
+- 720x1280 / 540x960 디자인 좌표에서 CharacterShowcase rect(360×180, y=480~660)가 StatusCard(y≤480)와 BtnPlay(y≥672)와 겹치지 않음을 정적 확인
+- 폰 실기 검증은 다음 빌드/AAB 단계에서 진행 (현재 세션에서 생략)
+
+### Notes
+- 새 이미지 애셋은 추가하지 않았다. 1차 리워크 후 추가로 필요한 후보(메인 배경 일러스트, 캐릭터 큰 portrait, 9-slice 텍스처, 출정/상점/도감/설정/업적 아이콘)는 `.agent/progress.md`에 기록
+
+## Unreleased - 2026-05-15 (AdMob 보상형 광고 SDK 통합)
+
+### Added
+- Poing Studios AdMob 플러그인 통합
+  - 메인 플러그인 v4.3.1: `godot/addons/admob/` (csharp/sample/donate/docs 제외)
+  - Android 백엔드 v4.2.0 (ads only): `godot/addons/admob/android/bin/ads/libs/*.aar`
+  - `project.godot`의 `[editor_plugins]`에 admob plugin 활성화
+- `godot/android/build/proguard-rules.pro`에 Google Mobile Ads keep 룰
+
+### Changed
+- `godot/scripts/core/AdManager.gd` 새 SDK API로 재작성
+  - 외부 시그널/메서드 인터페이스 (`rewarded_granted/dismissed/failed`, `is_supported`, `is_rewarded_ready`, `show_rewarded(tag)`) 유지 — GameRoot 호출부 변경 없음
+  - 내부 구현: `MobileAds.initialize()` → `RewardedAdLoader` + 콜백 람다
+  - `ENABLED=true`, **Google 공식 테스트 광고 단위 ID** 사용 — 실제 ID는 사용자 수급 후 두 상수 교체
+- `addons/admob/admob.gd` 패치 (외부 플러그인 원본 수정):
+  - iOS exporter 등록 제거 — Godot 4.2가 iOS export_plugin.gd의 4.3+ type-inference 패턴을 파싱 못함
+  - AdMob Manager 에디터 메뉴 제거 — 메뉴의 iOS handler가 에디터 열 때마다 GitHub에서 iOS 백엔드 zip을 자동 다운로드
+- `addons/admob/internal/exporters/ios/`에 `.gdignore` 배치 (Godot 4.2 파싱 스킵)
+- `docs/ADMOB_SETUP.md` 새 SDK API에 맞게 전면 갱신
+
+### Verification
+- Godot 4.2.2 에디터 임포트 통과 (GDScript 파싱 에러 0)
+- AAB 빌드는 별도 단계 — 비공개 테스트 트랙 업로드 시 폰에서 부활/골드 2배 버튼 동작 확인 예정
+
 ## Unreleased - 2026-05-15 (UI 아트 디렉션 로드맵)
 
 ### Documentation
 - `docs/UI_ART_DIRECTION_ROADMAP.md` 추가
   - Nightseed UI 디자인 철학, 색/형태 언어, 공통 UI 키트, 메인 메뉴 리워크, 캐릭터 쇼케이스, 레벨업 카드, 결과 화면, 하위 화면 톤 맞추기 계획 정리
+- 다음 세션 착수 판단 추가
+  - 이미지 애셋 선제작보다 `ButtonStyles.gd` Moon/Stone 스타일과 메인 메뉴 버튼 위계를 먼저 정리
+  - 절차 배경/기존 스프라이트로 1차 리워크 후 실제 필요한 배경, portrait, 9-slice, 아이콘 목록 산출
 - `docs/ROADMAP.md`, `.agent/tasks.md`에 UI Art Direction 마일스톤과 다음 작업 후보 연결
 
 ### Verification
