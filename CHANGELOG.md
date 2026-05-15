@@ -1,5 +1,19 @@
 # CHANGELOG.md
 
+## Unreleased - 2026-05-15 (UI 자산 P1/P2 원본 PNG)
+
+### Added
+- `docs/ASSETS_TO_GENERATE.md` 기준 후속 UI 리워크용 원본 PNG 20개 추가
+  - 레벨업/결과 화면용 패널·글로우 프레임
+  - HUD 아이콘과 조이스틱 베이스/노브
+  - 상점 `Warrior's Might` 아이콘
+  - 결과 보상 아이콘 6종
+  - 로고 뒤 장식 엠블럼
+
+### Verification
+- 신규 PNG 20개 해상도 및 RGBA 포맷 확인
+- Godot import/headless 검증은 현재 로컬 PATH에 `godot` 실행 파일이 없어 생략
+
 ## v0.24.0 - 2026-05-15 (메인 메뉴 Nightseed 비주얼 리워크 1차 + AdMob 보상형 광고 SDK)
 
 ### Added

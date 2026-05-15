@@ -1,5 +1,41 @@
 # HISTORY.md
 
+## 2026-05-15 (UI 자산 P1/P2 원본 PNG 1차 생성)
+
+- 날짜: 2026-05-15
+- 작업: `docs/ASSETS_TO_GENERATE.md`의 자산 생성 프롬프트 표를 기준으로 후속 UI 리워크용 패널, HUD 아이콘, 결과 보상 아이콘, 로고 장식 원본 PNG 20개를 지정 경로에 생성
+- 변경 파일:
+  - godot/assets/sprites/ui/panel/panel_card_dark.9.png
+  - godot/assets/sprites/ui/panel/frame_card_glow_blue.9.png
+  - godot/assets/sprites/ui/panel/frame_card_glow_green.9.png
+  - godot/assets/sprites/ui/panel/frame_card_glow_purple.9.png
+  - godot/assets/sprites/ui/panel/frame_card_glow_gold.9.png
+  - godot/assets/sprites/ui/panel/banner_stage_clear.png
+  - godot/assets/sprites/ui/icon_top/icon_close_x.png
+  - godot/assets/sprites/ui/icon_hud/icon_hud_timer.png
+  - godot/assets/sprites/ui/icon_hud/icon_hud_kills.png
+  - godot/assets/sprites/ui/icon_hud/icon_hud_joystick_base.png
+  - godot/assets/sprites/ui/icon_hud/icon_hud_joystick_thumb.png
+  - godot/assets/sprites/ui/icon_hud/icon_hud_skill_button.png
+  - godot/assets/sprites/shop_warriors_might.png
+  - godot/assets/sprites/ui/icon_reward/icon_reward_chest_closed.png
+  - godot/assets/sprites/ui/icon_reward/icon_reward_chest_open.png
+  - godot/assets/sprites/ui/icon_reward/icon_reward_sword.png
+  - godot/assets/sprites/ui/icon_reward/icon_reward_potion.png
+  - godot/assets/sprites/ui/icon_reward/icon_reward_magic_tome.png
+  - godot/assets/sprites/ui/icon_reward/icon_reward_coins.png
+  - godot/assets/logo/logo_nightseed_survivor.png
+  - .agent/tasks.md, .agent/progress.md, CHANGELOG.md, HISTORY.md
+- 검증:
+  - Python/Pillow로 신규 PNG 20개 해상도 및 RGBA 포맷 확인
+  - 접촉 시트로 빠른 시각 검수 후 임시 파일 삭제
+  - 로컬 환경에서 `godot` 실행 파일을 찾을 수 없어 Godot headless 및 `.import` 생성은 미실행
+- 결과:
+  - LevelUp / Results / HUD / Shop / Logo 후속 리워크에 사용할 원본 자산 세트가 저장소에 추가됨
+- 후속 작업:
+  - Godot 에디터 또는 headless import로 `.import` 파일 생성
+  - 각 화면에 자산 연결 후 9-slice margin과 모바일 실기 렌더 검수
+
 ## 2026-05-15 (v0.24.0 릴리즈 준비 — UI 리워크 1차 + AdMob SDK)
 
 - 날짜: 2026-05-15

@@ -1,5 +1,29 @@
 # Progress
 
+## 2026-05-15 — UI 자산 P1/P2 원본 PNG 1차 생성
+
+### Status
+
+`docs/ASSETS_TO_GENERATE.md`의 프롬프트 표를 기준으로, 아직 저장소에 없던 P1/P2 계열 UI 원본 PNG 20개를 지정 경로와 파일명에 맞춰 생성했다. 이번 작업은 자산 배치까지만이며, 각 화면 연결과 Godot `.import` 생성은 후속 검증 루프로 남긴다.
+
+### Completed
+
+- 패널/프레임 6개 — `panel_card_dark.9.png`, `frame_card_glow_{blue,green,purple,gold}.9.png`, `banner_stage_clear.png`
+- 상단/HUD 아이콘 6개 — `icon_close_x.png`, `icon_hud_timer.png`, `icon_hud_kills.png`, `icon_hud_joystick_base.png`, `icon_hud_joystick_thumb.png`, `icon_hud_skill_button.png`
+- 상점/결과/로고 자산 8개 — `shop_warriors_might.png`, 결과 보상 아이콘 6개, `logo_nightseed_survivor.png`
+- 모든 신규 PNG는 표의 원본 크기와 RGBA 포맷으로 생성 확인
+
+### Verification
+
+- Python/Pillow로 신규 PNG 20개 존재 및 해상도 확인
+- 접촉 시트로 빠른 시각 검수 후 임시 파일 삭제
+
+### Not Yet Done
+
+- Godot `.import` 자동 생성
+- `godot --headless --path godot --quit` 검증
+- LevelUp / Results / HUD / Shop / Logo 화면 실제 연결
+
 ## 2026-05-15 — 메인 메뉴 Phase UI-3 (AI 자산 1차 통합)
 
 ### Status
