@@ -15,9 +15,11 @@ extends Control
 @onready var btn_leaderboard: Button = $VBox/SecondaryRow/BtnLeaderboard
 @onready var btn_language: Button = $TopRightRow/BtnLanguage
 @onready var btn_credits: Button = $TopRightRow/BtnCredits
+@onready var character_showcase: CharacterShowcase = $CharacterShowcase
 
 func _ready() -> void:
 	AudioManager.play_bgm("menu")
+	_apply_title_styles()
 	_apply_button_styles()
 	_apply_status_card_style()
 	_refresh()
@@ -34,23 +36,40 @@ func _ready() -> void:
 	if Localization:
 		Localization.language_changed.connect(_on_language_changed)
 
+func _apply_title_styles() -> void:
+	# Nightseed 톤 — 창백한 달빛 제목 + 살짝 푸른 부제. 배경(MenuBackdrop)의
+	# 어두운 남색 위에서 충분히 떠 보이도록 외곽선/그림자 보정.
+	title_label.add_theme_color_override("font_color", Color(0.93, 0.96, 1.0, 1.0))
+	title_label.add_theme_color_override("font_outline_color", Color(0.043, 0.078, 0.149, 0.95))
+	title_label.add_theme_constant_override("outline_size", 6)
+	subtitle_label.add_theme_color_override("font_color", Color(0.76, 0.84, 1.0, 1.0))
+	subtitle_label.add_theme_color_override("font_outline_color", Color(0.043, 0.078, 0.149, 0.85))
+	subtitle_label.add_theme_constant_override("outline_size", 3)
+
 func _apply_button_styles() -> void:
-	ButtonStyles.apply(btn_play, ButtonStyles.PLAY)
-	ButtonStyles.apply(btn_character, ButtonStyles.CHARACTER)
-	ButtonStyles.apply(btn_stage, ButtonStyles.STAGE)
-	ButtonStyles.apply(btn_shop, ButtonStyles.SHOP)
-	ButtonStyles.apply(btn_difficulty, ButtonStyles.DIFFICULTY)
-	ButtonStyles.apply(btn_leaderboard, ButtonStyles.LEADERBOARD)
-	ButtonStyles.apply(btn_codex, ButtonStyles.CODEX)
-	ButtonStyles.apply(btn_language, ButtonStyles.LANGUAGE)
-	ButtonStyles.apply(btn_credits, ButtonStyles.CREDITS)
+	# Phase UI-1 — Moon/Stone 위계 적용.
+	# PLAY 만 달빛 CTA, 1차 행은 강조색 테두리의 석판 스타일,
+	# 2차 행과 코너 보조 버튼은 더 조용한 석판 스타일.
+	ButtonStyles.apply_moon(btn_play)
+	ButtonStyles.apply_stone(btn_character, ButtonStyles.CHARACTER)
+	ButtonStyles.apply_stone(btn_stage, ButtonStyles.STAGE)
+	ButtonStyles.apply_stone(btn_difficulty, ButtonStyles.DIFFICULTY)
+	ButtonStyles.apply_stone_secondary(btn_shop, ButtonStyles.SHOP)
+	ButtonStyles.apply_stone_secondary(btn_codex, ButtonStyles.CODEX)
+	ButtonStyles.apply_stone_secondary(btn_leaderboard, ButtonStyles.LEADERBOARD)
+	ButtonStyles.apply_stone_secondary(btn_language, ButtonStyles.LANGUAGE)
+	ButtonStyles.apply_stone_secondary(btn_credits, ButtonStyles.CREDITS)
 
 func _apply_status_card_style() -> void:
+	# 상태 카드는 메뉴 위에 떠 있어야 하므로 톤을 살짝 더 어둡게 + 모서리는 작게(6 이하).
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.10, 0.11, 0.16, 0.92)
-	sb.border_color = Color(0.32, 0.36, 0.52, 1.0)
-	sb.set_border_width_all(2)
-	sb.set_corner_radius_all(12)
+	sb.bg_color = Color(0.078, 0.094, 0.137, 0.88)
+	sb.border_color = Color(0.38, 0.45, 0.58, 0.95)
+	sb.border_width_top = 3
+	sb.border_width_left = 2
+	sb.border_width_right = 2
+	sb.border_width_bottom = 2
+	sb.set_corner_radius_all(6)
 	sb.content_margin_left = 16
 	sb.content_margin_right = 16
 	sb.content_margin_top = 12
@@ -68,6 +87,9 @@ func _refresh() -> void:
 	status_label.text = Localization.tr_key("label_status") % [ch_name, st_name, df_name]
 	var df: Dictionary = Difficulty.get_data(GameData.difficulty)
 	status_label.add_theme_color_override("font_color", df["color"])
+	if character_showcase:
+		character_showcase.character_key = String(GameData.selected_character)
+		character_showcase.refresh()
 	btn_play.text = Localization.tr_key("btn_play")
 	btn_character.text = Localization.tr_key("btn_characters")
 	btn_stage.text = Localization.tr_key("btn_stages")

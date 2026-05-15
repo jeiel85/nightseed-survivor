@@ -48,7 +48,7 @@
 
 ### 상용화 인프라
 - [x] Play Games Services 활성화 — App ID + 리더보드 6종 실제 ID 주입
-- [ ] AdMob 보상형 광고 SDK 통합 — 인터페이스/UI 훅까지 완료, SDK + ID 수급 대기
+- [x] AdMob 보상형 광고 SDK 통합 — Poing Studios 플러그인 v4.3.1 + 백엔드 v4.2.0 배치, AdManager 새 API로 재작성, Google 공식 테스트 광고 ID로 ENABLED=true. 사용자 실제 ID 수급 시 `config.gd`/`AdManager.gd` 두 상수 교체로 라이브 전환
 
 ---
 
@@ -69,11 +69,19 @@
 ## Phase 3+ 후보 (대기열)
 
 ### UI 아트 디렉션 / 제품감 고도화
-- [ ] `docs/UI_ART_DIRECTION_ROADMAP.md` 기준 공통 UI 키트 정리
-- [ ] 메인 메뉴 Nightseed 비주얼 리워크 1차 (배경 레이어 + 캐릭터 쇼케이스 + PLAY CTA)
-- [ ] 레벨업 카드 보상 카드 스타일 리워크
-- [ ] 결과 화면 승패/보상 연출 리워크
-- [ ] 캐릭터/스테이지/상점 화면 톤 통일
+- [x] `docs/UI_ART_DIRECTION_ROADMAP.md` 기준 공통 UI 키트 1차 정리 (Phase UI-1)
+  - `ButtonStyles.gd`에 Moon CTA (`apply_moon`) + Stone primary (`apply_stone`) + Stone secondary (`apply_stone_secondary`) 추가, 코너 반경 ≤6 / 테두리 2~3
+- [x] 메인 메뉴 Nightseed 비주얼 리워크 1차 (Phase UI-2)
+  - `MenuBackdrop.gd` 절차 배경 (수직 그라데이션 + 별 + 달빛 헤일로 + 안개 + 트리 실루엣 + 반딧불)
+  - `CharacterShowcase.gd` + 노드 — 현재 캐릭터 스프라이트(16×16) 6× 업스케일 + 후광/봉인 링 + 이름 라벨, 스프라이트 누락 시 silhouette fallback
+  - PLAY 달빛 CTA / 1차 행 강조 석판 / 2차 행 + 코너 조용한 석판으로 위계 재정리
+- [ ] 1차 리워크 후 실제 추가 애셋 필요성 산출
+  - 후보: 메뉴 배경 일러스트, 캐릭터 큰 portrait, 9-slice 텍스처, 출정/상점/도감/설정/업적 아이콘
+  - 폰 실기 검증 결과를 본 뒤 확정
+- [ ] Phase UI-3 캐릭터 쇼케이스 고도화 (Characters.DATA에 `portrait` 키 추가 + 실제 큰 이미지 도입)
+- [ ] Phase UI-4 레벨업 카드 보상 카드 스타일 리워크
+- [ ] Phase UI-5 결과 화면 승패/보상 연출 리워크
+- [ ] Phase UI-6 캐릭터/스테이지/상점 화면 톤 통일
 
 ### 데이터/성능 기반화
 - [ ] 무기/패시브/캐릭터/적 수치 데이터화 (`weapons.json` 등으로 분리)
@@ -92,5 +100,8 @@
 ### 미해결 외부 의존
 - [x] PGS App ID + 리더보드 6개 ID 수급 → `LeaderboardManager.LEADERBOARD_IDS`
       및 `res/values/game_services_ids.xml` 반영 완료
-- [ ] AdMob 앱 ID + 보상형 광고 단위 ID 수급 → `AdManager` 활성화
+- [ ] AdMob 실제 앱 ID + 보상형 광고 단위 ID 수급 → `addons/admob/android/config.gd`의
+      `APPLICATION_ID`와 `scripts/core/AdManager.gd`의 `REWARDED_UNIT_ID` 교체.
+      현재는 Google 공식 테스트 ID로 SDK 통합/빌드 검증 가능 상태.
+      **전제: Play Console 공개 트랙 출시 후 AdMob 콘솔 검색에서 앱이 잡힘.**
 - [ ] iOS 빌드 (Mac + Apple Dev 계정 필요, 보류)
