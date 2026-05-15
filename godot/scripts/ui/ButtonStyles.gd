@@ -165,3 +165,104 @@ static func _stone_focus_box(accent: Color, primary: bool) -> StyleBoxFlat:
 	sb.border_color = Color(1, 1, 1, 0.85)
 	sb.set_border_width_all(3)
 	return sb
+
+# ------------------------------------------------------------
+# Texture-based styles (Phase UI-3) — uses the AI-generated 9-slice panels
+# in res://assets/sprites/ui/panel/. Falls back to the flat StyleBox helpers
+# above when the texture is missing so the menu still renders during asset
+# bring-up. docs/UI_REDESIGN_SPEC.md §3.3 has the 9-slice margin spec.
+# ------------------------------------------------------------
+
+const PANEL_STONE_BLUE_PATH := "res://assets/sprites/ui/panel/panel_stone_blue.9.png"
+const PANEL_CTA_AMBER_PATH  := "res://assets/sprites/ui/panel/panel_cta_amber.9.png"
+
+# 9-slice margins (px) — see docs/UI_REDESIGN_SPEC.md §3.3.
+# Generated PNGs are ~1024px native; the 9-slice nine-patch grid divides them
+# proportionally so the corner runes/highlights stay sharp at any button size.
+const STONE_NINE_MARGIN := 96   # 96 of ~1024 ≈ 9% — keeps the corner rune dots inside the fixed corners
+const AMBER_NINE_L_R    := 140  # rounded pill caps live in the outer ~14% of the width
+const AMBER_NINE_T_B    := 36   # top highlight strip is ~7% of the height
+
+# CTA text uses the same dark navy as the Moon button — high contrast on amber.
+const CTA_MOON_TEXT_COLOR := Color(0.043, 0.078, 0.149)
+
+# Texture-backed stone primary button. Same hover/pressed/focus contract as
+# apply_stone(): we tint the texture via modulate to convey state without
+# swapping textures, and keep the per-button accent color on the focus ring.
+static func apply_stone_texture(button: Button, accent: Color = MOON_BORDER) -> void:
+	var tex := _try_load_texture(PANEL_STONE_BLUE_PATH)
+	if tex == null:
+		apply_stone(button, accent)
+		return
+	button.add_theme_stylebox_override("normal",   _stone_tex_box(tex, Color(1, 1, 1, 1)))
+	button.add_theme_stylebox_override("hover",    _stone_tex_box(tex, Color(1.10, 1.10, 1.12, 1)))
+	button.add_theme_stylebox_override("pressed",  _stone_tex_box(tex, Color(0.82, 0.84, 0.92, 1)))
+	button.add_theme_stylebox_override("focus",    _stone_tex_focus(tex, accent))
+	button.add_theme_stylebox_override("disabled", _stone_tex_box(tex, Color(0.55, 0.58, 0.65, 0.85)))
+	button.add_theme_color_override("font_color", STONE_TEXT)
+	button.add_theme_color_override("font_hover_color", STONE_TEXT)
+	button.add_theme_color_override("font_pressed_color", STONE_TEXT.darkened(0.10))
+	button.add_theme_color_override("font_focus_color", STONE_TEXT)
+
+# Texture-backed amber CTA button. PLAY-tier action only (one per screen).
+static func apply_amber_texture(button: Button) -> void:
+	var tex := _try_load_texture(PANEL_CTA_AMBER_PATH)
+	if tex == null:
+		apply(button, PLAY)
+		return
+	button.add_theme_stylebox_override("normal",   _amber_tex_box(tex, Color(1, 1, 1, 1)))
+	button.add_theme_stylebox_override("hover",    _amber_tex_box(tex, Color(1.10, 1.08, 1.02, 1)))
+	button.add_theme_stylebox_override("pressed",  _amber_tex_box(tex, Color(0.86, 0.78, 0.62, 1)))
+	button.add_theme_stylebox_override("focus",    _amber_tex_focus(tex))
+	button.add_theme_stylebox_override("disabled", _amber_tex_box(tex, Color(0.55, 0.50, 0.42, 0.85)))
+	button.add_theme_color_override("font_color", CTA_MOON_TEXT_COLOR)
+	button.add_theme_color_override("font_hover_color", CTA_MOON_TEXT_COLOR)
+	button.add_theme_color_override("font_pressed_color", CTA_MOON_TEXT_COLOR.lightened(0.10))
+	button.add_theme_color_override("font_focus_color", CTA_MOON_TEXT_COLOR)
+
+static func _try_load_texture(path: String) -> Texture2D:
+	# ResourceLoader.exists() lets us bring up assets gradually without scene
+	# loads failing on machines that haven't run the editor import pass yet.
+	if not ResourceLoader.exists(path):
+		return null
+	var res := load(path)
+	if res is Texture2D:
+		return res
+	return null
+
+static func _stone_tex_box(tex: Texture2D, modulate: Color) -> StyleBoxTexture:
+	var sb := StyleBoxTexture.new()
+	sb.texture = tex
+	sb.modulate_color = modulate
+	sb.texture_margin_left = STONE_NINE_MARGIN
+	sb.texture_margin_right = STONE_NINE_MARGIN
+	sb.texture_margin_top = STONE_NINE_MARGIN
+	sb.texture_margin_bottom = STONE_NINE_MARGIN
+	sb.content_margin_left = 18
+	sb.content_margin_right = 18
+	sb.content_margin_top = 12
+	sb.content_margin_bottom = 12
+	return sb
+
+static func _stone_tex_focus(tex: Texture2D, accent: Color) -> StyleBoxTexture:
+	# Focus state keeps the texture but lifts modulate toward the accent hue
+	# so keyboard/controller focus is visible without breaking the stone look.
+	var sb := _stone_tex_box(tex, Color(1, 1, 1, 1).lerp(accent, 0.25))
+	return sb
+
+static func _amber_tex_box(tex: Texture2D, modulate: Color) -> StyleBoxTexture:
+	var sb := StyleBoxTexture.new()
+	sb.texture = tex
+	sb.modulate_color = modulate
+	sb.texture_margin_left = AMBER_NINE_L_R
+	sb.texture_margin_right = AMBER_NINE_L_R
+	sb.texture_margin_top = AMBER_NINE_T_B
+	sb.texture_margin_bottom = AMBER_NINE_T_B
+	sb.content_margin_left = 28
+	sb.content_margin_right = 28
+	sb.content_margin_top = 16
+	sb.content_margin_bottom = 16
+	return sb
+
+static func _amber_tex_focus(tex: Texture2D) -> StyleBoxTexture:
+	return _amber_tex_box(tex, Color(1.06, 1.04, 0.96, 1))

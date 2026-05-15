@@ -1,8 +1,25 @@
 extends Control
 
+# Asset paths for the Phase UI-3 rework. Each may be missing on a freshly cloned
+# checkout (the .import pass hasn't run yet), so every loader below falls back
+# gracefully — the menu still renders, just without the new artwork.
+const BG_MENU_NIGHT_SKY_PATH := "res://assets/sprites/ui/bg/bg_menu_night_sky.png"
+const ICON_GOLD_PATH         := "res://assets/sprites/ui/icon_top/icon_gold_coin.png"
+const NAV_ICON_PATHS := {
+	"heroes":      "res://assets/sprites/ui/icon_nav/icon_nav_heroes.png",
+	"stages":      "res://assets/sprites/ui/icon_nav/icon_nav_stages.png",
+	"difficulty":  "res://assets/sprites/ui/icon_nav/icon_nav_difficulty.png",
+	"shop":        "res://assets/sprites/ui/icon_nav/icon_nav_shop.png",
+	"story":       "res://assets/sprites/ui/icon_nav/icon_nav_story.png",
+	"leaderboard": "res://assets/sprites/ui/icon_nav/icon_nav_leaderboard.png",
+}
+
+@onready var background_image: TextureRect = $BackgroundImage
+@onready var menu_backdrop: Control = $MenuBackdrop
 @onready var title_label: Label = $VBox/TitleLabel
 @onready var subtitle_label: Label = $VBox/Subtitle
 @onready var status_card: PanelContainer = $VBox/StatusCard
+@onready var gold_coin_icon: TextureRect = $VBox/StatusCard/StatusVBox/GoldRow/GoldCoinIcon
 @onready var gold_label: Label = $VBox/StatusCard/StatusVBox/GoldRow/GoldLabel
 @onready var next_goal_label: Label = $VBox/StatusCard/StatusVBox/GoldRow/NextGoalLabel
 @onready var status_label: Label = $VBox/StatusCard/StatusVBox/StatusLabel
@@ -19,8 +36,10 @@ extends Control
 
 func _ready() -> void:
 	AudioManager.play_bgm("menu")
+	_apply_background()
 	_apply_title_styles()
 	_apply_button_styles()
+	_apply_button_icons()
 	_apply_status_card_style()
 	_refresh()
 	btn_play.pressed.connect(_on_play_pressed)
@@ -46,19 +65,68 @@ func _apply_title_styles() -> void:
 	subtitle_label.add_theme_color_override("font_outline_color", Color(0.043, 0.078, 0.149, 0.85))
 	subtitle_label.add_theme_constant_override("outline_size", 3)
 
+func _apply_background() -> void:
+	# Phase UI-3: AI-generated night-sky background as the dominant menu image.
+	# When the texture import hasn't run yet, fall back to the procedural
+	# MenuBackdrop drawing so the screen never goes blank.
+	if ResourceLoader.exists(BG_MENU_NIGHT_SKY_PATH):
+		var tex: Texture2D = load(BG_MENU_NIGHT_SKY_PATH)
+		if tex != null:
+			background_image.texture = tex
+			menu_backdrop.visible = false
+			return
+	background_image.visible = false
+	menu_backdrop.visible = true
+
 func _apply_button_styles() -> void:
-	# Phase UI-1 — Moon/Stone 위계 적용.
-	# PLAY 만 달빛 CTA, 1차 행은 강조색 테두리의 석판 스타일,
-	# 2차 행과 코너 보조 버튼은 더 조용한 석판 스타일.
-	ButtonStyles.apply_moon(btn_play)
-	ButtonStyles.apply_stone(btn_character, ButtonStyles.CHARACTER)
-	ButtonStyles.apply_stone(btn_stage, ButtonStyles.STAGE)
-	ButtonStyles.apply_stone(btn_difficulty, ButtonStyles.DIFFICULTY)
-	ButtonStyles.apply_stone_secondary(btn_shop, ButtonStyles.SHOP)
-	ButtonStyles.apply_stone_secondary(btn_codex, ButtonStyles.CODEX)
-	ButtonStyles.apply_stone_secondary(btn_leaderboard, ButtonStyles.LEADERBOARD)
+	# Phase UI-3 — Texture-based Moon/Stone styles using the new 9-slice panels.
+	# ButtonStyles automatically falls back to the flat StyleBox helpers when
+	# the panel textures are missing, so this call site stays the single source
+	# of truth for which button gets which tier.
+	ButtonStyles.apply_amber_texture(btn_play)
+	ButtonStyles.apply_stone_texture(btn_character,    ButtonStyles.CHARACTER)
+	ButtonStyles.apply_stone_texture(btn_stage,        ButtonStyles.STAGE)
+	ButtonStyles.apply_stone_texture(btn_difficulty,   ButtonStyles.DIFFICULTY)
+	ButtonStyles.apply_stone_texture(btn_shop,         ButtonStyles.SHOP)
+	ButtonStyles.apply_stone_texture(btn_codex,        ButtonStyles.CODEX)
+	ButtonStyles.apply_stone_texture(btn_leaderboard,  ButtonStyles.LEADERBOARD)
+	# Corner secondaries stay quiet — flat secondary stone, not the new texture.
 	ButtonStyles.apply_stone_secondary(btn_language, ButtonStyles.LANGUAGE)
-	ButtonStyles.apply_stone_secondary(btn_credits, ButtonStyles.CREDITS)
+	ButtonStyles.apply_stone_secondary(btn_credits,  ButtonStyles.CREDITS)
+
+func _apply_button_icons() -> void:
+	# Phase UI-3: navigation icons sit left of each menu button label. The
+	# helper silently no-ops on any missing texture so we can ship the rework
+	# even if a single asset is held back.
+	_set_button_icon(btn_character,   String(NAV_ICON_PATHS["heroes"]))
+	_set_button_icon(btn_stage,       String(NAV_ICON_PATHS["stages"]))
+	_set_button_icon(btn_difficulty,  String(NAV_ICON_PATHS["difficulty"]))
+	_set_button_icon(btn_shop,        String(NAV_ICON_PATHS["shop"]))
+	_set_button_icon(btn_codex,       String(NAV_ICON_PATHS["story"]))
+	_set_button_icon(btn_leaderboard, String(NAV_ICON_PATHS["leaderboard"]))
+	# Gold coin icon next to the gold counter — pixel-art accent in the status
+	# strip so the gold number doesn't sit on a bare text label.
+	if ResourceLoader.exists(ICON_GOLD_PATH):
+		var coin := load(ICON_GOLD_PATH)
+		if coin is Texture2D:
+			gold_coin_icon.texture = coin
+			gold_coin_icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		else:
+			gold_coin_icon.visible = false
+	else:
+		gold_coin_icon.visible = false
+
+func _set_button_icon(button: Button, path: String) -> void:
+	if not ResourceLoader.exists(path):
+		return
+	var tex := load(path)
+	if not (tex is Texture2D):
+		return
+	button.icon = tex
+	button.expand_icon = true
+	button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	# 1024px source PNGs need filter=Nearest to read as crisp pixel art.
+	button.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 func _apply_status_card_style() -> void:
 	# 상태 카드는 메뉴 위에 떠 있어야 하므로 톤을 살짝 더 어둡게 + 모서리는 작게(6 이하).

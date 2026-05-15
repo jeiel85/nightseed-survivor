@@ -75,9 +75,10 @@
   - `MenuBackdrop.gd` 절차 배경 (수직 그라데이션 + 별 + 달빛 헤일로 + 안개 + 트리 실루엣 + 반딧불)
   - `CharacterShowcase.gd` + 노드 — 현재 캐릭터 스프라이트(16×16) 6× 업스케일 + 후광/봉인 링 + 이름 라벨, 스프라이트 누락 시 silhouette fallback
   - PLAY 달빛 CTA / 1차 행 강조 석판 / 2차 행 + 코너 조용한 석판으로 위계 재정리
-- [ ] 1차 리워크 후 실제 추가 애셋 필요성 산출
-  - 후보: 메뉴 배경 일러스트, 캐릭터 큰 portrait, 9-slice 텍스처, 출정/상점/도감/설정/업적 아이콘
-  - 폰 실기 검증 결과를 본 뒤 확정
+- [x] 1차 리워크 후 실제 추가 애셋 필요성 산출 — `docs/UI_REDESIGN_SPEC.md` + `docs/ASSETS_TO_GENERATE.md`로 확정 (6화면 × 30여 자산, 우선순위 P0/P1/P2)
+- [x] Phase UI-3 메인 메뉴 1차 자산 통합 — BG-01/PN-01/PN-03/IC-TOP-01,02/IC-NAV-01~06 (총 10장 P0) + BG-02/BG-03 보너스 2장. `ButtonStyles.apply_stone_texture`/`apply_amber_texture` 추가, `MainMenu.tscn`에 `BackgroundImage`+`GoldCoinIcon` 노드, 모든 텍스처는 `ResourceLoader.exists()` 가드로 fallback.
+- [ ] **다음 세션(빌드 가능 PC)에서**: `.import` 자동 생성 커밋 → 헤드리스 검증 → 로컬 AAB 빌드 → 폰 실기 검증 → 9-slice margin(96/140/36) 시각 검수 후 필요시 조정 → 통과시 Play Console 비공개 트랙 업로드
+- [ ] P4: 나머지 5화면 자산 통합 — LevelUp → Results → CharSelect → Shop → BattleHUD (P3 폰 검증 통과 후 진입)
 - [ ] Phase UI-3 캐릭터 쇼케이스 고도화 (Characters.DATA에 `portrait` 키 추가 + 실제 큰 이미지 도입)
 - [ ] Phase UI-4 레벨업 카드 보상 카드 스타일 리워크
 - [ ] Phase UI-5 결과 화면 승패/보상 연출 리워크

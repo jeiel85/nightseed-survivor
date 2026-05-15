@@ -1,5 +1,28 @@
 # Progress
 
+## 2026-05-15 — 메인 메뉴 Phase UI-3 (AI 자산 1차 통합)
+
+### Status
+
+ChatGPT(GPT-4o)로 생성한 P0 자산 10개 + BG-02/03 보너스 2개를 메인 메뉴에 1차 통합. 로컬 빌드 불가 환경이라 코드만 푸시하고 빌드/실기 검증은 다음 세션(빌드 가능 PC)에 위임.
+
+### Completed
+
+- 자산 12장 배치 — `godot/assets/sprites/ui/{bg,panel,icon_top,icon_nav}/`
+- 디자인 스펙 2장 — `docs/UI_REDESIGN_SPEC.md`, `docs/ASSETS_TO_GENERATE.md` (ChatGPT 워크플로우 반영)
+- `ButtonStyles.gd` 확장 — `apply_stone_texture(Button, accent)`, `apply_amber_texture(Button)` + 9-slice margin 상수 + 텍스처 누락 시 기존 `apply_stone`/`apply` 자동 fallback
+- `MainMenu.tscn` — `BackgroundImage` (TextureRect) 추가, 기존 절차 `MenuBackdrop`은 fallback용으로 visible=false, `GoldCoinIcon` (TextureRect) GoldRow에 추가
+- `MainMenu.gd` — `_apply_background()` / `_apply_button_icons()` 추가, `_apply_button_styles()` 텍스처 기반으로 전환 (Language/Credits만 flat 보조 유지), 모든 텍스처 로드는 `ResourceLoader.exists()` 가드
+
+### Not Yet Done — 다음 세션(빌드 가능 PC)에서
+
+- `.import` 파일 자동 생성 (Godot 에디터 첫 실행) → 커밋
+- `godot --headless --path godot --quit` 헤드리스 검증
+- 로컬 Android AAB 빌드 + 실기 확인 (메인 메뉴 새 배경/버튼/아이콘 렌더)
+- 9-slice margin 96/140/36 px가 실제 렌더에서 의도대로 나오는지 시각 검수 (어긋나면 `ButtonStyles.gd`의 `STONE_NINE_MARGIN`/`AMBER_NINE_L_R`/`AMBER_NINE_T_B` 조정)
+- Play Console 비공개 트랙 업로드 (검증 후)
+- 통과 시 P4 진입: LevelUp → Results → CharSelect → Shop → BattleHUD 순차 적용
+
 ## 2026-05-15 — v0.24.0 릴리즈 준비
 
 ### Status
