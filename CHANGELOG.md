@@ -1,5 +1,26 @@
 # CHANGELOG.md
 
+## v0.25.1 - 2026-05-16 (한국어 게임 제목 정리)
+
+### Changed
+- `godot/project.godot`
+  - `application/config/name` "밤의 씨앗: 서바이버" → "Nightseed Survivor" (default 영문)
+  - `application/config/name_localized` 추가 `{"en": "Nightseed Survivor", "ko": "잔불의 밤"}` — 한국어 폰은 "잔불의 밤", 그 외는 영문
+- `branding/index.html` — 한국어 게임 제목 10곳 일괄 변경 ("밤의 씨앗: 서바이버" → "잔불의 밤"), SEO keywords에 신규 표기 추가하면서 옛 표기는 검색 유입 호환 위해 보존
+- `branding/index.html` — "7분 생존 액션" 잔재 4곳 → "5분 생존 액션" 정정 (v0.18부터 5분 정책)
+- 버전 번호 갱신: versionCode 26→27, versionName 0.25.0→0.25.1 (`godot/export_presets.cfg` preset.0 + preset.4)
+
+### Preserved (의도된 그대로)
+- 게임 lore 용어 "밤의 씨앗" (Nightseed의 한국어 번역, `docs/story/`) — 게임 세계관 개념
+- 영문 코드네임 "Nightseed Survivor" (프로젝트 이름, 외부 등록명)
+- 과거 release 노트의 옛 표기 (역사 기록)
+
+### Documentation
+- `docs/releases/v0.25.1.md` / `play_store/release_notes/v0.25.1.txt` 신규
+
+### Known Issue (계속)
+- ★ RANK / AdMob native (.aar) 빌드 누락 — v0.25.0과 동일 (Godot 4.2 헤드리스 export quirk). GUI 에디터에서 직접 export 필요. v0.25.2 또는 v0.26.0에서 fix 예정
+
 ## v0.25.0 - 2026-05-16 (메인 메뉴 픽셀아트 리워크 — AI 자산 31장 + 5명 영웅 일러)
 
 ### Added — 메인 메뉴 시각 전면 리워크

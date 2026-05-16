@@ -1,0 +1,32 @@
+<ko-KR>
+🌙 한국어 게임 제목 정리
+
+한국어 표기를 "잔불의 밤"으로 일괄 변경했습니다.
+
+변경 사항
+• 안드로이드 앱 이름 (한국어 폰) "밤의 씨앗: 서바이버" → "잔불의 밤"
+• 영어/기타 언어 폰은 "Nightseed Survivor" 유지
+• 브랜딩 페이지 / SEO 메타 데이터 일괄 정리
+• 옛 "7분 생존 액션" 잔재 → "5분 생존 액션" 정정
+
+게임 내용 / 자산 / 게임플레이 변화 없음.
+
+알려진 문제
+• 순위표 버튼이 아직 안 열립니다 (다음 release에서 fix)
+</ko-KR>
+<en-US>
+🌙 Korean title cleanup
+
+Standardized the Korean game title to "잔불의 밤".
+
+Changes
+• Android app name on Korean devices: "잔불의 밤" (was "밤의 씨앗: 서바이버")
+• English/other locales keep "Nightseed Survivor"
+• Branding page / SEO metadata aligned
+• Old "7-min" copy corrected to "5-min survival action"
+
+No content / asset / gameplay changes.
+
+Known issue
+• Rank button doesn't open leaderboards yet (next release)
+</en-US>

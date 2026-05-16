@@ -4,6 +4,15 @@
 > Phase 1~4 로드맵을 작업 단위로 풀어 놓은 운영 목록입니다. 코드 상태를
 > 기준으로 한 마지막 동기화는 v0.23.0 작업 시작 시점입니다.
 
+## v0.25.1 완료 (한국어 게임 제목 정리)
+
+- [x] `config/name_localized` 추가 — 한국어 폰 "잔불의 밤", 그 외 "Nightseed Survivor"
+- [x] `branding/index.html` 한국어 표기 10곳 + "7분"→"5분" 4곳 일괄 정리
+- [x] AAB 빌드 + 바탕화면 복사 + release 노트
+
+### v0.25.2 또는 v0.26.0 → 다음 release 차단 해제 필요
+- [ ] PGS / AdMob native (.aar) 빌드 누락 fix — Godot GUI 에디터로 export
+
 ## v0.25.0 완료 (메인 메뉴 픽셀아트 리워크)
 
 ### 메인 메뉴 시각 전면 리워크

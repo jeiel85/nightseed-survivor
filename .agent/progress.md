@@ -1,5 +1,28 @@
 # Progress
 
+## 2026-05-16 — v0.25.1 릴리즈 (한국어 게임 제목 정리)
+
+### Status
+
+v0.25.0 픽셀아트 타이틀 로고가 "잔불의 밤"으로 바뀐 뒤 남아있던 옛 한국어 표기를 일괄 정리. 안드로이드 앱 이름은 `name_localized`로 영문/한국어 분리. 게임 로직/자산 변화 없음.
+
+### Completed
+
+- `godot/project.godot` — `config/name` "Nightseed Survivor" 기본, `config/name_localized` `{ko: "잔불의 밤", en: "Nightseed Survivor"}` 추가
+- `branding/index.html` — 한국어 게임 제목 10곳 + "7분"→"5분" 4곳 일괄 정정
+- 버전 번호 갱신 (27 / 0.25.1) + 헤드리스 AAB 빌드 + R8 서명
+- 노트 작성 (KO 271 / EN 402, 500자 이내)
+- 바탕화면 복사
+
+### PGS Native Fix — 헤드리스로 불가 확정
+
+- 검증 시도:
+  - `godot --headless --editor --quit-after 1800` (30초) 사전 띄움 → 효과 없음
+  - `godot --headless -v --export-release` verbose → plugin 로드 로그 0건
+  - APK 확인: `lib/`에 PGS .so 없음, `classes.dex`에 `play-games-services` 클래스 0개
+- 결론: Godot 4.2의 헤드리스 `--export-release`는 EditorPlugin(AndroidExportPlugin)을 활성화하지 못함. **GUI 에디터에서 직접 export**만이 안정적
+- 다음 release(v0.25.2 또는 v0.26.0)에서 사용자 직접 GUI 에디터 빌드 진행 예정
+
 ## 2026-05-16 — v0.25.0 릴리즈 (메인 메뉴 픽셀아트 리워크)
 
 ### Status

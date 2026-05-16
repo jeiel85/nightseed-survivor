@@ -1,5 +1,25 @@
 # HISTORY.md
 
+## 2026-05-16 (v0.25.1 릴리즈 — 한국어 게임 제목 정리)
+
+- 날짜: 2026-05-16
+- 작업: v0.25.0 픽셀아트 타이틀 로고가 "잔불의 밤"으로 바뀌었지만 안드로이드 앱 이름, 브랜딩 페이지에 옛 "밤의 씨앗: 서바이버" 표기가 남아있던 것을 일괄 정리. 영문은 "Nightseed Survivor" 유지. 게임 로직/자산 변화 없음.
+- 변경 파일:
+  - godot/project.godot (`config/name` + `config/name_localized` 추가)
+  - godot/export_presets.cfg (versionCode 26→27, versionName 0.25.0→0.25.1)
+  - branding/index.html (한국어 제목 10곳 + "7분"→"5분" 4곳)
+  - CHANGELOG.md, docs/releases/v0.25.1.md, play_store/release_notes/v0.25.1.txt
+- 검증:
+  - AAB 매니페스트 versionName "0.25.1" 확인
+  - 로컬 AAB 빌드 + R8 서명 통과
+- Known Issue (계속):
+  - ★ RANK / AdMob native (.aar) 빌드 누락 (Godot 4.2 헤드리스 export quirk). GUI 에디터 빌드 필요. v0.25.2 또는 v0.26.0에서 fix 예정
+- 산출물:
+  - C:\Users\jeiel\OneDrive\바탕 화면\nightseed-survivor-v0.25.1.aab
+  - C:\Users\jeiel\OneDrive\바탕 화면\nightseed-survivor-v0.25.1-release-notes.txt
+  - D:\Project\nightseed-survivor\build\nightseed-survivor-release.aab
+  - D:\Project\nightseed-survivor\build\nightseed-survivor-release.mapping.txt
+
 ## 2026-05-16 (v0.25.0 릴리즈 준비 — 메인 메뉴 픽셀아트 리워크)
 
 - 날짜: 2026-05-16

@@ -10,7 +10,11 @@ config_version=5
 
 [application]
 
-config/name="밤의 씨앗: 서바이버"
+config/name="Nightseed Survivor"
+config/name_localized={
+"en": "Nightseed Survivor",
+"ko": "잔불의 밤"
+}
 run/main_scene="res://scenes/ui/MainMenu.tscn"
 config/features=PackedStringArray("4.2")
 config/icon="res://assets/icons/icon.png"
