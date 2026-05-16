@@ -62,12 +62,14 @@ theme_override_font_sizes/font_size = 28
 theme_override_colors/font_color = Color(0.86, 0.93, 1, 1)
 
 [node name="VBox" type="VBoxContainer" parent="."]
-offset_left = 40.0
-offset_top = 80.0
-offset_right = -40.0
-offset_bottom = -32.0
-anchor_right = 1.0
+anchor_left = 0.5
+anchor_top = 0.0
+anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = -360.0
+offset_top = 80.0
+offset_right = 360.0
+offset_bottom = -32.0
 theme_override_constants/separation = 12
 
 [node name="TitleImage" type="TextureRect" parent="VBox"]
@@ -85,7 +87,8 @@ theme_override_font_sizes/font_size = 36
 theme_override_colors/font_color = Color(0.74, 0.76, 0.92, 1)
 
 [node name="StatusCard" type="PanelContainer" parent="VBox"]
-custom_minimum_size = Vector2(0, 140)
+custom_minimum_size = Vector2(1, 140)
+size_flags_horizontal = 3
 
 [node name="StatusVBox" type="VBoxContainer" parent="VBox/StatusCard"]
 theme_override_constants/separation = 4
@@ -112,7 +115,8 @@ size_flags_horizontal = 3
 text = ""
 horizontal_alignment = 2
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 28
+clip_text = true
+theme_override_font_sizes/font_size = 22
 theme_override_colors/font_color = Color(0.78, 0.84, 1, 1)
 
 [node name="StatusLabel" type="Label" parent="VBox/StatusCard/StatusVBox"]
@@ -120,7 +124,8 @@ custom_minimum_size = Vector2(0, 44)
 text = "Vagrant  ·  Forest of Echoes  ·  Normal"
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 30
+clip_text = true
+theme_override_font_sizes/font_size = 24
 
 [node name="Spacer" type="Control" parent="VBox"]
 custom_minimum_size = Vector2(0, 6)
@@ -128,12 +133,15 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 
 [node name="BtnPlay" type="Button" parent="VBox"]
-custom_minimum_size = Vector2(0, 196)
+custom_minimum_size = Vector2(1, 196)
+size_flags_horizontal = 3
 text = "PLAY"
-theme_override_font_sizes/font_size = 76
+clip_text = true
+theme_override_font_sizes/font_size = 60
 
 [node name="PrimaryRow" type="HBoxContainer" parent="VBox"]
-custom_minimum_size = Vector2(0, 110)
+custom_minimum_size = Vector2(1, 110)
+size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
 [node name="BtnCharacter" type="Button" parent="VBox/PrimaryRow"]
@@ -153,7 +161,8 @@ clip_text = true
 theme_override_font_sizes/font_size = 32
 
 [node name="SecondaryRow" type="HBoxContainer" parent="VBox"]
-custom_minimum_size = Vector2(0, 110)
+custom_minimum_size = Vector2(1, 110)
+size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
 [node name="BtnDifficulty" type="Button" parent="VBox/SecondaryRow"]
@@ -173,7 +182,8 @@ clip_text = true
 theme_override_font_sizes/font_size = 32
 
 [node name="TertiaryRow" type="HBoxContainer" parent="VBox"]
-custom_minimum_size = Vector2(0, 110)
+custom_minimum_size = Vector2(1, 110)
+size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
 [node name="BtnCodex" type="Button" parent="VBox/TertiaryRow"]

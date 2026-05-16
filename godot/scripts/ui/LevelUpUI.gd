@@ -23,6 +23,18 @@ const TAG_NEW_COLOR := Color(0.4, 0.85, 1.0, 1.0)
 const TAG_UP_COLOR := Color(1.0, 0.85, 0.45, 1.0)
 const TAG_EVOLVE_COLOR := Color(1.0, 0.6, 0.95, 1.0)
 
+# Phase UI-4 — AI pixel-art card assets.
+# panel_card_dark is the base stone tablet (any card kind).
+# glow frames overlay on top to convey rarity at a glance.
+const PANEL_CARD_DARK_PATH := "res://assets/sprites/ui/panel/panel_card_dark.9.png"
+const GLOW_BY_KIND := {
+	"new":         "res://assets/sprites/ui/panel/frame_card_glow_blue.9.png",
+	"up":          "res://assets/sprites/ui/panel/frame_card_glow_gold.9.png",
+	"evolve":      "res://assets/sprites/ui/panel/frame_card_glow_purple.9.png",
+	"passive_new": "res://assets/sprites/ui/panel/frame_card_glow_green.9.png",
+	"passive_up":  "res://assets/sprites/ui/panel/frame_card_glow_gold.9.png",
+}
+
 var _options: Array = []
 var _player: Player
 var _cards: Array = []
@@ -222,19 +234,15 @@ func _setup_card(card: PanelContainer, opt: Dictionary, idx: int) -> void:
 	var tags_lbl: Label = card.get_node_or_null("VBox/Tags")
 	var btn: Button = card.get_node_or_null("VBox/SelectBtn")
 	var color: Color = opt["color"]
+	var kind: String = String(opt.get("kind", ""))
 	var captured_idx := idx
 
-	# Distinct colored frame per card so options read as 3 separate choices
-	# at a glance, not one continuous strip.
-	var card_style := StyleBoxFlat.new()
-	card_style.bg_color = Color(color.r * 0.16, color.g * 0.16, color.b * 0.20, 0.95)
-	card_style.border_color = color
-	card_style.set_border_width_all(4)
-	card_style.set_corner_radius_all(16)
-	card_style.set_content_margin_all(10)
-	card_style.shadow_color = Color(color.r, color.g, color.b, 0.40)
-	card_style.shadow_size = 8
-	card.add_theme_stylebox_override("panel", card_style)
+	# Card panel — prefer the AI pixel-art stone tablet (panel_card_dark.9), fall
+	# back to the procedural StyleBoxFlat when the texture isn't imported yet.
+	card.add_theme_stylebox_override("panel", _make_card_panel_style(color))
+	# Rarity glow overlay (separate node so it doesn't fight PanelContainer
+	# layout). NinePatchRect stretches the pixel-art glow to any card size.
+	_apply_card_glow(card, kind)
 
 	# Whole card is the tap target — players can tap the icon, title, desc, or button.
 	# Inner children must not stop the event from reaching the panel's gui_input.
@@ -306,6 +314,74 @@ func _setup_card(card: PanelContainer, opt: Dictionary, idx: int) -> void:
 		btn.add_theme_color_override("font_hover_color", Color.WHITE)
 		btn.add_theme_color_override("font_pressed_color", Color.WHITE)
 		btn.add_theme_color_override("font_focus_color", Color.WHITE)
+		# Heavy navy outline so the white label reads against any card hue
+		# (bright green / orange / pink backgrounds all happen).
+		var outline_color := Color(0.05, 0.07, 0.12, 0.95)
+		btn.add_theme_color_override("font_outline_color", outline_color)
+		btn.add_theme_constant_override("outline_size", 6)
+
+func _make_card_panel_style(tint: Color) -> StyleBox:
+	# Texture-backed stone tablet when the asset is present.
+	if ResourceLoader.exists(PANEL_CARD_DARK_PATH):
+		var tex := load(PANEL_CARD_DARK_PATH)
+		if tex is Texture2D:
+			var sb := StyleBoxTexture.new()
+			sb.texture = tex
+			# 128×160 source asset; 14 px corner keeps the tablet's rounded
+			# corner detail crisp at any card size.
+			sb.texture_margin_left = 14
+			sb.texture_margin_right = 14
+			sb.texture_margin_top = 14
+			sb.texture_margin_bottom = 14
+			sb.content_margin_left = 12
+			sb.content_margin_right = 12
+			sb.content_margin_top = 12
+			sb.content_margin_bottom = 12
+			# Subtle rarity-color modulate so the dark stone reads slightly
+			# warmer/cooler per card without overpowering the texture.
+			sb.modulate_color = Color(1, 1, 1, 1).lerp(tint, 0.12)
+			return sb
+	# Fallback: original procedural flat panel.
+	var sb_flat := StyleBoxFlat.new()
+	sb_flat.bg_color = Color(tint.r * 0.16, tint.g * 0.16, tint.b * 0.20, 0.95)
+	sb_flat.border_color = tint
+	sb_flat.set_border_width_all(4)
+	sb_flat.set_corner_radius_all(16)
+	sb_flat.set_content_margin_all(10)
+	sb_flat.shadow_color = Color(tint.r, tint.g, tint.b, 0.40)
+	sb_flat.shadow_size = 8
+	return sb_flat
+
+func _apply_card_glow(card: PanelContainer, kind: String) -> void:
+	var glow_path: String = String(GLOW_BY_KIND.get(kind, ""))
+	var glow: NinePatchRect = card.get_node_or_null("CardGlow") as NinePatchRect
+	if glow_path == "" or not ResourceLoader.exists(glow_path):
+		if glow:
+			glow.visible = false
+		return
+	if glow == null:
+		glow = NinePatchRect.new()
+		glow.name = "CardGlow"
+		glow.set_anchors_preset(Control.PRESET_FULL_RECT)
+		glow.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		glow.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		# Skip the center stretch region entirely — only the corners + edges
+		# of the glow get drawn. Without this the (still partially opaque)
+		# asset center would overlay the card content as a solid sheet.
+		glow.draw_center = false
+		# 144×176 source asset; 24 px corner gives the rounded glow halo
+		# room to stretch without distorting the corner curve.
+		glow.set_patch_margin_all(24)
+		# PanelContainer expects a single layout child; the glow as an extra
+		# child with anchors=FULL_RECT just paints over the panel rect and
+		# does not affect VBox layout. Z-order: drawn after the stylebox.
+		card.add_child(glow)
+		card.move_child(glow, card.get_child_count() - 1)
+	glow.texture = load(glow_path)
+	# Force WHITE so PanelContainer.modulate (alpha 0→1 fade-in) doesn't tint
+	# the glow, and so it always shows the asset's native pixel color.
+	glow.self_modulate = Color.WHITE
+	glow.visible = true
 
 func _propagate_mouse_ignore(node: Node) -> void:
 	for child in node.get_children():

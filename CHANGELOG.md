@@ -1,5 +1,39 @@
 # CHANGELOG.md
 
+## v0.26.0 - 2026-05-16 (LevelUp 픽셀아트 + Galmuri 폰트 + 다국어 layout)
+
+### Added — Phase UI-4 LevelUp 카드 자산 통합
+- `LevelUpUI.gd` — `panel_card_dark.9.png` StyleBoxTexture로 카드 panel 적용 + rarity별 글로우 overlay (NinePatchRect 동적 추가)
+- `GLOW_BY_KIND` 매핑: new→blue, up→gold, evolve→purple, passive_new→green, passive_up→gold
+- `NinePatchRect.draw_center=false` + `self_modulate=WHITE` 강제 (parent modulate가 글로우 색 변형 방지)
+- 글로우 자산 4장 (blue/green/purple/gold) 채도 기반 알파 처리 — saturation < 40 픽셀 alpha 0, 진한 색 외곽만 보존
+- SELECT 버튼에 진한 navy outline 6px 추가 — 어떤 rarity 배경에서도 텍스트 가독
+- 카드 높이 372→420, 아이콘 96→108, 폰트 사이즈 일괄 ~1.3배 (카드 title 42, header tag 30, stats 30, desc 28, select 32, "레벨업!" 48)
+
+### Added — Galmuri 11 픽셀 폰트
+- `godot/assets/fonts/Galmuri11.ttf` 신규 (5.1 MB, OFL 라이선스, https://github.com/quiple/galmuri)
+- `gui/theme/custom_font` Pretendard → Galmuri 11 일괄 교체
+- 한글 + 영문 동일 폰트로 픽셀아트 자산과 톤 통일
+
+### Changed — 메인 메뉴 다국어 layout 안전화
+- `MainMenu.tscn` VBox 가운데 정렬 + 폭 720 (anchor_left/right=0.5, offset -360~360)
+- `project.godot` `stretch_aspect=expand` 복구 + `default_clear_color=Color(0.043,0.054,0.09,1)` (letterbox 영역 navy)
+- BtnPlay, StatusCard, PrimaryRow/SecondaryRow/TertiaryRow에 `size_flags_horizontal=3` + `clip_text=true` 일괄 명시
+- 폰트 사이즈 영문 fit 보정: BtnPlay 76→60, StatusLabel 30→24, NextGoalLabel 28→22
+
+### Changed — Localization 영문 텍스트 단축 (NextGoalLabel 잘림 fix)
+- `menu_next_goal_fmt` "Next upgrade in %d gold" → "%d g to upgrade"
+- `menu_next_goal_ready` "★ Upgrade ready · open Shop" → "★ Upgrade ready"
+- `menu_next_goal_maxed` "All upgrades maxed" → "All maxed"
+- 한국어 텍스트는 변경 없음
+
+### Documentation
+- `docs/releases/v0.26.0.md`, `play_store/release_notes/v0.26.0.txt` 신규
+
+### Known Issues (계속)
+- ★ RANK 리더보드 / AdMob 광고 미동작 — Godot 4.2 헤드리스 export quirk (PGS/AdMob native .aar 누락). GUI 에디터 빌드 필요. v0.26.1+ fix 예정
+- **Pyromancer 캐릭터 공격 미작동 의심** — 폰 검증 중 사용자 보고. FireWisp 코드 review로는 명확한 원인 못 찾음. v0.26.1에서 logcat 진단 + fix 예정
+
 ## v0.25.1 - 2026-05-16 (한국어 게임 제목 정리)
 
 ### Changed

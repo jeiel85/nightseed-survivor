@@ -1,0 +1,38 @@
+<ko-KR>
+🌙 레벨업 카드 픽셀아트 + 픽셀 폰트
+
+레벨업 화면
+• 카드 picture가 픽셀아트 stone tablet으로 리워크
+• 신규/강화/진화/패시브 별 외곽 글로우 색 구분
+• 선택 버튼 가독성 보강
+
+폰트 / 레이아웃
+• 시스템 폰트 → Galmuri 11 픽셀 한글 폰트
+• 영문/한국어 모두 안전하게 fit (PLAY 잘림 등 fix)
+• 메뉴 가운데 정렬 + 폭 일관
+
+게임플레이 변화 없음.
+
+알려진 문제
+• 순위표 / 광고 미동작 (다음 release)
+• Pyromancer 공격 미작동 의심 (조사 중)
+</ko-KR>
+<en-US>
+🌙 Level-up cards pixel art + pixel font
+
+Level up
+• Cards reworked with pixel-art stone tablet panel
+• Rarity glow halo per kind (new/up/evolve/passive)
+• Select button outline for readability
+
+Font / Layout
+• System font → Galmuri 11 Korean pixel font
+• English/Korean both fit safely (PLAY clipping etc. fixed)
+• Menu centered + consistent width
+
+No gameplay changes.
+
+Known issues
+• Rank / ads not working (next release)
+• Pyromancer attack may not fire (investigating)
+</en-US>

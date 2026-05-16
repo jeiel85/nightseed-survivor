@@ -1,5 +1,34 @@
 # Progress
 
+## 2026-05-16 — v0.26.0 릴리즈 (LevelUp 픽셀아트 + Galmuri 폰트 + 다국어 layout)
+
+### Status
+
+LevelUp 카드 P1 자산 (panel_card_dark + rarity 글로우 4색) 통합 + Galmuri 11 픽셀 폰트 + 메인 메뉴 다국어 layout 안전화 완료. 한국어/영문 모두 폰 검증 통과.
+
+### Completed
+
+- LevelUp 카드: panel_card_dark.9 (StyleBoxTexture) + NinePatchRect 글로우 overlay (rarity별, draw_center=false, self_modulate WHITE)
+- 글로우 4장 (blue/green/purple/gold) 채도 기반 알파 처리 — 무채색 영역 모두 알파 0
+- SELECT 버튼 navy outline 6px
+- Galmuri 11 ttf 다운로드 + project 전역 default font
+- 메인 메뉴 VBox 가운데 정렬 + 폭 720
+- stretch_aspect=expand + clear_color navy
+- size_flags + clip_text 일괄 명시
+- 영문 fit fix: BtnPlay 60, StatusLabel 24, NextGoalLabel 22, 영문 텍스트 단축
+- versionCode 28 / versionName 0.26.0
+- AAB 빌드 + 바탕화면 복사 완료
+
+### Verification
+
+- 폰 실기 검증: 메인 메뉴 (KO + EN 모두), LevelUp 카드 panel + glow
+- AAB 매니페스트 versionName "0.26.0" 확인
+
+### Known Issues → v0.26.1
+
+- PGS / AdMob native (.aar) 빌드 누락 (Godot 4.2 헤드리스 export quirk). GUI 에디터로 export 필요
+- **Pyromancer FireWisp 공격 미작동 의심** — 사용자 보고. 코드 review로 명확 원인 못 찾음. logcat 진단 필요
+
 ## 2026-05-16 — v0.25.1 릴리즈 (한국어 게임 제목 정리)
 
 ### Status

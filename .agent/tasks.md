@@ -4,6 +4,27 @@
 > Phase 1~4 로드맵을 작업 단위로 풀어 놓은 운영 목록입니다. 코드 상태를
 > 기준으로 한 마지막 동기화는 v0.23.0 작업 시작 시점입니다.
 
+## v0.26.0 완료 (LevelUp 픽셀아트 + Galmuri 폰트 + 다국어 layout)
+
+### LevelUp Phase UI-4
+- [x] panel_card_dark.9 + rarity 글로우 4색 통합
+- [x] NinePatchRect.draw_center=false + self_modulate WHITE
+- [x] 글로우 자산 채도 기반 알파 처리
+- [x] SELECT navy outline + 폰트 사이즈 ~1.3배
+
+### 픽셀아트 폰트
+- [x] Galmuri 11 ttf 다운로드 + 전역 default font
+
+### 다국어 layout 안전화
+- [x] VBox 가운데 정렬 + 폭 720
+- [x] stretch_aspect=expand + clear_color navy
+- [x] size_flags + clip_text 일괄
+- [x] 영문 fit fix (BtnPlay/StatusLabel/NextGoal 폰트 + 텍스트 단축)
+
+### Known Issues → v0.26.1
+- [ ] PGS / AdMob native (.aar) 빌드 누락 fix (GUI 에디터 export)
+- [ ] Pyromancer FireWisp 공격 미작동 진단 (logcat)
+
 ## v0.25.1 완료 (한국어 게임 제목 정리)
 
 - [x] `config/name_localized` 추가 — 한국어 폰 "잔불의 밤", 그 외 "Nightseed Survivor"

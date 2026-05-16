@@ -41,9 +41,9 @@ const STRINGS: Dictionary = {
 	"btn_language_fmt":    {"en": "Language:  %s", "ko": "언어:  %s"},
 	"lang_ko_label":       {"en": "한국어", "ko": "한국어"},
 	"lang_en_label":       {"en": "English", "ko": "English"},
-	"menu_next_goal_fmt":   {"en": "Next upgrade in %d gold", "ko": "다음 강화까지 %d 골드"},
-	"menu_next_goal_ready": {"en": "★ Upgrade ready · open Shop", "ko": "★ 강화 가능 · 상점에서 확인"},
-	"menu_next_goal_maxed": {"en": "All upgrades maxed", "ko": "모든 강화 완료"},
+	"menu_next_goal_fmt":   {"en": "%d g to upgrade",       "ko": "다음 강화까지 %d 골드"},
+	"menu_next_goal_ready": {"en": "★ Upgrade ready",       "ko": "★ 강화 가능 · 상점에서 확인"},
+	"menu_next_goal_maxed": {"en": "All maxed",             "ko": "모든 강화 완료"},
 
 	# --- HUD ---
 	"hud_hp_fmt":          {"en": "HP  %d / %d", "ko": "HP  %d / %d"},

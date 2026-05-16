@@ -1,5 +1,32 @@
 # HISTORY.md
 
+## 2026-05-16 (v0.26.0 릴리즈 — LevelUp 픽셀아트 + Galmuri 폰트 + 다국어 layout)
+
+- 날짜: 2026-05-16
+- 작업: LevelUp 카드에 picture 자산 (panel_card_dark + rarity 글로우 4색) 통합, Pretendard → Galmuri 11 픽셀 폰트 일괄 교체, 메인 메뉴 다국어(영문/한국어) 모두 안전 fit 보정. PGS native 미해결 + Pyromancer 공격 버그 의심은 known issue로 명시.
+- 변경 파일:
+  - godot/export_presets.cfg (versionCode 27→28, versionName 0.25.1→0.26.0)
+  - godot/scripts/ui/LevelUpUI.gd (panel + glow overlay 적용, SELECT outline)
+  - godot/scenes/ui/LevelUpUI.tscn (폰트 사이즈 + 카드 높이 + 아이콘 사이즈)
+  - godot/scripts/ui/MainMenu.gd, godot/scenes/ui/MainMenu.tscn (VBox 가운데 정렬, size_flags 명시)
+  - godot/scripts/core/Localization.gd (영문 menu_next_goal 단축)
+  - godot/project.godot (gui/theme/custom_font = Galmuri11, stretch_aspect=expand, clear_color navy)
+  - godot/assets/fonts/Galmuri11.ttf (신규 5.1MB, OFL)
+  - godot/assets/sprites/ui/panel/frame_card_glow_{blue,green,purple,gold}.9.png (채도 기반 알파 처리)
+  - CHANGELOG.md, docs/releases/v0.26.0.md, play_store/release_notes/v0.26.0.txt
+- 검증:
+  - 폰 실기 검증 — 메인 메뉴 (한국어 + 영문 둘 다 fit), LevelUp 카드 (panel + glow + SELECT outline)
+  - AAB 매니페스트 versionName "0.26.0" 확인
+  - 로컬 AAB 빌드 + R8 서명 통과
+- Known Issues:
+  - PGS 리더보드 / AdMob 광고 native (.aar) 빌드 누락 — Godot 4.2 헤드리스 export quirk. GUI 에디터 빌드 필요. v0.26.1+ 예정
+  - **Pyromancer 캐릭터 공격 미작동 의심** — 사용자 보고. FireWisp 코드 review로는 명확한 원인 못 찾음. v0.26.1에서 logcat 진단 + fix 예정
+- 산출물:
+  - C:\Users\jeiel\OneDrive\바탕 화면\nightseed-survivor-v0.26.0.aab
+  - C:\Users\jeiel\OneDrive\바탕 화면\nightseed-survivor-v0.26.0-release-notes.txt
+  - D:\Project\nightseed-survivor\build\nightseed-survivor-release.aab
+  - D:\Project\nightseed-survivor\build\nightseed-survivor-release.mapping.txt
+
 ## 2026-05-16 (v0.25.1 릴리즈 — 한국어 게임 제목 정리)
 
 - 날짜: 2026-05-16

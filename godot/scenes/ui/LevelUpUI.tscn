@@ -21,7 +21,7 @@ anchor_right = 1.0
 text = "- LEVEL UP! -"
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 44
+theme_override_font_sizes/font_size = 48
 
 [node name="VBox" type="VBoxContainer" parent="Background"]
 offset_left = 40.0
@@ -34,13 +34,13 @@ theme_override_constants/separation = 12
 alignment = 1
 
 [node name="Card1" type="PanelContainer" parent="Background/VBox"]
-custom_minimum_size = Vector2(0, 372)
+custom_minimum_size = Vector2(0, 420)
 
 [node name="VBox" type="VBoxContainer" parent="Background/VBox/Card1"]
 theme_override_constants/separation = 3
 
 [node name="Header" type="ColorRect" parent="Background/VBox/Card1/VBox"]
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 52)
 color = Color(0.5, 0.8, 1.0, 1)
 
 [node name="Tag" type="Label" parent="Background/VBox/Card1/VBox/Header"]
@@ -51,7 +51,7 @@ offset_right = -12.0
 text = "NEW"
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 30
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.65)
 theme_override_constants/outline_size = 4
@@ -60,7 +60,7 @@ theme_override_constants/outline_size = 4
 theme_override_constants/separation = 12
 
 [node name="Icon" type="TextureRect" parent="Background/VBox/Card1/VBox/HBox"]
-custom_minimum_size = Vector2(96, 96)
+custom_minimum_size = Vector2(108, 108)
 size_flags_vertical = 4
 expand_mode = 1
 stretch_mode = 5
@@ -74,13 +74,13 @@ theme_override_constants/separation = 2
 text = "Weapon"
 horizontal_alignment = 0
 vertical_alignment = 0
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 36
 
 [node name="LevelLine" type="Label" parent="Background/VBox/Card1/VBox/HBox/TitleBox"]
 text = ""
 horizontal_alignment = 0
 vertical_alignment = 0
-theme_override_font_sizes/font_size = 23
+theme_override_font_sizes/font_size = 28
 theme_override_colors/font_color = Color(0.82, 0.86, 1, 1)
 
 [node name="Stats" type="Label" parent="Background/VBox/Card1/VBox"]
@@ -88,7 +88,7 @@ custom_minimum_size = Vector2(0, 30)
 text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 30
 theme_override_colors/font_color = Color(1, 0.95, 0.78, 1)
 
 [node name="Desc" type="Label" parent="Background/VBox/Card1/VBox"]
@@ -97,29 +97,29 @@ text = "Description"
 autowrap_mode = 3
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 23
+theme_override_font_sizes/font_size = 28
 
 [node name="Tags" type="Label" parent="Background/VBox/Card1/VBox"]
 custom_minimum_size = Vector2(0, 24)
 text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 24
 theme_override_colors/font_color = Color(0.78, 0.88, 1, 0.9)
 
 [node name="SelectBtn" type="Button" parent="Background/VBox/Card1/VBox"]
-custom_minimum_size = Vector2(0, 64)
+custom_minimum_size = Vector2(0, 76)
 text = "SELECT"
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 32
 
 [node name="Card2" type="PanelContainer" parent="Background/VBox"]
-custom_minimum_size = Vector2(0, 372)
+custom_minimum_size = Vector2(0, 420)
 
 [node name="VBox" type="VBoxContainer" parent="Background/VBox/Card2"]
 theme_override_constants/separation = 3
 
 [node name="Header" type="ColorRect" parent="Background/VBox/Card2/VBox"]
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 52)
 color = Color(0.5, 0.8, 1.0, 1)
 
 [node name="Tag" type="Label" parent="Background/VBox/Card2/VBox/Header"]
@@ -130,7 +130,7 @@ offset_right = -12.0
 text = "NEW"
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 30
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.65)
 theme_override_constants/outline_size = 4
@@ -139,7 +139,7 @@ theme_override_constants/outline_size = 4
 theme_override_constants/separation = 12
 
 [node name="Icon" type="TextureRect" parent="Background/VBox/Card2/VBox/HBox"]
-custom_minimum_size = Vector2(96, 96)
+custom_minimum_size = Vector2(108, 108)
 size_flags_vertical = 4
 expand_mode = 1
 stretch_mode = 5
@@ -153,13 +153,13 @@ theme_override_constants/separation = 2
 text = "Weapon"
 horizontal_alignment = 0
 vertical_alignment = 0
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 36
 
 [node name="LevelLine" type="Label" parent="Background/VBox/Card2/VBox/HBox/TitleBox"]
 text = ""
 horizontal_alignment = 0
 vertical_alignment = 0
-theme_override_font_sizes/font_size = 23
+theme_override_font_sizes/font_size = 28
 theme_override_colors/font_color = Color(0.82, 0.86, 1, 1)
 
 [node name="Stats" type="Label" parent="Background/VBox/Card2/VBox"]
@@ -167,7 +167,7 @@ custom_minimum_size = Vector2(0, 30)
 text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 30
 theme_override_colors/font_color = Color(1, 0.95, 0.78, 1)
 
 [node name="Desc" type="Label" parent="Background/VBox/Card2/VBox"]
@@ -176,29 +176,29 @@ text = "Description"
 autowrap_mode = 3
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 23
+theme_override_font_sizes/font_size = 28
 
 [node name="Tags" type="Label" parent="Background/VBox/Card2/VBox"]
 custom_minimum_size = Vector2(0, 24)
 text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 24
 theme_override_colors/font_color = Color(0.78, 0.88, 1, 0.9)
 
 [node name="SelectBtn" type="Button" parent="Background/VBox/Card2/VBox"]
-custom_minimum_size = Vector2(0, 64)
+custom_minimum_size = Vector2(0, 76)
 text = "SELECT"
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 32
 
 [node name="Card3" type="PanelContainer" parent="Background/VBox"]
-custom_minimum_size = Vector2(0, 372)
+custom_minimum_size = Vector2(0, 420)
 
 [node name="VBox" type="VBoxContainer" parent="Background/VBox/Card3"]
 theme_override_constants/separation = 3
 
 [node name="Header" type="ColorRect" parent="Background/VBox/Card3/VBox"]
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 52)
 color = Color(0.5, 0.8, 1.0, 1)
 
 [node name="Tag" type="Label" parent="Background/VBox/Card3/VBox/Header"]
@@ -209,7 +209,7 @@ offset_right = -12.0
 text = "NEW"
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 30
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.65)
 theme_override_constants/outline_size = 4
@@ -218,7 +218,7 @@ theme_override_constants/outline_size = 4
 theme_override_constants/separation = 12
 
 [node name="Icon" type="TextureRect" parent="Background/VBox/Card3/VBox/HBox"]
-custom_minimum_size = Vector2(96, 96)
+custom_minimum_size = Vector2(108, 108)
 size_flags_vertical = 4
 expand_mode = 1
 stretch_mode = 5
@@ -232,13 +232,13 @@ theme_override_constants/separation = 2
 text = "Weapon"
 horizontal_alignment = 0
 vertical_alignment = 0
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 36
 
 [node name="LevelLine" type="Label" parent="Background/VBox/Card3/VBox/HBox/TitleBox"]
 text = ""
 horizontal_alignment = 0
 vertical_alignment = 0
-theme_override_font_sizes/font_size = 23
+theme_override_font_sizes/font_size = 28
 theme_override_colors/font_color = Color(0.82, 0.86, 1, 1)
 
 [node name="Stats" type="Label" parent="Background/VBox/Card3/VBox"]
@@ -246,7 +246,7 @@ custom_minimum_size = Vector2(0, 30)
 text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 30
 theme_override_colors/font_color = Color(1, 0.95, 0.78, 1)
 
 [node name="Desc" type="Label" parent="Background/VBox/Card3/VBox"]
@@ -255,17 +255,17 @@ text = "Description"
 autowrap_mode = 3
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 23
+theme_override_font_sizes/font_size = 28
 
 [node name="Tags" type="Label" parent="Background/VBox/Card3/VBox"]
 custom_minimum_size = Vector2(0, 24)
 text = ""
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 24
 theme_override_colors/font_color = Color(0.78, 0.88, 1, 0.9)
 
 [node name="SelectBtn" type="Button" parent="Background/VBox/Card3/VBox"]
-custom_minimum_size = Vector2(0, 64)
+custom_minimum_size = Vector2(0, 76)
 text = "SELECT"
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 32
