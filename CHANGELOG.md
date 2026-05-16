@@ -1,22 +1,66 @@
 # CHANGELOG.md
 
-## Unreleased - 2026-05-15 (P1/P2 UI 자산 생성 자동화)
+## v0.25.0 - 2026-05-16 (메인 메뉴 픽셀아트 리워크 — AI 자산 31장 + 5명 영웅 일러)
 
-### Added
-- `scripts/generate_missing_ui_assets.py` 추가
-  - `docs/ASSETS_TO_GENERATE.md` 기준 P1/P2 누락 자산만 생성
-  - P0 ID는 항상 제외하고, 이미 존재하는 파일은 덮어쓰지 않음
-  - 기본 모델 `gpt-image-2`, `OPENAI_IMAGE_MODEL`로 모델명 오버라이드 가능
-  - Windows 사용자 환경 변수의 `OPENAI_API_KEY`도 자동 확인
-  - `--dry-run`으로 생성 대상 확인 가능
-  - 생성 PNG를 표의 원본 크기로 nearest-neighbor 리사이즈
+### Added — 메인 메뉴 시각 전면 리워크
+
+**5명 영웅 일러 배경 (BG-04, 720×1280)**
+- `bg_menu_hero_lineup.png` — Berserker / Spirit Sister / Vagrant(중앙) / Hunter / Pyromancer 다섯이 야경 숲 앞에 정렬
+- 자산 자체를 130 px 위로 shift (메뉴 UI와 안 겹치도록), 빈 하단은 dark navy padding
+- `MainMenu.gd._apply_background()` — BG-04 우선, BG-01(야경) → 절차 MenuBackdrop fallback. BG-04 적용 시 단일 캐릭터 `CharacterShowcase` 자동 hide
+
+**픽셀아트 타이틀 로고 (LG-02 / LG-03, 640×288)**
+- `assets/logo/title_ko.png` — "잔불의 밤" (한국어)
+- `assets/logo/title_en.png` — "NIGHTSEED SURVIVOR" (그 외 모든 언어)
+- `MainMenu.tscn` — `TitleLabel` (Label, 시스템 폰트) → `TitleImage` (TextureRect)로 교체
+- `MainMenu.gd._refresh_title_texture()` — `Localization.current_lang` 보고 자동 스왑
+
+**9-slice 텍스처 패널 (PN-01 / PN-03)**
+- `panel_stone_blue.9.png` (96×96) + `panel_cta_amber.9.png` (192×64)
+- 9-slice 마진 텍스처 픽셀 기준 16 / 24 / 12 px로 수정 (이전 1024 px 가정 96/140/36 → 가운데 stretch 영역 0이라 단순 stretch처럼 동작하던 버그 수정)
+
+**메뉴 버튼 3줄 × 2 배치**
+- `MainMenu.tscn` — PrimaryRow / SecondaryRow / TertiaryRow (각 2개 버튼). 노드 path 변경에 맞춰 `MainMenu.gd` `@onready` path 갱신
+- 영문 라벨 정리: `CHARACTERS` → `HEROES`, `★ LEADERS` → `★ RANK`, DIFF는 prefix 제거 후 난이도 이름만 (`btn_difficulty_short_fmt = "%s"`)
+- `clip_text=true` + `custom_minimum_size=(1, 110)` — EXPAND 정상 동작
+- 폰트 36 → 32
+
+**6개 네비 아이콘 + 골드 코인 + 설정 톱니 + close X**
+- `IC-NAV-01~06` (48×48): heroes / stages / difficulty / shop / story / leaderboard
+- `IC-TOP-01~03` (24×24): gold_coin / settings_gear / close_x
+- `_set_button_icon()` — `expand_icon=false` + `alignment=CENTER` + `icon_alignment=LEFT` + `icon_max_width=44` + `h_separation=12` + icon_modulate 살짝 lift (1.18~1.25)
+
+**좌하단 코너 — Language / Credits**
+- `TopRightRow` 위치 변경 — 우상단 (타이틀과 겹침) → 화면 좌하단 코너 (anchor bottom + offset_left=16)
+- 폰트 24 → 22
+
+### Added — AI 자산 후처리 자동화 파이프라인
+
+ChatGPT(GPT-4o) 출력의 공통 결함을 일괄 보정. 31장 자산 모두 같은 파이프라인 통과:
+1. **흰 가장자리 자동 crop** (4면에서 95%+ 흰색 행/열 detect)
+2. **target ratio alpha padding** + nearest 다운샘플 (비율 보존)
+3. **외곽 흰 영역 → 알파 (flood-fill)** — 외곽 alpha 0에서 인접 흰 픽셀만 변환, 가운데 디자인 흰 영역은 보존
+4. **1 px navy outline** — 어두운 석판 위 가시성 확보
+
+### Added — P1/P2 후속 화면용 자산 패키지 (import만, 코드 통합은 다음 버전)
+
+LevelUp 카드 (`panel_card_dark.9` + 글로우 프레임 4색), Results 화면 (`banner_stage_clear` + 보상 아이콘 6종), 인게임 HUD (5종), 로고 ornament, 상점 보강 — 총 18장. 자산은 import + 후처리 완료, 화면별 코드 통합은 v0.26.0+ 진행 예정.
+
+### Changed
+- `Localization.gd`: `btn_characters` "CHARACTERS"→"HEROES", `btn_leaderboard_short` "★ LEADERS"→"★ RANK", `btn_difficulty_short_fmt` "DIFF: %s"→"%s"
+- `MainMenu.gd`: title text → title texture, BG hero-lineup 우선
 
 ### Documentation
-- `docs/ASSETS_TO_GENERATE.md`에 자동 생성 스크립트 실행 방법 추가
+- `docs/releases/v0.25.0.md`, `play_store/release_notes/v0.25.0.txt` 신규
+- `docs/ASSETS_TO_GENERATE.md` §1.1 — BG-04 5명 캐릭터 배경 프롬프트, 메뉴 UI와 안 겹치도록 캐릭터를 화면 가운데 좁은 띠에 배치하는 구도 규칙
 
 ### Verification
-- `python scripts\generate_missing_ui_assets.py --dry-run` 통과 — P0와 기존 파일을 제외한 P1/P2 누락 20개 확인
-- 실제 생성 호출은 OpenAI `billing_hard_limit_reached` 응답으로 중단되어 PNG 자산은 생성되지 않음
+- 자산 31장 .import 자동 생성 + 헤드리스 부트 검증 통과
+- 로컬 APK + AAB 빌드 + R8 서명 통과 (versionCode 26 / versionName 0.25.0)
+- 폰 실기 검증 — 메인 메뉴 시각 전체 OK (배경/타이틀/캐릭터 lineup/버튼 3줄/아이콘 alignment)
+
+### Known Issue
+- ★ RANK 버튼 클릭 시 PGS 리더보드가 열리지 않음 — Godot 4.2 헤드리스 export(`--export-release`)가 EditorPlugin(AndroidExportPlugin)을 활성화하지 못해 PGS / AdMob native (.aar)이 빌드에 포함 안 됨. APK 안에 `play-games-services` 클래스 0개, `lib/`에 PGS native lib 없음 확인. v0.24.0도 같은 문제였을 가능성 (당시 폰 미검증). 다음 release(v0.25.1 또는 v0.26.0)에서 GUI 에디터 빌드 또는 Godot 4.3+ 업그레이드로 fix 예정
 
 ## v0.24.0 - 2026-05-15 (메인 메뉴 Nightseed 비주얼 리워크 1차 + AdMob 보상형 광고 SDK)
 

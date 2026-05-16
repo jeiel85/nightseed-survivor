@@ -4,6 +4,21 @@
 > Phase 1~4 로드맵을 작업 단위로 풀어 놓은 운영 목록입니다. 코드 상태를
 > 기준으로 한 마지막 동기화는 v0.23.0 작업 시작 시점입니다.
 
+## v0.25.0 완료 (메인 메뉴 픽셀아트 리워크)
+
+### 메인 메뉴 시각 전면 리워크
+- [x] BG-04 5명 영웅 일러 배경 + 메뉴 UI 안 겹치게 130 px shift
+- [x] 픽셀아트 타이틀 로고 KO "잔불의 밤" / EN "NIGHTSEED SURVIVOR" 자동 스왑
+- [x] 9-slice 마진 버그 수정 (96/140/36 → 16/24/12 px 텍스처 픽셀 기준)
+- [x] 메뉴 버튼 3줄 × 2 재배치
+- [x] 영문 라벨 정리 (HEROES, ★ RANK, DIFF=난이도이름만)
+- [x] 아이콘 alignment center + h_separation
+- [x] TopRightRow 좌하단 코너로 이동
+- [x] 자산 31장 후처리 자동화 파이프라인 (crop / alpha padding / flood-fill / outline)
+
+### Known Issue → v0.25.1
+- [ ] PGS / AdMob native (.aar) 빌드 누락 fix — Godot 4.2 헤드리스 export quirk
+
 ## v0.23.0 완료
 
 ### 폰트 대확대 — 모바일 가독성 최종 보정

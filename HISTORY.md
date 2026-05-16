@@ -1,5 +1,32 @@
 # HISTORY.md
 
+## 2026-05-16 (v0.25.0 릴리즈 준비 — 메인 메뉴 픽셀아트 리워크)
+
+- 날짜: 2026-05-16
+- 작업: ChatGPT(GPT-4o) 픽셀아트 자산 31장 + 5명 영웅 일러 배경 + 한국어/영어 픽셀아트 타이틀 로고로 메인 메뉴 시각 전면 리워크. 메뉴 버튼 3줄×2 재배치. 자산 후처리 자동화 파이프라인(흰 가장자리 crop / alpha padding / flood-fill / outline) 정착.
+- 변경 파일:
+  - godot/export_presets.cfg (versionCode 25→26, versionName 0.24.0→0.25.0)
+  - godot/scenes/ui/MainMenu.tscn (TitleLabel→TitleImage, 3줄×2 행, TopRightRow 좌하단)
+  - godot/scripts/ui/MainMenu.gd (BG hero-lineup 우선, title texture KO/EN 자동 스왑, icon alignment center)
+  - godot/scripts/ui/ButtonStyles.gd (9-slice 마진 96/140/36 → 16/24/12 px 수정)
+  - godot/scripts/core/Localization.gd (HEROES, ★ RANK, DIFF=난이도 이름만)
+  - godot/assets/sprites/ui/ (P0/P1/P2 자산 31장 후처리)
+  - godot/assets/sprites/ui/bg/bg_menu_hero_lineup.png (BG-04, 신규, 130 px 위로 shift)
+  - godot/assets/logo/title_ko.png, title_en.png (LG-02/03, 신규)
+  - CHANGELOG.md, docs/releases/v0.25.0.md, play_store/release_notes/v0.25.0.txt
+  - docs/ASSETS_TO_GENERATE.md §1.1 (BG-04 캐릭터 영역 가운데 띠 구도 규칙)
+- 검증:
+  - 자산 31장 .import 자동 생성 + 헤드리스 부트 OK
+  - 로컬 APK + AAB 빌드 + R8 서명 통과
+  - 폰 실기 검증 — 메인 메뉴 시각 전체 OK (KO/EN 둘 다)
+- Known Issue:
+  - ★ RANK 버튼 클릭 시 PGS 리더보드 안 열림. APK/AAB에 PGS native (.aar) 누락. Godot 4.2 헤드리스 export가 EditorPlugin(AndroidExportPlugin)을 활성화하지 못하는 quirk. v0.24.0도 같은 상태였을 것 (당시 폰 미검증). v0.25.1 또는 v0.26.0에서 GUI 에디터 빌드로 fix 예정
+- 산출물:
+  - C:\Users\jeiel\OneDrive\바탕 화면\nightseed-survivor-v0.25.0.aab
+  - C:\Users\jeiel\OneDrive\바탕 화면\nightseed-survivor-v0.25.0-release-notes.txt
+  - D:\Project\nightseed-survivor\build\nightseed-survivor-release.aab
+  - D:\Project\nightseed-survivor\build\nightseed-survivor-release.mapping.txt
+
 ## 2026-05-15 (P1/P2 UI 자산 생성 자동화)
 
 - 날짜: 2026-05-15

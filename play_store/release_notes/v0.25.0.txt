@@ -1,0 +1,42 @@
+<ko-KR>
+🌙 메인 메뉴 픽셀아트 리워크
+
+ChatGPT 픽셀아트 자산 31장이 메인 메뉴를 덮습니다.
+
+비주얼
+• 5명 영웅이 함께 등장하는 야경 일러 배경
+• "잔불의 밤" 픽셀아트 타이틀 로고 (시스템 폰트 X)
+• 9-slice 석판 버튼 + 호박 PLAY CTA
+• 6개 메뉴 아이콘 (캐릭터/스테이지/난이도/상점/스토리/순위표)
+• 골드 코인 / 설정 톱니 아이콘
+
+레이아웃
+• 메뉴 버튼 3줄 × 2 배치 — 영문/한국어 모두 깔끔
+• English/Credits 좌하단 코너로 이동
+
+알려진 문제
+• 순위표 버튼이 아직 안 열립니다 (다음 버전 fix)
+
+게임플레이 변화 없음.
+</ko-KR>
+<en-US>
+🌙 Main menu pixel-art rework
+
+31 ChatGPT pixel-art assets cover the entire main menu.
+
+Visuals
+• Night-forest background with all five heroes
+• "NIGHTSEED SURVIVOR" pixel-art title logo
+• 9-slice stone buttons + amber PLAY CTA
+• 6 nav icons (heroes/stages/diff/shop/story/rank)
+• Gold coin / settings gear icons
+
+Layout
+• Menu buttons reflowed to 3 rows × 2
+• Language/Credits moved to bottom-left
+
+Known issue
+• Rank button doesn't open leaderboards yet (next release)
+
+No gameplay changes.
+</en-US>

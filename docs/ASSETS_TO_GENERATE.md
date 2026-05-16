@@ -93,6 +93,66 @@ no painterly shading, no illustration style
 | BG-01 | **P0** | `godot/assets/sprites/ui/bg/bg_menu_night_sky.png` | 720×1280 | `vertical 9:16 mobile game background, night sky over distant haunted forest silhouette at the bottom edge, deep indigo to violet gradient from top to bottom, scattered tiny stars and faint nebula dust, faint pale moon top-right, center area kept relatively empty for UI overlay, no characters, no buildings, no creatures` |
 | BG-02 | P1 | `godot/assets/sprites/ui/bg/bg_battle_floor.png` | 256×256 (tile) | `seamless tileable dark fantasy floor texture, mossy cracked stone ground at night, deep teal-green and navy palette, subtle dirt patches, no plants, no objects, viewed straight from above, tileable on all four sides` |
 | BG-03 | P2 | `godot/assets/sprites/ui/bg/bg_logo_glow_ornament.png` | 512×256 | `decorative horizontal banner ornament for game logo background, two thin ornate silver vines curving outward from center, pale moonlight glow behind, ember gold sparkles, transparent background, suitable as backdrop for centered logo text` |
+| BG-04 | **P0** | `godot/assets/sprites/ui/bg/bg_menu_hero_lineup.png` | 720×1280 | (아래 §1.1 참조 — 다섯 캐릭터 그룹 일러) |
+
+### 1.1 BG-04 — 다섯 캐릭터 그룹 메인 메뉴 배경
+
+**용도**: 메인 메뉴 배경(BG-01) 대체 또는 그 위 레이어. 5명 캐릭터(Vagrant/Spirit Sister/Hunter/Berserker/Pyromancer)가 야경 숲 앞에 함께 서 있는 그룹 일러. 메뉴 UI가 위에 얹혀도 가독성이 유지되도록 캐릭터 그룹은 화면 하단~중앙에, 상단은 비교적 비워둠.
+
+**ChatGPT 첫 메시지 — 톤 앵커링용 참조 이미지** (필수):
+- `godot/assets/sprites/char_vagrant.png`
+- `godot/assets/sprites/char_spirit_sister.png`
+- `godot/assets/sprites/char_hunter.png`
+- `godot/assets/sprites/char_berserker.png`
+- `godot/assets/sprites/char_pyromancer.png`
+- `godot/assets/sprites/ui/bg/bg_menu_night_sky.png` (배경 톤)
+
+**프롬프트 본문** (참조 이미지 첨부 후):
+
+```
+Vertical 9:16 mobile game main menu background, 720×1280 pixel art.
+
+Five fantasy hero silhouettes standing together in a single front-facing group portrait, posed shoulder-to-shoulder on a low moonlit ridge in front of a haunted night forest. From left to right:
+
+1. Berserker — bulky bare-chested warrior, dark green skin tone, wielding a thorny ring weapon at his side, broad shoulders, intimidating stance.
+2. Spirit Sister — slender hooded priestess in a pale teal robe, three small glowing soul orbs orbiting her shoulders, calm pose with hands clasped.
+3. Vagrant (centered, slightly taller) — hooded loner in a dark cloak, holding a curved moonlit dagger that glints pale blue, the visual anchor of the group.
+4. Hunter — swift archer in light leather, drawn shortbow held low, quiver of star-tipped arrows on the back, athletic ready stance.
+5. Pyromancer — robed fire caster in deep crimson and ember, a small floating fire wisp hovering above the open palm, embers drifting upward.
+
+Background:
+- Night sky at the very top with deep indigo to violet vertical gradient, scattered tiny stars and faint nebula dust.
+- Pale moon top-right with soft halo.
+- Distant dark haunted forest silhouette as a thin horizon strip behind the heroes' shoulders only — NOT at the bottom of the frame.
+- Faint horizontal mist band behind the heroes' feet.
+- Scattered amber firefly sparks around the group.
+
+Composition rules (CRITICAL — game UI will overlap top 30% and bottom 55% of the frame; heroes MUST sit in the narrow middle band):
+- Top 30% (y=0 to y=384 in 720×1280): empty night sky + small moon top-right. Reserved for the game title text overlay. NO characters here.
+- Middle band roughly y=420 to y=720 (about 23% of the frame, centered around vertical y=570): all five heroes stand here, shoulder-to-shoulder, group horizontally centered, group fits within the middle 70% of the width.
+- Bottom 45% (y=720 to y=1280): dim ground / dark fog / distant tree silhouette only. NO characters here. Reserved for menu buttons (PLAY, HEROES, STAGES, etc.) overlay.
+- Heroes are NOT cropped at the bottom of the frame. Their feet stand on the moonlit ridge inside the middle band, with empty dark ground extending below them.
+- No text, no logos, no UI frames inside the image itself.
+
+Style:
+- Pixel art, crisp pixel edges, no anti-aliasing.
+- Match the Kenney Tiny Dungeon 16×16 character aesthetic of the reference sprites.
+- Color palette: deep navy #0B0E17 sky, pale moonlight #DDEBFF highlights, ember gold #F2C66A sparks, character clothing in muted earthy tones.
+- Flat front view of all five heroes.
+- No painterly shading, no illustration style — keep it readable as pixel art.
+```
+
+**중요 — 재생성이 필요한 이유**: 첫 번째 BG-04는 캐릭터를 화면 하단 35%에 그렸는데, 그 영역이 메인 메뉴의 PLAY/HEROES/STAGES 버튼 행과 겹쳐서 캐릭터가 안 보임. 새 프롬프트는 캐릭터를 **세로 가운데 작은 띠 (y=420~720)**에 배치하도록 명시 — StatusCard와 PLAY 버튼 사이의 빈 공간.
+
+**후처리** (§10 표준 외 추가):
+- 출력 1024×1792 → 720×1280 nearest 다운샘플
+- 5명 모두 보이는지 확인 (ChatGPT가 종종 1~2명 빠뜨림 — "draw all five characters visible, no one cropped"으로 보정 재요청)
+- 캐릭터 비율이 너무 크지 않은지 (메뉴 UI가 얹힐 자리 확보)
+
+**파일 적용 옵션**:
+- A. BG-01을 BG-04로 교체 → `_apply_background()`의 `BG_MENU_NIGHT_SKY_PATH` 상수만 새 경로로
+- B. 별도 레이어로 추가 → `MainMenu.tscn`에 `HeroLineupImage` TextureRect를 BG 위에 깔고 캐릭터 쇼케이스 노드 제거
+- 추천: A (단순). 마음에 들면 CharacterShowcase 노드도 같이 제거 가능
 
 ---
 

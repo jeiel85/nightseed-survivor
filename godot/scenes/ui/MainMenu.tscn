@@ -70,13 +70,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_constants/separation = 12
 
-[node name="TitleLabel" type="Label" parent="VBox"]
+[node name="TitleImage" type="TextureRect" parent="VBox"]
 custom_minimum_size = Vector2(0, 184)
-text = "NIGHTSEED
-SURVIVOR"
-horizontal_alignment = 1
-vertical_alignment = 1
-theme_override_font_sizes/font_size = 76
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
 
 [node name="Subtitle" type="Label" parent="VBox"]
 custom_minimum_size = Vector2(0, 52)
@@ -134,48 +133,64 @@ text = "PLAY"
 theme_override_font_sizes/font_size = 76
 
 [node name="PrimaryRow" type="HBoxContainer" parent="VBox"]
-custom_minimum_size = Vector2(0, 128)
+custom_minimum_size = Vector2(0, 110)
 theme_override_constants/separation = 10
 
 [node name="BtnCharacter" type="Button" parent="VBox/PrimaryRow"]
+custom_minimum_size = Vector2(1, 110)
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "CHARACTERS"
-theme_override_font_sizes/font_size = 36
+text = "HEROES"
+clip_text = true
+theme_override_font_sizes/font_size = 32
 
 [node name="BtnStage" type="Button" parent="VBox/PrimaryRow"]
+custom_minimum_size = Vector2(1, 110)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "STAGES"
-theme_override_font_sizes/font_size = 36
+clip_text = true
+theme_override_font_sizes/font_size = 32
 
-[node name="BtnDifficulty" type="Button" parent="VBox/PrimaryRow"]
+[node name="SecondaryRow" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 110)
+theme_override_constants/separation = 10
+
+[node name="BtnDifficulty" type="Button" parent="VBox/SecondaryRow"]
+custom_minimum_size = Vector2(1, 110)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "DIFFICULTY"
-theme_override_font_sizes/font_size = 36
-
-[node name="SecondaryRow" type="HBoxContainer" parent="VBox"]
-custom_minimum_size = Vector2(0, 120)
-theme_override_constants/separation = 10
+clip_text = true
+theme_override_font_sizes/font_size = 32
 
 [node name="BtnShop" type="Button" parent="VBox/SecondaryRow"]
+custom_minimum_size = Vector2(1, 110)
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "SHOP"
-theme_override_font_sizes/font_size = 36
+clip_text = true
+theme_override_font_sizes/font_size = 32
 
-[node name="BtnCodex" type="Button" parent="VBox/SecondaryRow"]
+[node name="TertiaryRow" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 110)
+theme_override_constants/separation = 10
+
+[node name="BtnCodex" type="Button" parent="VBox/TertiaryRow"]
+custom_minimum_size = Vector2(1, 110)
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "CODEX"
-theme_override_font_sizes/font_size = 36
+text = "STORY"
+clip_text = true
+theme_override_font_sizes/font_size = 32
 
-[node name="BtnLeaderboard" type="Button" parent="VBox/SecondaryRow"]
+[node name="BtnLeaderboard" type="Button" parent="VBox/TertiaryRow"]
+custom_minimum_size = Vector2(1, 110)
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "★ LEADERS"
-theme_override_font_sizes/font_size = 36
+text = "★ RANK"
+clip_text = true
+theme_override_font_sizes/font_size = 32
 
 [node name="BottomSpacer" type="Control" parent="VBox"]
 custom_minimum_size = Vector2(0, 6)
@@ -183,20 +198,24 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 1.0
 
 [node name="TopRightRow" type="HBoxContainer" parent="."]
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -340.0
-offset_top = 40.0
-offset_right = -16.0
-offset_bottom = 104.0
-theme_override_constants/separation = 10
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -64.0
+offset_right = 300.0
+offset_bottom = -16.0
+theme_override_constants/separation = 8
 
 [node name="BtnLanguage" type="Button" parent="TopRightRow"]
+custom_minimum_size = Vector2(1, 48)
 size_flags_horizontal = 3
 text = "English"
-theme_override_font_sizes/font_size = 24
+clip_text = true
+theme_override_font_sizes/font_size = 22
 
 [node name="BtnCredits" type="Button" parent="TopRightRow"]
+custom_minimum_size = Vector2(1, 48)
 size_flags_horizontal = 3
 text = "Credits"
-theme_override_font_sizes/font_size = 24
+clip_text = true
+theme_override_font_sizes/font_size = 22

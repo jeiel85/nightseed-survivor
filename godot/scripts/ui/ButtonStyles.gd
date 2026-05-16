@@ -176,12 +176,12 @@ static func _stone_focus_box(accent: Color, primary: bool) -> StyleBoxFlat:
 const PANEL_STONE_BLUE_PATH := "res://assets/sprites/ui/panel/panel_stone_blue.9.png"
 const PANEL_CTA_AMBER_PATH  := "res://assets/sprites/ui/panel/panel_cta_amber.9.png"
 
-# 9-slice margins (px) — see docs/UI_REDESIGN_SPEC.md §3.3.
-# Generated PNGs are ~1024px native; the 9-slice nine-patch grid divides them
-# proportionally so the corner runes/highlights stay sharp at any button size.
-const STONE_NINE_MARGIN := 96   # 96 of ~1024 ≈ 9% — keeps the corner rune dots inside the fixed corners
-const AMBER_NINE_L_R    := 140  # rounded pill caps live in the outer ~14% of the width
-const AMBER_NINE_T_B    := 36   # top highlight strip is ~7% of the height
+# 9-slice margins are in TEXTURE pixels, not source-render pixels. Our PNGs are
+# downsampled to native button sizes (stone 96×96, amber 192×64), so margins
+# must leave a non-zero center region to stretch.
+const STONE_NINE_MARGIN := 16   # 96×96 texture, 16px corner → 64×64 center stretches
+const AMBER_NINE_L_R    := 24   # 192×64 texture, 24px caps → 144×40 center stretches
+const AMBER_NINE_T_B    := 12
 
 # CTA text uses the same dark navy as the Moon button — high contrast on amber.
 const CTA_MOON_TEXT_COLOR := Color(0.043, 0.078, 0.149)
@@ -238,8 +238,10 @@ static func _stone_tex_box(tex: Texture2D, modulate: Color) -> StyleBoxTexture:
 	sb.texture_margin_right = STONE_NINE_MARGIN
 	sb.texture_margin_top = STONE_NINE_MARGIN
 	sb.texture_margin_bottom = STONE_NINE_MARGIN
-	sb.content_margin_left = 18
-	sb.content_margin_right = 18
+	# Tight horizontal content margins so localized labels (HEROES, ★ RANK)
+	# fit inside the narrow primary/secondary row buttons.
+	sb.content_margin_left = 10
+	sb.content_margin_right = 10
 	sb.content_margin_top = 12
 	sb.content_margin_bottom = 12
 	return sb

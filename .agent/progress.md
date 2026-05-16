@@ -1,5 +1,45 @@
 # Progress
 
+## 2026-05-16 — v0.25.0 릴리즈 (메인 메뉴 픽셀아트 리워크)
+
+### Status
+
+ChatGPT(GPT-4o) 픽셀아트 자산 31장으로 메인 메뉴를 시각 전면 리워크. 5명 영웅 일러 배경, KO/EN 픽셀아트 타이틀 로고, 9-slice 텍스처 패널, 6개 네비 아이콘, 3줄×2 버튼 레이아웃까지 적용. 폰 실기 검증 통과. PGS 누락은 Known Issue로 다음 release에 fix.
+
+### Completed
+
+- 자산 31장 후처리 파이프라인 정착: 흰 가장자리 crop / target ratio alpha padding / 외곽 흰→알파 flood-fill / 1 px navy outline. 기존 P0 12장 + P1 17장 + P2 2장 모두 같은 파이프라인 통과
+- BG-04 5명 영웅 일러 (`bg_menu_hero_lineup.png`) — 메뉴 UI와 안 겹치도록 자산 자체 130 px 위로 shift, 빈 하단 dark navy padding
+- 픽셀아트 타이틀 로고 — `title_ko.png` "잔불의 밤" / `title_en.png` "NIGHTSEED SURVIVOR", `Localization.current_lang` 보고 자동 스왑
+- 9-slice 마진 버그 수정 — `STONE_NINE_MARGIN` 96→16, `AMBER_NINE_L_R` 140→24, `AMBER_NINE_T_B` 36→12 (텍스처 픽셀 기준으로 정정)
+- 메뉴 버튼 3줄×2 재배치 — `MainMenu.tscn` PrimaryRow/SecondaryRow/TertiaryRow + `MainMenu.gd` @onready path 갱신
+- 영문 라벨 정리 — HEROES / ★ RANK / DIFF=난이도이름만, 폰트 36→32, `clip_text=true`
+- 아이콘 alignment — `expand_icon=false` + `alignment=CENTER` + icon_max_width=44 + h_separation=12 + 살짝 lift modulate
+- TopRightRow 좌하단 코너로 이동 (타이틀과 안 겹침)
+- v0.25.0 노트 (docs/releases + play_store/release_notes 다국어, KO 325 / EN 491 둘 다 500자 이내)
+- 로컬 APK + AAB 빌드 + R8 서명 통과 (versionCode 26)
+- 바탕화면 복사 완료
+
+### Verification
+
+- 헤드리스 부트 — 스크립트 에러 0
+- AAB 매니페스트 versionName "0.25.0" 확인
+- 폰 실기 검증 — 메인 메뉴 시각 전체 OK (KO/EN 모두)
+
+### Known Issue → 다음 release
+
+- **★ RANK 버튼 무반응** — APK/AAB 안에 PGS native (.aar) 누락. `lib/`에 godot 엔진 .so만, `classes.dex`에 `play-games-services` 클래스 0개. Godot 4.2 헤드리스 `--export-release`가 EditorPlugin(AndroidExportPlugin)을 활성화 못 하는 quirk. v0.24.0도 같은 상태였을 가능성 (당시 폰 미검증). 옵션:
+  - A. GUI 에디터에서 직접 export (가장 안전)
+  - B. 헤드리스에 `--editor` 충분히 띄워 plugin pre-register 시도
+  - C. Godot 4.3+ 업그레이드 (해당 quirk fix됨, 그러나 다른 호환 이슈 가능)
+- AdMob native도 같은 이유로 누락 (현재는 테스트 ID 단계라 영향 작음)
+
+### Not Yet Done (다음 release/세션)
+
+- PGS / AdMob native fix (위 옵션 중 선택)
+- Phase UI-4 LevelUp 카드 자산 코드 통합
+- BG-04 캐릭터가 PLAY 버튼 바로 위에 살짝 닿음 — 시각 미세 조정 가능
+
 ## 2026-05-15 — P1/P2 UI 자산 생성 자동화
 
 ### Status

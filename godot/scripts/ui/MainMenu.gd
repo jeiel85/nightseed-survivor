@@ -3,8 +3,15 @@ extends Control
 # Asset paths for the Phase UI-3 rework. Each may be missing on a freshly cloned
 # checkout (the .import pass hasn't run yet), so every loader below falls back
 # gracefully — the menu still renders, just without the new artwork.
-const BG_MENU_NIGHT_SKY_PATH := "res://assets/sprites/ui/bg/bg_menu_night_sky.png"
-const ICON_GOLD_PATH         := "res://assets/sprites/ui/icon_top/icon_gold_coin.png"
+# Hero-lineup BG (BG-04) takes precedence; falls back to the empty night sky
+# (BG-01) when the lineup asset isn't present yet, and finally to the procedural
+# MenuBackdrop. When the hero lineup is shown, the per-character showcase is
+# hidden because the same five heroes already live inside the artwork.
+const BG_MENU_HERO_LINEUP_PATH := "res://assets/sprites/ui/bg/bg_menu_hero_lineup.png"
+const BG_MENU_NIGHT_SKY_PATH   := "res://assets/sprites/ui/bg/bg_menu_night_sky.png"
+const ICON_GOLD_PATH           := "res://assets/sprites/ui/icon_top/icon_gold_coin.png"
+const TITLE_KO_PATH            := "res://assets/logo/title_ko.png"
+const TITLE_EN_PATH            := "res://assets/logo/title_en.png"
 const NAV_ICON_PATHS := {
 	"heroes":      "res://assets/sprites/ui/icon_nav/icon_nav_heroes.png",
 	"stages":      "res://assets/sprites/ui/icon_nav/icon_nav_stages.png",
@@ -16,7 +23,7 @@ const NAV_ICON_PATHS := {
 
 @onready var background_image: TextureRect = $BackgroundImage
 @onready var menu_backdrop: Control = $MenuBackdrop
-@onready var title_label: Label = $VBox/TitleLabel
+@onready var title_image: TextureRect = $VBox/TitleImage
 @onready var subtitle_label: Label = $VBox/Subtitle
 @onready var status_card: PanelContainer = $VBox/StatusCard
 @onready var gold_coin_icon: TextureRect = $VBox/StatusCard/StatusVBox/GoldRow/GoldCoinIcon
@@ -26,10 +33,10 @@ const NAV_ICON_PATHS := {
 @onready var btn_play: Button = $VBox/BtnPlay
 @onready var btn_character: Button = $VBox/PrimaryRow/BtnCharacter
 @onready var btn_stage: Button = $VBox/PrimaryRow/BtnStage
-@onready var btn_difficulty: Button = $VBox/PrimaryRow/BtnDifficulty
+@onready var btn_difficulty: Button = $VBox/SecondaryRow/BtnDifficulty
 @onready var btn_shop: Button = $VBox/SecondaryRow/BtnShop
-@onready var btn_codex: Button = $VBox/SecondaryRow/BtnCodex
-@onready var btn_leaderboard: Button = $VBox/SecondaryRow/BtnLeaderboard
+@onready var btn_codex: Button = $VBox/TertiaryRow/BtnCodex
+@onready var btn_leaderboard: Button = $VBox/TertiaryRow/BtnLeaderboard
 @onready var btn_language: Button = $TopRightRow/BtnLanguage
 @onready var btn_credits: Button = $TopRightRow/BtnCredits
 @onready var character_showcase: CharacterShowcase = $CharacterShowcase
@@ -56,19 +63,40 @@ func _ready() -> void:
 		Localization.language_changed.connect(_on_language_changed)
 
 func _apply_title_styles() -> void:
-	# Nightseed 톤 — 창백한 달빛 제목 + 살짝 푸른 부제. 배경(MenuBackdrop)의
-	# 어두운 남색 위에서 충분히 떠 보이도록 외곽선/그림자 보정.
-	title_label.add_theme_color_override("font_color", Color(0.93, 0.96, 1.0, 1.0))
-	title_label.add_theme_color_override("font_outline_color", Color(0.043, 0.078, 0.149, 0.95))
-	title_label.add_theme_constant_override("outline_size", 6)
+	# Title is now a TextureRect (pixel-art logo image, language-aware in
+	# _refresh_title_texture). Subtitle keeps the system-font outline so it
+	# stays readable over the BG-04 hero-lineup art.
 	subtitle_label.add_theme_color_override("font_color", Color(0.76, 0.84, 1.0, 1.0))
 	subtitle_label.add_theme_color_override("font_outline_color", Color(0.043, 0.078, 0.149, 0.85))
 	subtitle_label.add_theme_constant_override("outline_size", 3)
 
+func _refresh_title_texture() -> void:
+	# Pick KO logo for Korean, EN logo for everything else (en + future langs).
+	var lang := "en"
+	if Localization and "current_lang" in Localization:
+		lang = String(Localization.current_lang)
+	var path := TITLE_KO_PATH if lang == "ko" else TITLE_EN_PATH
+	if ResourceLoader.exists(path):
+		var tex := load(path)
+		if tex is Texture2D:
+			title_image.texture = tex
+			title_image.visible = true
+			return
+	# Fallback: keep TitleImage hidden if textures missing — Subtitle alone
+	# still labels the screen well enough for early dev.
+	title_image.visible = false
+
 func _apply_background() -> void:
-	# Phase UI-3: AI-generated night-sky background as the dominant menu image.
-	# When the texture import hasn't run yet, fall back to the procedural
-	# MenuBackdrop drawing so the screen never goes blank.
+	# Prefer the hero-lineup background when present; the five heroes already
+	# appear in the art so the per-character showcase is hidden alongside.
+	if ResourceLoader.exists(BG_MENU_HERO_LINEUP_PATH):
+		var tex_lineup: Texture2D = load(BG_MENU_HERO_LINEUP_PATH)
+		if tex_lineup != null:
+			background_image.texture = tex_lineup
+			menu_backdrop.visible = false
+			if character_showcase:
+				character_showcase.visible = false
+			return
 	if ResourceLoader.exists(BG_MENU_NIGHT_SKY_PATH):
 		var tex: Texture2D = load(BG_MENU_NIGHT_SKY_PATH)
 		if tex != null:
@@ -123,10 +151,26 @@ func _set_button_icon(button: Button, path: String) -> void:
 	if not (tex is Texture2D):
 		return
 	button.icon = tex
-	button.expand_icon = true
+	# Keep icon at its native pixel size so the icon+text group can be visually
+	# centered together. expand_icon=true forces the icon to fill the button
+	# height and pins it to the left edge — looks unbalanced on wide buttons.
+	button.expand_icon = false
 	button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
-	# 1024px source PNGs need filter=Nearest to read as crisp pixel art.
+	button.alignment = HORIZONTAL_ALIGNMENT_CENTER
 	button.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	# Modest cap so cropped icons (some came in slightly larger after auto-fit)
+	# stay readable next to a 32pt label.
+	button.add_theme_constant_override("icon_max_width", 44)
+	button.add_theme_constant_override("h_separation", 12)
+	# Lift dark silhouettes (heroes hood, watchtower, skull) so they read
+	# against the dark stone texture. Mild lift only — we don't want to wash
+	# out warmer icons (gold trophy, parchment).
+	var lift := Color(1.18, 1.20, 1.25, 1.0)
+	button.add_theme_color_override("icon_normal_color", lift)
+	button.add_theme_color_override("icon_hover_color", lift)
+	button.add_theme_color_override("icon_pressed_color", lift)
+	button.add_theme_color_override("icon_focus_color", lift)
+	button.add_theme_color_override("icon_disabled_color", Color(0.7, 0.7, 0.78, 0.85))
 
 func _apply_status_card_style() -> void:
 	# 상태 카드는 메뉴 위에 떠 있어야 하므로 톤을 살짝 더 어둡게 + 모서리는 작게(6 이하).
@@ -145,7 +189,7 @@ func _apply_status_card_style() -> void:
 	status_card.add_theme_stylebox_override("panel", sb)
 
 func _refresh() -> void:
-	title_label.text = Localization.tr_key("app_title")
+	_refresh_title_texture()
 	subtitle_label.text = Localization.tr_key("app_subtitle")
 	gold_label.text = Localization.tr_key("label_gold") % GameData.gold
 	next_goal_label.text = _next_goal_text()
