@@ -58,6 +58,27 @@ dependencies {
     if (pluginsBinaries != null && pluginsBinaries.size() > 0) {
         implementation files(pluginsBinaries)
     }
+
+    // Nightseed Survivor: statically wire GodotPlayGameServices + AdMob plugins.
+    // EditorExportPlugin._get_android_libraries / _get_android_dependencies do
+    // not fire reliably under `godot --headless --export-release` (Godot 4.2
+    // quirk), so CI builds end up without the native plugin code. Keep in sync
+    // with addons/GodotPlayGameServices/export_plugin.gd and
+    // addons/admob/android/bin/ads/poing_godot_admob_ads.gd if either bumps
+    // dependency versions.
+    releaseImplementation files(
+        "../../addons/GodotPlayGameServices/bin/release/GodotPlayGameServices-release.aar",
+        "../../addons/admob/android/bin/ads/libs/poing-godot-admob-ads-release.aar",
+        "../../addons/admob/android/bin/ads/libs/poing-godot-admob-core-release.aar"
+    )
+    debugImplementation files(
+        "../../addons/GodotPlayGameServices/bin/debug/GodotPlayGameServices-debug.aar",
+        "../../addons/admob/android/bin/ads/libs/poing-godot-admob-ads-debug.aar",
+        "../../addons/admob/android/bin/ads/libs/poing-godot-admob-core-debug.aar"
+    )
+    implementation 'com.google.code.gson:gson:2.11.0'
+    implementation 'com.google.android.gms:play-services-games-v2:21.0.0'
+    implementation 'com.google.android.gms:play-services-ads:24.9.0'
 }
 
 android {

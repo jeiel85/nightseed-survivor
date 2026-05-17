@@ -30,6 +30,17 @@
             android:name="org.godotengine.editor.version"
             android:value="${godotEditorVersion}" />
 
+        <!-- Nightseed Survivor: PGS + AdMob meta-data. Normally injected by
+             EditorExportPlugin android-manifest hook but headless export skips
+             it. Keep in sync with addons/GodotPlayGameServices/export_plugin.gd
+             and addons/admob/internal/exporters/android/export_plugin.gd. -->
+        <meta-data
+            android:name="com.google.android.gms.games.APP_ID"
+            android:value="@string/game_services_project_id" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
+
         <activity
             android:name=".GodotApp"
             android:label="@string/godot_project_name_string"
