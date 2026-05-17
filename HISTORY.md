@@ -1,5 +1,25 @@
 # HISTORY.md
 
+## 2026-05-18 (v0.28.0 — 스테이지 차별화 Phase 1, 팔레트 + 적 톤)
+
+- 날짜: 2026-05-18
+- 작업: v0.27.0 직후 사용자 피드백 "두번째 스테이지인데 배경이 똑같다" 대응. `docs/STAGE_DIFFERENTIATION_PLAN.md`의 Stage A(코드만, 자산 추가 없음)를 완료해 v0.28.0으로 릴리즈.
+- 핵심 변경:
+  - 5개 스테이지(`stages.json`) bg 팔레트 hue 명확히 분리 — 보이드/타일/펩블/decor/torch_glow 모두 한 hue로 통일성 유지하면서 채도/명도 차이 확대
+    - Forest 녹, Frozen Wastes 청, Twilight Sanctum 보라+orange torch, Inferno Chasm 주홍, Cursed Tomb 자홍
+  - `enemy_tint: [r,g,b,a]` 필드 신규 — 적의 modulate에 곱해질 색
+  - `EnemySpawner.setup()`에서 stage tint 캐싱, `register_enemy()`에서 modulate 적용 (Splitter splitterling 자식들도 통일)
+  - Forest는 `[1,1,1,1]` (base)로 두고, 나머지 4스테이지에 각자 hue tint
+- 결정:
+  - 버전 폭은 v0.28.0 minor — Stage A는 게임 분위기가 명확히 바뀌는 시각 리워크라 patch보다 minor가 자연스러움
+  - 피격 white-flash와의 곱셈 상호작용은 우선 그대로 둠 → 폰 검증 후 어색하면 다음 패치
+  - DeathBurst burst_color는 enemy.modulate 영향 안 받음 → 별도 fix 없이 유지
+  - 보스/미니보스도 tint 입음 — 다음 단계에서 정체성 보존 여부 재검토
+- 다음 후보 (계획서):
+  - A4 — 스테이지별 BGM 분기 (절차 합성)
+  - B1 — 스테이지 고유 파티클 (눈송이/영혼/잿가루/안개) — 자산 필요
+  - B2 — enemy sprite hue-shift shader (자산 추가 없는 대안)
+
 ## 2026-05-17 (v0.27.0 — 시그니처 패시브 + 난이도 재조정 + PGS/AdMob fix)
 
 - 날짜: 2026-05-17

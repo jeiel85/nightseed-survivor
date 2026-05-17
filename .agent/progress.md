@@ -1,5 +1,43 @@
 # Progress
 
+## 2026-05-18 — v0.28.0 릴리즈 (스테이지 차별화 Phase 1 — 팔레트 + 적 톤)
+
+### Status
+
+v0.27.0 직후 사용자 피드백 "두번째 스테이지인데 배경이 똑같다" 대응. `docs/STAGE_DIFFERENTIATION_PLAN.md` Stage A(코드만, 자산 추가 X)를 한 세션에서 완료 + v0.28.0으로 묶어 태그 푸시까지 진행. 폰 실기 검증 대기.
+
+### Completed
+
+- 5개 스테이지 bg 팔레트 hue 명확히 분리 (`godot/data/stages.json` schema v7→v8)
+  - Forest 녹, Frozen Wastes 청, Twilight Sanctum 보라+orange torch, Inferno Chasm 주홍, Cursed Tomb 자홍
+- `enemy_tint: [r,g,b,a]` 필드 신규 + EnemySpawner 적용
+  - `EnemySpawner.setup()`에서 stage tint 캐싱
+  - `register_enemy()` 경로에서 `enemy.modulate` 적용 → Splitter splitterling 자식들도 통일
+  - Forest `[1,1,1,1]` 일 때 modulate 호출 스킵
+- 릴리즈 노트 작성 (`docs/releases/v0.28.0.md` + `play_store/release_notes/v0.28.0.txt`)
+- version 0.28.0 / code 30 bump
+- 태그 v0.28.0 푸시 → CI 자동 빌드 진행 중
+
+### Verification
+
+- 로컬 headless GameRoot smoke 클린 (push_error 없음)
+- JSON 파싱 sanity: 5개 스테이지 모두 enemy_tint 필드 + 새 void 색 확인
+- Play Store 노트 길이 KO 247자 / EN 372자 (500자 제한 안)
+
+### Not Yet Done
+
+- 폰 실기 검증 (다음 빌드 떨어진 후)
+  - 5개 스테이지 시작 화면 캡처 → 옆에 두고 한눈에 구분되는지 확인
+  - 피격 white-flash와 modulate 곱셈 상호작용 — 어색하면 다음 패치
+  - 보스/미니보스 tint 적용이 정체성에 어색한지
+
+### Follow-ups (계획서 Stage A 잔여 / Stage B)
+
+- A4 — 스테이지별 BGM 분기 (절차 합성, 자산 0)
+- B1 — 스테이지 고유 파티클 (눈송이/영혼/잿가루/안개), 자산 필요
+- B2 — enemy sprite hue-shift shader (자산 0 대안)
+- B3/B4 — decor texture variant / ground tile texture variant (자산 큼)
+
 ## 2026-05-17 — v0.27.0 릴리즈 (시그니처 패시브 + 난이도 재조정 + PGS/AdMob fix)
 
 ### Status

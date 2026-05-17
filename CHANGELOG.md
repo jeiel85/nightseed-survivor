@@ -1,5 +1,40 @@
 # CHANGELOG.md
 
+## v0.28.0 - 2026-05-18 (스테이지 차별화 Phase 1 — 팔레트 + enemy tint)
+
+### Changed — 5개 스테이지 bg 팔레트 hue 분리 (`godot/data/stages.json`, schema v7→v8)
+
+이전까지 5개 스테이지의 보이드/타일/펩블 RGB 가 거의 비슷해 폰 화면에서 "다 어두운 색"으로 보이던 문제 해결. 각 스테이지가 하나의 hue로 통일성을 유지하면서 채도/명도 차이를 키움.
+
+- Forest: 녹/이끼 (기존 톤 강화)
+- Frozen Wastes: 얼음/푸른 — void/tile/pebble 모두 청색 계열로
+- Twilight Sanctum: 보라 + 따뜻한 횃불 (orange torch_glow로 콘트라스트)
+- Inferno Chasm: 불/주홍 — tile R채널 0.48 → 0.62
+- Cursed Tomb: 자/분홍 — tile (R0.42 G0.26 B0.36) → (R0.52 G0.22 B0.42)
+
+### Added — 스테이지별 enemy tint 시스템
+
+- `stages.json` 각 entry에 `enemy_tint: [r,g,b,a]` 신규 필드. 적의 `modulate` 에 곱해질 색.
+- 같은 적 종류라도 스테이지에 따라 다른 색조로 보임:
+  - Forest `[1,1,1,1]` (base — 변화 없음)
+  - Frozen Wastes `[0.70, 0.85, 1.10, 1]` (청록빛 — 얼어붙은 느낌)
+  - Twilight Sanctum `[0.85, 0.70, 1.10, 1]` (보랏빛 — 마법 들린 느낌)
+  - Inferno Chasm `[1.20, 0.75, 0.65, 1]` (주홍빛 — 그을린 느낌)
+  - Cursed Tomb `[1.05, 0.70, 0.85, 1]` (자홍빛 — 부패한 느낌)
+- `EnemySpawner.setup()` 시점에 tint 캐싱, `register_enemy()` 경로에서 `modulate` 적용 — Splitter가 자체 spawn하는 splitterling 자식들도 같은 hue 입음.
+- Forest처럼 `[1,1,1,1]` 인 스테이지는 modulate 호출 자체를 스킵.
+
+### Docs
+
+- `docs/STAGE_DIFFERENTIATION_PLAN.md` — 스테이지 차별화 Stage A(코드만) / Stage B(자산 필요) 작업 계획서. 이번 릴리즈는 Stage A 완료분.
+
+### Known limitations
+
+- 피격 white-flash와 modulate의 곱셈 상호작용은 우선 그대로 둠. 폰에서 어색하면 다음 패치에서 조정.
+- 적 DeathBurst 의 burst_color 는 enemy.modulate 영향 안 받음 (별도 노드) — 죽을 때 본래 색 burst. 큰 위화감 없으면 유지.
+- 보스/미니보스도 tint 입음. 본래 색이 정체성이라면 별도 처리 검토 필요.
+- BGM은 여전히 한 트랙 (계획서 §A4 — 다음 릴리즈 후보).
+
 ## v0.27.0 - 2026-05-17 (시그니처 패시브 + 난이도 재조정 + PGS/AdMob fix)
 
 ### Added — Character signature passives (Phase Class-1)

@@ -27,3 +27,6 @@ godot/android/build/assetPacks/*/src/
 secrets/
 *.keystore
 *.jks
+
+# Claude Code local session artifacts (scheduled task locks, etc.)
+.claude/

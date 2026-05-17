@@ -4,6 +4,16 @@
 > Phase 1~4 로드맵을 작업 단위로 풀어 놓은 운영 목록입니다. 코드 상태를
 > 기준으로 한 마지막 동기화는 v0.23.0 작업 시작 시점입니다.
 
+## 2026-05-18 완료 (v0.28.0 — 스테이지 차별화 Phase 1)
+
+### Stage A (계획서 `docs/STAGE_DIFFERENTIATION_PLAN.md`)
+- [x] A1 — 5개 스테이지 bg 팔레트 hue 분리 (Forest/Frozen/Twilight/Inferno/Cursed)
+- [x] A2 — stages.json schema에 `enemy_tint: [r,g,b,a]` 필드 추가
+- [x] A3 — EnemySpawner setup() 캐싱 + register_enemy() modulate 적용 (splitterling 통일)
+- [x] A5 — headless smoke + JSON sanity 검증
+- [ ] A5 — 폰 실기 5스테이지 캡처 비교 (다음 빌드 후)
+- [ ] A4 — 스테이지별 BGM 분기 (잔여, 다음 릴리즈 후보)
+
 ## 2026-05-17 완료 (v0.27.0 — 시그니처 패시브 + 난이도 재조정 + PGS/AdMob fix)
 
 ### Character signature passives (Phase Class-1)
