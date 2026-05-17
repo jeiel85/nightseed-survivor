@@ -14,6 +14,10 @@ signal kill_count_changed(count: int)
 
 var current_hp: int
 var xp_radius: float = 80.0
+# Character signature passives (SoulEcho specifically) stamp a transient
+# bonus here. _handle_pickups adds it to the base xp_radius so the magnet
+# pull respects both shop-bought magnet_charm and conditional passives.
+var passive_xp_radius_bonus: float = 0.0
 var current_xp: int = 0
 var current_level: int = 1
 var kill_count: int = 0
@@ -46,6 +50,14 @@ func _ready() -> void:
 	var w := _create_starting_weapon(ch["starting_weapon"])
 	if w:
 		weapon_manager.add_weapon(w)
+	# Signature passive — instantiated AFTER the starting weapon so EmberRenewal
+	# can connect to weapon_manager.weapon_fired in time for the first shot.
+	var passive_id: String = String(ch.get("passive_id", ""))
+	if not passive_id.is_empty():
+		var passive_node := _create_passive(passive_id)
+		if passive_node:
+			add_child(passive_node)
+			passive_node.setup(self)
 
 func _create_starting_weapon(weapon_name: String) -> WeaponBase:
 	match weapon_name:
@@ -55,6 +67,15 @@ func _create_starting_weapon(weapon_name: String) -> WeaponBase:
 		"Thorn Ring":   return ThornRing.new()
 		"Star Needle":  return StarNeedle.new()
 	return MoonDagger.new()
+
+func _create_passive(id: String) -> CharacterPassive:
+	match id:
+		"blade_dance":   return BladeDance.new()
+		"soul_echo":     return SoulEcho.new()
+		"flee_reload":   return FleeAndReload.new()
+		"reckless_fury": return RecklessFury.new()
+		"ember_renewal": return EmberRenewal.new()
+	return null
 
 func _physics_process(delta: float) -> void:
 	var input := Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -98,11 +119,12 @@ func _find_nearest_enemy() -> Node2D:
 	return nearest
 
 func _handle_pickups() -> void:
+	var effective_radius: float = xp_radius + passive_xp_radius_bonus
 	for gem in get_tree().get_nodes_in_group("xp_gems"):
 		if not is_instance_valid(gem):
 			continue
 		var dist := global_position.distance_to(gem.global_position)
-		if dist <= xp_radius and gem.has_method("attract"):
+		if dist <= effective_radius and gem.has_method("attract"):
 			gem.attract(global_position)
 		if dist <= 22.0 and gem.has_method("collect"):
 			gem.collect(self)
@@ -111,7 +133,7 @@ func _handle_pickups() -> void:
 		if not is_instance_valid(coin):
 			continue
 		var dist := global_position.distance_to(coin.global_position)
-		if dist <= xp_radius and coin.has_method("attract"):
+		if dist <= effective_radius and coin.has_method("attract"):
 			coin.attract(global_position)
 		if dist <= 22.0 and coin.has_method("collect"):
 			coin.collect(self)

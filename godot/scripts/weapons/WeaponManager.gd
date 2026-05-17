@@ -1,6 +1,10 @@
 extends Node2D
 class_name WeaponManager
 
+# Re-emitted whenever any owned weapon fires. EmberRenewal (Pyromancer
+# signature passive) hooks this to count fires for its heal cadence.
+signal weapon_fired
+
 var weapons: Array = []
 var passives: Dictionary = {
 	"swift_boots": 0,
@@ -11,6 +15,10 @@ var passives: Dictionary = {
 }
 var _init_damage_mult: float = 1.0
 var _init_cooldown_mult: float = 1.0
+# Per-character signature passives stamp into these. Multiplied on top of the
+# init multipliers and shop passive bonuses inside _get_*_mult().
+var passive_damage_mult: float = 1.0
+var passive_cooldown_mult: float = 1.0
 
 func add_weapon(weapon: WeaponBase) -> void:
 	weapon.player = get_parent()
@@ -22,6 +30,10 @@ func add_weapon(weapon: WeaponBase) -> void:
 	# starting weapon at Lv.1 alongside the existing upgraded one.
 	add_child(weapon)
 	weapons.append(weapon)
+	weapon.fired.connect(_on_weapon_fired)
+
+func _on_weapon_fired() -> void:
+	weapon_fired.emit()
 
 func has_weapon(wname: String) -> bool:
 	for w in weapons:
@@ -60,10 +72,10 @@ func get_passive_level(key: String) -> int:
 	return passives.get(key, 0)
 
 func _get_damage_mult() -> float:
-	return _init_damage_mult * (1.0 + passives.get("power_core", 0) * 0.15)
+	return _init_damage_mult * (1.0 + passives.get("power_core", 0) * 0.15) * passive_damage_mult
 
 func _get_cooldown_mult() -> float:
-	return maxf(_init_cooldown_mult * (1.0 - passives.get("battle_focus", 0) * 0.08), 0.3)
+	return maxf(_init_cooldown_mult * (1.0 - passives.get("battle_focus", 0) * 0.08) * passive_cooldown_mult, 0.3)
 
 func _refresh_weapon_multipliers() -> void:
 	var dm := _get_damage_mult()

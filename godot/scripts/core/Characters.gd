@@ -19,6 +19,9 @@ const DATA: Dictionary = {
 		"unlock_cost": 0,
 		"name_key": "char_vagrant_name",
 		"desc_key": "char_vagrant_desc",
+		"passive_id": "blade_dance",
+		"passive_name_key": "char_passive_blade_dance_name",
+		"passive_desc_key": "char_passive_blade_dance_desc",
 	},
 	"spirit_sister": {
 		"name": "Spirit Sister",
@@ -34,6 +37,9 @@ const DATA: Dictionary = {
 		"unlock_cost": 200,
 		"name_key": "char_spirit_sister_name",
 		"desc_key": "char_spirit_sister_desc",
+		"passive_id": "soul_echo",
+		"passive_name_key": "char_passive_soul_echo_name",
+		"passive_desc_key": "char_passive_soul_echo_desc",
 	},
 	"hunter": {
 		"name": "Hunter",
@@ -49,6 +55,9 @@ const DATA: Dictionary = {
 		"unlock_cost": 500,
 		"name_key": "char_hunter_name",
 		"desc_key": "char_hunter_desc",
+		"passive_id": "flee_reload",
+		"passive_name_key": "char_passive_flee_reload_name",
+		"passive_desc_key": "char_passive_flee_reload_desc",
 	},
 	"berserker": {
 		"name": "Berserker",
@@ -64,6 +73,9 @@ const DATA: Dictionary = {
 		"unlock_cost": 1000,
 		"name_key": "char_berserker_name",
 		"desc_key": "char_berserker_desc",
+		"passive_id": "reckless_fury",
+		"passive_name_key": "char_passive_reckless_fury_name",
+		"passive_desc_key": "char_passive_reckless_fury_desc",
 	},
 	"pyromancer": {
 		"name": "Pyromancer",
@@ -79,6 +91,9 @@ const DATA: Dictionary = {
 		"unlock_cost": 1500,
 		"name_key": "char_pyromancer_name",
 		"desc_key": "char_pyromancer_desc",
+		"passive_id": "ember_renewal",
+		"passive_name_key": "char_passive_ember_renewal_name",
+		"passive_desc_key": "char_passive_ember_renewal_desc",
 	},
 }
 
@@ -102,3 +117,15 @@ static func stat_summary(key: String) -> String:
 	return "HP %d  ·  SPD %d  ·  CD x%.2f  ·  Magnet %d" % [
 		int(d["max_hp"]), int(d["move_speed"]), float(d["cooldown_mult"]), int(d["xp_radius"])
 	]
+
+static func display_passive_name(key: String) -> String:
+	var d := get_data(key)
+	if d.has("passive_name_key") and Localization:
+		return Localization.tr_key(String(d["passive_name_key"]), "")
+	return ""
+
+static func display_passive_desc(key: String) -> String:
+	var d := get_data(key)
+	if d.has("passive_desc_key") and Localization:
+		return Localization.tr_key(String(d["passive_desc_key"]), "")
+	return ""

@@ -127,6 +127,21 @@ const STRINGS: Dictionary = {
 	"char_pyromancer_name":{"en": "Pyromancer", "ko": "화염술사"},
 	"char_pyromancer_desc":{"en": "Fire-bound caster. Wisp-charged from start.", "ko": "불을 다루는 시전자. 시작부터 위습 충전."},
 
+	# --- Character signature passives (auto-active, one per character) ---
+	"char_passive_blade_dance_name":   {"en": "Blade Dance",   "ko": "칼날 무용"},
+	"char_passive_blade_dance_desc":   {"en": "Every 5 kills: +5% DMG for 8s (stacks ×3)", "ko": "처치 5회마다 8초간 +5% 피해 (최대 3중첩)"},
+	"char_passive_soul_echo_name":     {"en": "Soul Echo",     "ko": "영혼의 메아리"},
+	"char_passive_soul_echo_desc":     {"en": "Below 50% HP: +60 magnet  ·  Full HP: −4% CD", "ko": "HP 50% 이하: 자력 +60  ·  풀피: 쿨다운 −4%"},
+	"char_passive_flee_reload_name":   {"en": "Flee & Reload", "ko": "재장전 도약"},
+	"char_passive_flee_reload_desc":   {"en": "Kiting: −12% CD  ·  Standing still: +15% DMG", "ko": "적에서 멀어지는 중: 쿨다운 −12%  ·  정지 시: 피해 +15%"},
+	"char_passive_reckless_fury_name": {"en": "Reckless Fury", "ko": "무모한 분노"},
+	"char_passive_reckless_fury_desc": {"en": "Take damage: +8% DMG for 4s (stacks ×5)", "ko": "피격 시 4초간 +8% 피해 (최대 5중첩)"},
+	"char_passive_ember_renewal_name": {"en": "Ember Renewal", "ko": "재연소"},
+	"char_passive_ember_renewal_desc": {"en": "Every 3 shots: heal +5 HP (capped)  ·  Below max HP: −3% CD", "ko": "3발마다 +5 HP 회복 (상한 있음)  ·  풀피 미만: 쿨다운 −3%"},
+
+	# --- CharacterSelect signature passive label ---
+	"label_signature_fmt": {"en": "Signature:  %s", "ko": "특성:  %s"},
+
 	# --- Weapon names ---
 	"weapon_moon_dagger": {"en": "Moon Dagger", "ko": "달의 단검"},
 	"weapon_spirit_orb":  {"en": "Spirit Orb",  "ko": "정령의 구"},

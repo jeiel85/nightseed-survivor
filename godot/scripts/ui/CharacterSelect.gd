@@ -65,6 +65,25 @@ func _make_card(key: String) -> PanelContainer:
 	stat_summary.add_theme_font_size_override("font_size", 16)
 	info.add_child(stat_summary)
 
+	# Signature passive — single line: name + condensed effect. Color matches
+	# the character so the trait reads as part of their identity.
+	var passive_name: String = Characters.display_passive_name(key)
+	if passive_name != "":
+		var signature_lbl := Label.new()
+		signature_lbl.text = Localization.tr_key("label_signature_fmt") % passive_name
+		signature_lbl.add_theme_font_size_override("font_size", 16)
+		var sig_c: Color = data["color"]
+		signature_lbl.add_theme_color_override("font_color", sig_c.lightened(0.15))
+		info.add_child(signature_lbl)
+		var passive_desc: String = Characters.display_passive_desc(key)
+		if passive_desc != "":
+			var sig_desc := Label.new()
+			sig_desc.text = passive_desc
+			sig_desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			sig_desc.add_theme_font_size_override("font_size", 14)
+			sig_desc.add_theme_color_override("font_color", Color(0.78, 0.82, 0.88))
+			info.add_child(sig_desc)
+
 	var btn := Button.new()
 	btn.name = "ActionBtn"
 	btn.custom_minimum_size = Vector2(0, 70)

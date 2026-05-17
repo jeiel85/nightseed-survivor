@@ -1,6 +1,10 @@
 extends Node2D
 class_name WeaponBase
 
+# Emitted right after fire() runs each cooldown tick. EmberRenewal (Pyromancer)
+# listens via WeaponManager.weapon_fired to count fires for its heal cadence.
+signal fired
+
 @export var weapon_name: String = "Weapon"
 @export var base_damage: int = 10
 @export var base_cooldown: float = 1.0
@@ -19,6 +23,7 @@ func _process(delta: float) -> void:
 	if _cooldown_timer <= 0.0:
 		_cooldown_timer = maxf(base_cooldown * cooldown_multiplier, 0.15)
 		fire()
+		fired.emit()
 
 func fire() -> void:
 	pass
