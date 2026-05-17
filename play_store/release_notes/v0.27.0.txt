@@ -1,0 +1,38 @@
+<ko-KR>
+🌙 시그니처 패시브 + 난이도 재조정
+
+캐릭터별 자동 패시브 5종
+• Vagrant 칼날 무용: 5킬마다 DMG+ (3중첩)
+• Spirit Sister 영혼의 메아리: 저체력 자력+ / 풀피 CD−
+• Hunter 재장전 도약: 후퇴 CD− / 정지 DMG+
+• Berserker 무모한 분노: 피격마다 DMG+ (5중첩)
+• Pyromancer 재연소: 3발마다 HP 회복
+
+Forest 재조정
+• 초반 완화, 후반 압박 강화
+• 최대 적 수 200→280
+
+수정
+• 리더보드/보상형 광고 동작
+• 무기 카드 중복 노출 fix
+• 결과화면 영문 버튼 잘림 fix
+</ko-KR>
+<en-US>
+🌙 Signature passives + difficulty rebalance
+
+5 auto-active passives
+• Vagrant Blade Dance: +DMG per 5 kills (×3)
+• Spirit Sister Soul Echo: low HP magnet+ / full HP CD−
+• Hunter Flee & Reload: kiting CD− / standing DMG+
+• Berserker Reckless Fury: hit-taken DMG+ (×5)
+• Pyromancer Ember Renewal: heal every 3 shots
+
+Forest rebalance
+• Softer early, stronger late
+• Max enemies 200→280
+
+Fixes
+• Leaderboard / rewarded ads work
+• Duplicate weapon cards
+• Result screen English clipping
+</en-US>
