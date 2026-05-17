@@ -1,5 +1,54 @@
 # Progress
 
+## 2026-05-17 — v0.27.0 릴리즈 (시그니처 패시브 + 난이도 재조정 + PGS/AdMob fix)
+
+### Status
+
+v0.26.0 직후 한 세션에서 후속 폴리시 + 신규 콘텐츠 묶음을 v0.27.0으로 묶어 태그 푸시까지 완료. CI 빌드 진행 중이며 폰 실기 검증 대기.
+
+### Completed
+
+- 캐릭터별 자동 발동 시그니처 패시브 5종 구현 (BladeDance / SoulEcho / FleeAndReload / RecklessFury / EmberRenewal)
+  - `godot/scripts/player/passives/` 신규 6개 파일
+  - WeaponBase `fired` 신호 + WeaponManager `weapon_fired` bubble
+  - `passive_damage_mult / passive_cooldown_mult` 합성 레이어
+  - `Player.passive_xp_radius_bonus` 필드 (SoulEcho 전용)
+  - Characters.gd `passive_id/name_key/desc_key` 필드 + Localization 10개 키
+  - CharacterSelect 카드에 시그니처 이름·효과 2줄 표시
+- Forest 스테이지 난이도 재조정
+  - Wave 0/1 spawn 완화 (1.3s→1.8s, 20s→35s)
+  - Wave 8/9/10 후반 압박 강화 (count +1, interval 0.65→0.50)
+  - `max_enemies` 200 → 280
+- v0.26.0 Known Issue 해결
+  - PGS / AdMob 미동작 — AndroidManifest meta-data 정적 주입 + plugin .aar/Maven deps 정적 선언 (fallback 안전망)
+  - Pyromancer FireWisp 의심 — 정상 동작 확인 후 close (오진)
+- 무기 카드 중복 노출 3중 방어
+- 결과 패널 영문 버튼 텍스트 잘림 fix
+- 릴리즈 노트 (docs/releases + play_store/release_notes) 작성
+- version 0.27.0 / code 29 bump
+- 태그 v0.27.0 푸시 → CI 자동 빌드 진행 중
+
+### Verification
+
+- 로컬 headless editor import + GameRoot smoke 클린
+- 로컬 headless APK build로 dexdump (PGS 클래스 485) + aapt2 dump xmltree (meta-data 7) 확인
+- 로컬 AAB build + 서명/dex 검증
+- CI in_progress (main push + tag push 두 runs)
+
+### Not Yet Done
+
+- 폰 실기 검증 (다음 빌드 떨어진 후)
+  - PGS 로그인 + 리더보드 점수 제출 정상 여부
+  - AdMob 보상형 광고 재생 정상 여부
+  - 캐릭터별 패시브 체감 (특히 Pyromancer EmberRenewal 회복, Berserker Reckless Fury 스택)
+  - Forest 초반/후반 난이도 곡선
+
+### Follow-ups
+
+- Ranged enemy 추가 (난이도 곡선 후속 단계, 후반 "가만히 두기" 패턴 차단)
+- 패시브 시각 피드백 (스택 인디케이터 UI)
+- LevelUp 카드 tooltip에 현재 활성 패시브 표시
+
 ## 2026-05-17 — GitHub README / 저장소 메타데이터 최신화
 
 ### Status

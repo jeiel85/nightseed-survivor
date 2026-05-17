@@ -4,6 +4,36 @@
 > Phase 1~4 로드맵을 작업 단위로 풀어 놓은 운영 목록입니다. 코드 상태를
 > 기준으로 한 마지막 동기화는 v0.23.0 작업 시작 시점입니다.
 
+## 2026-05-17 완료 (v0.27.0 — 시그니처 패시브 + 난이도 재조정 + PGS/AdMob fix)
+
+### Character signature passives (Phase Class-1)
+- [x] CharacterPassive 추상 base + 5 서브클래스 (BladeDance/SoulEcho/FleeAndReload/RecklessFury/EmberRenewal)
+- [x] WeaponBase `fired` + WeaponManager `weapon_fired` bubble
+- [x] passive_damage_mult / passive_cooldown_mult 합성 레이어
+- [x] Player.passive_xp_radius_bonus + _handle_pickups 적용
+- [x] Characters.gd passive_id 필드 + Localization 10 키
+- [x] CharacterSelect 카드 시그니처 표시
+
+### Forest 난이도 재조정
+- [x] Wave 0/1 spawn 완화
+- [x] Wave 8/9/10 후반 압박 강화
+- [x] EnemySpawner max_enemies 200 → 280
+
+### PGS / AdMob native fix
+- [x] AndroidManifest meta-data 정적 주입 (PGS APP_ID + AdMob APPLICATION_ID)
+- [x] build.gradle에 plugin .aar 3개 + Maven deps 정적 선언
+- [x] 로컬 headless APK build로 manifest meta + dex 클래스 검증
+
+### 버그 fix
+- [x] 무기 카드 중복 노출 3중 방어 (WeaponManager 순서, GameRoot guard, LevelUpUI dedup)
+- [x] 결과 패널 영문 버튼 텍스트 잘림 (폰트 사이즈 축소 + clip_text/size_flags)
+
+### 릴리즈
+- [x] docs/releases/v0.27.0.md + play_store/release_notes/v0.27.0.txt
+- [x] version_code 28 → 29, version_name 0.26.0 → 0.27.0
+- [x] 태그 v0.27.0 push → CI 자동 빌드 + GitHub Release 생성
+- [x] CHANGELOG.md, HISTORY.md, .agent/progress.md 갱신
+
 ## 2026-05-17 완료 (README / GitHub Pages 소개 이미지 적용)
 
 - [x] `Downloads/readme.png`를 README 상단 배너 이미지로 추가

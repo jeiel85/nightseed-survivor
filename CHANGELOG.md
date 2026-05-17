@@ -1,23 +1,67 @@
 # CHANGELOG.md
 
-## Unreleased - 2026-05-17
+## v0.27.0 - 2026-05-17 (시그니처 패시브 + 난이도 재조정 + PGS/AdMob fix)
+
+### Added — Character signature passives (Phase Class-1)
+- `godot/scripts/player/passives/CharacterPassive.gd` — 추상 base. `setup(player)`에서 weapon_manager 캐싱 + 서브클래스 `_on_setup` hook 실행.
+- `BladeDance.gd` (Vagrant) — 처치 5회마다 +5% DMG · 8s · 3중첩. `kill_count_changed` 구독.
+- `SoulEcho.gd` (Spirit Sister) — HP <50%: magnet +60 / 풀피: CD −4%. `hp_changed` 구독.
+- `FleeAndReload.gd` (Hunter) — 적에서 멀어지면 CD −12% / 정지 시 DMG +15%. 0.3s hysteresis.
+- `RecklessFury.gd` (Berserker) — 피격 시 +8% DMG · 4s · 5중첩.
+- `EmberRenewal.gd` (Pyromancer) — 3발마다 +5HP (max_hp 50% 상한) / HP<max: CD −3%. `weapon_fired` 구독.
+- `Characters.gd` 각 캐릭터에 `passive_id / passive_name_key / passive_desc_key` + `display_passive_name/desc` helper.
+- `CharacterSelect.gd` 카드에 시그니처 이름·효과 2줄 표시 (캐릭터 색 강조).
+- `Localization.gd` 패시브 이름/설명 10개 키 + `label_signature_fmt`.
+
+### Changed — WeaponBase / WeaponManager 신호 + multiplier 합성
+- `WeaponBase.fired` 신호 신규 (fire() 직후 emit). EmberRenewal 카운팅용.
+- `WeaponManager.weapon_fired` 신호 신규 (각 weapon의 fired bubble). `passive_damage_mult / passive_cooldown_mult` 필드 추가, `_get_damage_mult / _get_cooldown_mult`에 곱셈으로 합성 — init mult × shop passive × signature passive.
+- `Player.passive_xp_radius_bonus` 필드. `_handle_pickups`에서 `xp_radius + passive_xp_radius_bonus` 사용. `_ready`에서 starting weapon 직후 `_create_passive(id)`.
+
+### Changed — Forest 난이도 재조정 (`godot/data/stages.json`)
+- Wave 0 interval 1.3s → 1.8s, Wave 1 등장 20s → 35s (초반 −28%)
+- Wave 8 count 4 → 5 (3:45~ 압박 +25%)
+- Wave 9 interval 0.65s → 0.50s, count 4 → 5 (4:15~ spawn rate +30%)
+- Wave 10 count 4 → 5 (보스 동반 minion 압박)
+- `EnemySpawner.max_enemies` 200 → 280 (후반 캡 평탄화 제거)
+
+### Fixed — Android headless export PGS/AdMob manifest meta-data
+- v0.26.0 "리더보드 / 광고 미동작" Known Issue 해결.
+- 원인 정정: `.aar` 누락(오진) → AndroidManifest meta-data 통째 누락(실제). 헤드리스 export가 `EditorExportPlugin._get_android_manifest_application_element_contents()` 훅을 발동시키지 않음.
+- `godot/android/build/AndroidManifest.xml` PGS+AdMob APP_ID meta-data 2개 정적 추가.
+- `godot/android/build/build.gradle` plugin .aar 3개 + Maven deps (gson, play-services-games-v2, play-services-ads) 정적 선언 — export plugin 미발동 시 안전망.
+- 검증: 로컬 headless APK build → aapt2 dump xmltree로 meta-data 7개 + dexdump로 클래스 485개 모두 확인.
+
+### Fixed — 무기 카드 중복 노출
+- LevelUp에 같은 무기 카드 2개 동시 노출되던 버그 (Thorn Ring Lv.1→2 + Lv.9→10).
+- 루트 원인: `WeaponManager.add_weapon`이 `weapons.append` 후 `add_child` 호출 → weapon_name이 디폴트 "Weapon"인 윈도우에서 `has_weapon` 체크 실패하던 race.
+- 3중 방어: (1) add_weapon 순서 교체 (add_child 먼저, append 나중) (2) `GameRoot._add_weapon` has_weapon guard → 이미 있으면 upgrade fallback (3) `LevelUpUI._generate_options` "up:" 루프 `seen_up` dedup.
+
+### Fixed — 결과 패널 영문 버튼 텍스트 잘림
+- "Play Agai", "Main Men" 으로 끝글자 잘리던 문제.
+- 폰트 사이즈 축소: BtnRestart 32→26, BtnMenu 28→24, BtnRevive/DoubleGold 24→20.
+- `size_flags_horizontal=3 + clip_text=true` 일괄 명시 (MainMenu 패턴 일치).
+
+### Resolved — v0.26.0 Known Issues
+- "Pyromancer 공격 미작동 의심" — FireWisp 코드 review 결과 정상 동작. FireWisp가 Pyromancer의 base attack 그 자체. 오진 close.
+- "리더보드 / 광고 미동작" — 위 PGS/AdMob fix로 해결.
 
 ### Documentation
-- README 상단에 `docs/images/readme.png` 소개 배너 추가
-- GitHub Pages 소개 페이지의 히어로 배경, Open Graph, Twitter 공유 이미지를 `branding/assets/pages.png` 기반으로 변경
-- README 제목을 `잔불의 밤 (Nightseed Survivor)`로 정정하고, 현재 구현 상태/콘텐츠/알려진 이슈/빌드/릴리즈 설명을 v0.26 기준으로 재작성
-- GitHub repository description, homepage, topics 최신화
+- `docs/releases/v0.27.0.md` GitHub Release 본문 작성.
+- `play_store/release_notes/v0.27.0.txt` Play Console 다국어 노트 (KR/EN).
+- README 상단에 `docs/images/readme.png` 소개 배너 추가.
+- GitHub Pages 소개 페이지의 히어로 배경, Open Graph, Twitter 공유 이미지를 `branding/assets/pages.png` 기반으로 변경.
+- README 제목을 `잔불의 밤 (Nightseed Survivor)`로 정정하고, v0.26 기준 재작성.
+- GitHub repository description, homepage, topics 최신화.
 
 ### Build / CI
-- GitHub Actions Pages 배포 단계에서 `branding/assets/pages.png`를 `assets/pages.png`로 복사하도록 추가
+- GitHub Actions Pages 배포 단계에서 `branding/assets/pages.png`를 `assets/pages.png`로 복사하도록 추가.
+- `version/code` 28 → 29, `version/name` "0.26.0" → "0.27.0" (`godot/export_presets.cfg` preset.0 + preset.4).
 
 ### Verification
-- 이미지 원본 크기 1672×941 확인
-- 정적 파일 경로 및 배포 복사 경로 확인
-- `gh repo view`로 저장소 메타데이터 확인
-- README diff 정적 리뷰
-- `git diff --check` 통과
-- 로컬 Godot headless 검증은 PATH에서 `godot` 실행 파일을 찾을 수 없어 미실행
+- 로컬 headless editor import + GameRoot smoke 모두 클린.
+- 로컬 headless APK build로 plugin classes + manifest meta-data 모두 포함 확인.
+- 로컬 AAB build + 서명/dex 검증.
 
 ## v0.26.0 - 2026-05-16 (LevelUp 픽셀아트 + Galmuri 폰트 + 다국어 layout)
 

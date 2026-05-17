@@ -1,5 +1,37 @@
 # HISTORY.md
 
+## 2026-05-17 (v0.27.0 — 시그니처 패시브 + 난이도 재조정 + PGS/AdMob fix)
+
+- 날짜: 2026-05-17
+- 작업: 한 세션에서 v0.26.0 후속 폴리시 + 신규 콘텐츠 묶음을 v0.27.0으로 릴리즈.
+- 핵심 변경:
+  - 캐릭터별 자동 발동 시그니처 패시브 5종 (BladeDance / SoulEcho / FleeAndReload / RecklessFury / EmberRenewal)
+  - Forest 스테이지 난이도 재조정 — 초반 spawn 완화, 후반 압박 강화, max_enemies 200→280
+  - v0.26.0 Known Issue "리더보드/광고 미동작" 해결 — 진단 정정 후 AndroidManifest meta-data 정적 주입 + plugin .aar/Maven deps 정적 선언으로 fallback 안전망
+  - 무기 카드 중복 노출 버그 3중 방어
+  - 결과 패널 영문 버튼 텍스트 잘림 fix
+  - v0.26.0 "Pyromancer 공격 미작동 의심" Known Issue를 오진으로 close (FireWisp는 base attack 그 자체로 정상)
+- 변경 파일 핵심:
+  - `godot/scripts/player/passives/` 신규 6개 (base + 5 subclass)
+  - `godot/scripts/weapons/WeaponBase.gd`, `WeaponManager.gd` — fired/weapon_fired 신호 + passive multiplier 합성
+  - `godot/scripts/player/Player.gd` — passive 인스턴스화 + passive_xp_radius_bonus
+  - `godot/scripts/core/Characters.gd`, `Localization.gd`, `godot/scripts/ui/CharacterSelect.gd`
+  - `godot/data/stages.json` — Forest 곡선 재조정
+  - `godot/scripts/enemies/EnemySpawner.gd`, `godot/scenes/main/GameRoot.tscn` — max_enemies 280
+  - `godot/android/build/AndroidManifest.xml`, `build.gradle` — PGS/AdMob 정적 주입
+  - `godot/scenes/main/GameRoot.tscn` — 결과 패널 버튼 폰트/clip_text
+  - `godot/export_presets.cfg` — v0.27.0 / code 29
+  - `docs/releases/v0.27.0.md`, `play_store/release_notes/v0.27.0.txt`, CHANGELOG.md
+- 검증:
+  - 로컬 headless editor import + GameRoot smoke 클린
+  - 로컬 headless APK build → dexdump로 PGS 클래스 485개 + aapt2 dump xmltree로 manifest meta-data 7개 확인
+  - 로컬 AAB build + 서명/dex 검증
+- 결과:
+  - main에 a8389ed까지 푸시, 태그 v0.27.0 푸시 → CI 4 플랫폼 빌드 + Web Pages 자동 배포 + GitHub Release 자동 생성 진행 중
+- 후속 작업:
+  - 폰 실기 검증 — PGS 로그인 + 리더보드 + AdMob 보상형 광고 + 캐릭터별 패시브 체감 + Forest 난이도 곡선
+  - 다음 후보: ranged enemy 추가, 패시브 시각 피드백 (스택 인디케이터), LevelUp tooltip에 현재 패시브 표시
+
 ## 2026-05-17 (GitHub README / 저장소 메타데이터 최신화)
 
 - 날짜: 2026-05-17
