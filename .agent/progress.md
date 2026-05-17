@@ -1,5 +1,29 @@
 # Progress
 
+## 2026-05-17 — README / GitHub Pages 소개 이미지 적용
+
+### Status
+
+사용자가 다운로드 폴더에 준비한 도트 일러스트 2장을 저장소에 반영했다. README 상단 배너와 GitHub Pages 소개 페이지 히어로/공유 이미지가 각각 별도 파일을 사용한다.
+
+### Completed
+
+- `docs/images/readme.png` 신규 추가
+- README 상단 빌드 배지 아래에 소개 배너 추가
+- `branding/assets/pages.png` 신규 추가
+- `branding/index.html` 히어로 배경, Open Graph, Twitter 이미지를 `assets/pages.png`로 변경
+- GitHub Actions Pages 배포 단계에서 `branding/assets/pages.png`를 배포 루트 `assets/pages.png`로 복사하도록 추가
+
+### Verification
+
+- 이미지 원본 크기 확인: 1672×941
+- 정적 파일 경로 확인
+- `godot --headless --path godot --quit` 실행 시도 — 로컬 PATH에서 `godot` 실행 파일을 찾을 수 없어 미실행
+
+### Not Yet Done
+
+- GitHub Pages 실제 배포 결과 확인은 push 후 GitHub Actions에서 확인 필요
+
 ## 2026-05-16 — v0.26.0 릴리즈 (LevelUp 픽셀아트 + Galmuri 폰트 + 다국어 layout)
 
 ### Status

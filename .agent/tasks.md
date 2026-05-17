@@ -4,6 +4,12 @@
 > Phase 1~4 로드맵을 작업 단위로 풀어 놓은 운영 목록입니다. 코드 상태를
 > 기준으로 한 마지막 동기화는 v0.23.0 작업 시작 시점입니다.
 
+## 2026-05-17 완료 (README / GitHub Pages 소개 이미지 적용)
+
+- [x] `Downloads/readme.png`를 README 상단 배너 이미지로 추가
+- [x] `Downloads/pages.png`를 GitHub Pages 소개 페이지 히어로/공유 이미지로 추가
+- [x] GitHub Actions Pages 배포 자산 복사 목록에 `pages.png` 추가
+
 ## v0.26.0 완료 (LevelUp 픽셀아트 + Galmuri 폰트 + 다국어 layout)
 
 ### LevelUp Phase UI-4

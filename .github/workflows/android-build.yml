@@ -232,6 +232,7 @@ jobs:
           
           # 5. Copy branding assets (icons, screenshots)
           cp play_store/icon_512.png build/gh-pages-root/assets/icon.png
+          cp branding/assets/pages.png build/gh-pages-root/assets/pages.png
           cp play_store/feature_graphic_1024x500.png build/gh-pages-root/assets/feature_graphic.png
           cp play_store/screenshot_1_menu.png build/gh-pages-root/assets/screenshot_1.png
           cp play_store/screenshot_2_gameplay.png build/gh-pages-root/assets/screenshot_2.png

@@ -1,5 +1,28 @@
 # HISTORY.md
 
+## 2026-05-17 (README / GitHub Pages 소개 이미지 적용)
+
+- 날짜: 2026-05-17
+- 작업: 사용자가 다운로드 폴더에 준비한 도트 일러스트 2장을 README 상단 배너와 GitHub Pages 소개 페이지 히어로/공유 이미지로 적용.
+- 변경 파일:
+  - README.md
+  - docs/images/readme.png
+  - branding/index.html
+  - branding/assets/pages.png
+  - .github/workflows/android-build.yml
+  - .agent/tasks.md
+  - .agent/progress.md
+  - CHANGELOG.md
+- 검증:
+  - 이미지 원본 크기 1672×941 확인
+  - 정적 경로 및 GitHub Actions 배포 복사 경로 확인
+  - `godot --headless --path godot --quit` 실행 시도 — 로컬 PATH에서 `godot` 실행 파일을 찾을 수 없어 미실행
+- 결과:
+  - README는 `docs/images/readme.png`를 상단에서 표시
+  - GitHub Pages 소개 페이지는 `assets/pages.png`를 히어로 배경과 공유 카드 이미지로 사용
+- 후속 작업:
+  - push 후 GitHub Actions Pages 배포 결과 확인
+
 ## 2026-05-16 (v0.26.0 릴리즈 — LevelUp 픽셀아트 + Galmuri 폰트 + 다국어 layout)
 
 - 날짜: 2026-05-16

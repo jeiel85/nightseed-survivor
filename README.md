@@ -4,6 +4,8 @@
 
 [![Build](https://github.com/jeiel85/nightseed-survivor/actions/workflows/android-build.yml/badge.svg)](https://github.com/jeiel85/nightseed-survivor/actions/workflows/android-build.yml)
 
+![Nightseed Survivor key visual](docs/images/readme.png)
+
 > 밤의 씨앗이 깨어난 세계. 자동 발사 무기로 사방에서 몰려드는 군단을 베어내고, 레벨업 카드로 빌드를 골라가며 5분 끝의 보스를 처치하세요. 죽으면 메타 영구 패시브로 더 강해져서 돌아옵니다.
 
 ## 다운로드

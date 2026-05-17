@@ -1,5 +1,19 @@
 # CHANGELOG.md
 
+## Unreleased - 2026-05-17
+
+### Documentation
+- README 상단에 `docs/images/readme.png` 소개 배너 추가
+- GitHub Pages 소개 페이지의 히어로 배경, Open Graph, Twitter 공유 이미지를 `branding/assets/pages.png` 기반으로 변경
+
+### Build / CI
+- GitHub Actions Pages 배포 단계에서 `branding/assets/pages.png`를 `assets/pages.png`로 복사하도록 추가
+
+### Verification
+- 이미지 원본 크기 1672×941 확인
+- 정적 파일 경로 및 배포 복사 경로 확인
+- 로컬 Godot headless 검증은 PATH에서 `godot` 실행 파일을 찾을 수 없어 미실행
+
 ## v0.26.0 - 2026-05-16 (LevelUp 픽셀아트 + Galmuri 폰트 + 다국어 layout)
 
 ### Added — Phase UI-4 LevelUp 카드 자산 통합
