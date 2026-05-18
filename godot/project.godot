@@ -16,6 +16,7 @@ config/name_localized={
 "ko": "잔불의 밤"
 }
 run/main_scene="res://scenes/ui/MainMenu.tscn"
+config/quit_on_go_back=false
 config/features=PackedStringArray("4.2")
 config/icon="res://assets/icons/icon.png"
 
@@ -28,6 +29,8 @@ AudioManager="*res://scripts/core/AudioManager.gd"
 Localization="*res://scripts/core/Localization.gd"
 Story="*res://scripts/core/Story.gd"
 Transition="*res://scripts/core/Transition.gd"
+RunPersist="*res://scripts/core/RunPersist.gd"
+CloudSave="*res://scripts/core/CloudSave.gd"
 GodotPlayGameServices="*res://addons/GodotPlayGameServices/scripts/autoloads/godot_play_game_services.gd"
 LeaderboardManager="*res://scripts/core/LeaderboardManager.gd"
 AdManager="*res://scripts/core/AdManager.gd"

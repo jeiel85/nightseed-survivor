@@ -1,5 +1,39 @@
 # CHANGELOG.md
 
+## v0.29.0 - 2026-05-18 (이어하기 + Android Back + 클라우드 백업)
+
+GitHub Issues [#1](https://github.com/jeiel85/nightseed-survivor/issues/1) (게임 중 뒤로 가기로 앱 종료) / [#2](https://github.com/jeiel85/nightseed-survivor/issues/2) (게임 현황 저장) 대응.
+
+### Added — Android Back 키 + 일시정지 메뉴
+
+- `project.godot` `application/config/quit_on_go_back=false` 추가 — Godot의 기본 자동 종료를 막고 노드에 `NOTIFICATION_WM_GO_BACK_REQUEST` 가 전달되도록 변경
+- `GameRoot`: 전투 중 Back → 일시정지 메뉴 (계속하기 / 메인 메뉴로). 메뉴 패널은 코드로 구성 (`_build_pause_menu()`), 라벨/버튼은 Localization 키로 다국어
+- `MainMenu`: Back → "Nightseed Survivor 를 종료할까요?" 확인 다이얼로그 (예/취소)
+- `StageSelect` / `CharacterSelect` / `ShopUI` / `CodexUI` / `StoryUI` / `CreditsUI`: Back → 메인 메뉴로 복귀 (각 화면의 기존 `_on_back_pressed()` 호출)
+
+### Added — 이어하기 (`RunPersist` autoload, `user://run_save.json`)
+
+- 전투 중 Back → 일시정지 메뉴를 열면 스냅샷 캡처. "메인 메뉴로" 누르면 commit
+- `NOTIFICATION_APPLICATION_PAUSED` (홈 버튼/전화) 시점에도 자동 스냅샷 + commit
+- `MainMenu` 상단에 "▶ 이어하기 (스테이지 · Lv.N · M:SS)" CTA — `RunPersist.has_save()` 일 때만 표시
+- 이어하기 누르면 `GameData.selected_stage` / `selected_character` / `difficulty` 를 저장된 값으로 핀 후 `GameRoot.tscn` 로 진입 → `GameRoot._ready()` 가 `_apply_resume()` 로 Player / WeaponManager / WaveManager / 런 플래그 일괄 복원
+- "PLAY" 새 게임 시작 / 사망 / 승리 / 결과 패널의 메인 메뉴·재시도 누르면 save 삭제 (오래된 dead-state 복원 방지)
+- 적/투사체/픽업은 저장 안 함 — WaveManager 가 `_elapsed` 만으로 자연스럽게 재생성
+
+### Added — PGS Saved Games 클라우드 백업 (`CloudSave` autoload)
+
+- PlayGamesSnapshotsClient (`SNAPSHOT_NAME = nightseed_meta`) 래핑. 비-Android / 로그아웃 시 모든 호출 no-op
+- `GameData.save_data()` 호출마다 `CloudSave.mark_dirty()` → 10초 throttle 으로 일괄 업로드
+- `NOTIFICATION_APPLICATION_PAUSED` 시점에 `flush()` 로 즉시 동기화
+- MainMenu 진입 시 1회 `request_load()` → `GameData.apply_cloud_payload()` 가 골드/언락/영구업그레이드를 **safe merge** (max / union 정책) 으로 합침. 로컬 진행을 파괴하지 않음
+- 다음 빌드에서 Play Console "Saved games" 활성화 확인 필요 (없으면 클라우드 부분은 자동 비활성, 로컬 저장만 작동)
+
+### Known limitations
+
+- 캐릭터 시그니처 패시브(BladeDance/SoulEcho/...)의 내부 카운터(스택, 발사 카운트, 힐 cadence)는 복원하지 않음 — 이어하기 시 초기 상태로 리셋
+- 적·투사체·픽업은 저장 안 함 — 이어하기 직후 짧은 정적 구간 발생 가능
+- 결과 패널이 떠 있는 상태에서 Back 키는 무시 — 결과 패널의 "메인 메뉴" / "재시도" 버튼을 사용해야 함
+
 ## v0.28.1 - 2026-05-18 (정령의 구 CD 표시 버그 + 레벨업 카드 오버플로 수정)
 
 ### Fixed — 정령의 구 CD 가 비현실적인 값(4575초 등)으로 표시되던 버그

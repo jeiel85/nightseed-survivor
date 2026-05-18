@@ -109,6 +109,48 @@ func save_data() -> void:
 	if file:
 		file.store_string(JSON.stringify(data))
 		file.close()
+	# Mark cloud-dirty so PGS Snapshots flushes our meta progress within the
+	# throttle window. No-op on non-Android or when not signed in.
+	var cs := get_node_or_null("/root/CloudSave")
+	if cs and cs.has_method("mark_dirty"):
+		cs.mark_dirty()
+
+# Merge a payload coming from PGS cloud into local state, then persist.
+# Policy: gold takes the max; arrays (unlocks/achievements) take the union;
+# permanent_upgrades takes the max per key. Selected character/stage prefer
+# the cloud value only if it's still unlocked locally after the merge.
+func apply_cloud_payload(payload: Dictionary) -> void:
+	if payload.is_empty():
+		return
+	gold = maxi(gold, int(payload.get("gold", 0)))
+	var saved_up: Dictionary = payload.get("permanent_upgrades", {})
+	for key in permanent_upgrades:
+		permanent_upgrades[key] = maxi(permanent_upgrades.get(key, 0), int(saved_up.get(key, 0)))
+	var cloud_chars = payload.get("unlocked_characters", [])
+	if cloud_chars is Array:
+		for c in cloud_chars:
+			if not unlocked_characters.has(c):
+				unlocked_characters.append(c)
+	var cloud_stages = payload.get("unlocked_stages", [])
+	if cloud_stages is Array:
+		for s in cloud_stages:
+			if not unlocked_stages.has(s):
+				unlocked_stages.append(s)
+	var cloud_achs = payload.get("achievements_unlocked", [])
+	if cloud_achs is Array:
+		for a in cloud_achs:
+			if not achievements_unlocked.has(a):
+				achievements_unlocked.append(a)
+	var cs_char: String = String(payload.get("selected_character", ""))
+	if cs_char != "" and unlocked_characters.has(cs_char):
+		selected_character = cs_char
+	var cs_stage: String = String(payload.get("selected_stage", ""))
+	if cs_stage != "" and unlocked_stages.has(cs_stage):
+		selected_stage = cs_stage
+	var cs_diff: String = String(payload.get("difficulty", ""))
+	if cs_diff != "" and Difficulty.DATA.has(cs_diff):
+		difficulty = cs_diff
+	save_data()
 
 func load_data() -> void:
 	if not FileAccess.file_exists(SAVE_PATH):

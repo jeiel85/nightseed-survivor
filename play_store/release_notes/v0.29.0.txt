@@ -1,0 +1,30 @@
+<ko-KR>
+📱 이어하기 + 뒤로가기 + 클라우드 백업
+
+뒤로가기 동작
+• 전투 중 뒤로가기 → 일시정지 메뉴 (계속하기/메인 메뉴로)
+• 메인 메뉴에서 뒤로가기 → 종료 확인
+
+이어하기
+• 전투 중에 나가도 메인 메뉴에 "▶ 이어하기" 표시
+• 홈 버튼/전화 알림으로 백그라운드 가도 진행 상태 유지
+
+클라우드 백업
+• Play Games 로그인 시 골드·해금·업그레이드를 클라우드에 자동 저장
+• 기기 변경/재설치 후에도 진행 상태 복원
+</ko-KR>
+<en-US>
+📱 Resume + Back button + Cloud save
+
+Back-button handling
+• Back during a run → pause menu (Resume / Quit to Menu)
+• Back at main menu → quit confirmation
+
+Continue your run
+• Leave mid-run and a "▶ Continue run" CTA appears on the main menu
+• Backgrounding (home button, phone call) preserves run state automatically
+
+Cloud backup
+• Meta progress (gold, unlocks, upgrades) syncs to Play Games Saved Games
+• Restore on device change or reinstall
+</en-US>

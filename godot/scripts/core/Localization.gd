@@ -211,6 +211,24 @@ const STRINGS: Dictionary = {
 	"codex_title":         {"en": "CODEX", "ko": "용어집"},
 	"codex_hint":          {"en": "Select a term to read.", "ko": "용어를 선택해 읽어보세요."},
 	"codex_safe_label":    {"en": "Used as", "ko": "이렇게 표현됩니다"},
+
+	# --- Pause / Quit confirm (v0.29.0) ---
+	"pause_title":          {"en": "- PAUSED -", "ko": "- 일시정지 -"},
+	"btn_resume":           {"en": "Resume", "ko": "계속하기"},
+	"btn_quit_to_menu":     {"en": "Quit to Menu", "ko": "메인 메뉴로"},
+	"pause_save_hint":      {"en": "Progress is saved — you can continue later.", "ko": "진행 상태가 저장됩니다 — 나중에 이어할 수 있습니다."},
+	"quit_confirm_title":   {"en": "Quit Nightseed Survivor?", "ko": "Nightseed Survivor 를 종료할까요?"},
+	"btn_quit_app":         {"en": "Quit", "ko": "종료"},
+	"btn_cancel":           {"en": "Cancel", "ko": "취소"},
+
+	# --- Run resume / cloud save (v0.29.0) ---
+	"btn_resume_run":       {"en": "▶ Continue run", "ko": "▶ 이어하기"},
+	"resume_run_info_fmt":  {"en": "%s · Lv.%d · %d:%02d", "ko": "%s · Lv.%d · %d:%02d"},
+	"resume_run_discard":   {"en": "Start a new run will discard your saved run.", "ko": "새 게임을 시작하면 이어하기 데이터는 삭제됩니다."},
+	"cloud_save_title":     {"en": "Cloud save found", "ko": "클라우드 저장 발견"},
+	"cloud_save_msg":       {"en": "A newer cloud save was found. Use it?", "ko": "더 최신인 클라우드 저장이 있습니다. 사용할까요?"},
+	"btn_use_cloud":        {"en": "Use Cloud", "ko": "클라우드 사용"},
+	"btn_keep_local":       {"en": "Keep Local", "ko": "로컬 유지"},
 }
 
 var current_lang: String = DEFAULT_LANG

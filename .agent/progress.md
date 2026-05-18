@@ -1,5 +1,39 @@
 # Progress
 
+## 2026-05-18 — v0.29.0 릴리즈 (이어하기 + Android Back + PGS 클라우드)
+
+### Status
+
+GitHub Issues #1 (Android Back 으로 앱 종료) + #2 (게임 현황 저장) 를 한 릴리즈에 묶어 처리. 사용자 결정으로 분할 대신 v0.29.0 한 번에 세 갈래 모두 포함. headless 컴파일 통과, AAB 빌드/서명 검증 완료, 폰 실기 검증 대기.
+
+### Completed
+
+- `quit_on_go_back=false` 설정으로 Godot 기본 자동 종료 차단
+- 모든 화면(GameRoot/MainMenu/StageSelect/CharacterSelect/ShopUI/CodexUI/StoryUI/CreditsUI) 에 `_notification(NOTIFICATION_WM_GO_BACK_REQUEST)` 핸들러 추가
+- GameRoot 일시정지 메뉴(코드 구성, 다국어): 계속하기 / 메인 메뉴로
+- MainMenu 종료 확인 다이얼로그 (AcceptDialog)
+- `RunPersist` autoload: capture/commit/clear API + `user://run_save.json`
+- GameRoot `_apply_resume()` — Player·WeaponManager·WaveManager·런 플래그 복원
+- 저장 트리거: 일시정지 진입 / `NOTIFICATION_APPLICATION_PAUSED` / quit-to-menu
+- 저장 삭제: 새 게임 / 사망 / 승리 / 결과 패널 버튼
+- MainMenu "▶ 이어하기 (스테이지 · Lv.N · M:SS)" CTA — `RunPersist.has_save()` 시
+- `CloudSave` autoload — PlayGamesSnapshotsClient 래핑, dirty/throttle/flush 패턴
+- `GameData.apply_cloud_payload()` — gold = max, unlocks = union safe merge
+- Localization 추가 키: pause/btn_resume/btn_quit_to_menu/pause_save_hint/quit_confirm_title/btn_quit_app/btn_cancel/btn_resume_run/resume_run_info_fmt/cloud_save_*
+- 릴리즈 노트 (`docs/releases/v0.29.0.md` + `play_store/release_notes/v0.29.0.txt`, KO 239자 / EN 445자 모두 500자 내)
+- version 0.29.0 / code 32 bump
+- AAB 빌드 검증: 52.7MB · versionName 0.29.0 · META-INF/NIGHTSEE.SF 서명
+
+### Next
+
+- 폰 실기 테스트:
+  - 전투 중 Back → 일시정지 메뉴 확인 (계속 / 메인 메뉴)
+  - 메인 메뉴 Back → 종료 다이얼로그 확인
+  - 전투 중 홈 버튼 → 다시 진입 → 메인 메뉴 "이어하기" CTA 확인
+  - 이어하기 누르면 정확한 위치/HP/레벨/무기로 복원되는지 확인
+  - PGS 로그인 상태에서 골드 획득 → 앱 강제 종료 → 재진입 시 메인 메뉴에서 클라우드 머지 적용 여부 확인
+- Play Console "Saved games" 활성화 확인 (Game services → 이번 빌드 업로드 후 확인)
+
 ## 2026-05-18 — v0.28.1 패치 (정령의 구 CD 표시 / 레벨업 카드 오버플로 수정)
 
 ### Status

@@ -118,3 +118,7 @@ func _on_back_pressed() -> void:
 
 func _on_codex_pressed() -> void:
 	Transition.change_scene("res://scenes/ui/CodexUI.tscn")
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST or what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_on_back_pressed()

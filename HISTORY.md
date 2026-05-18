@@ -1,5 +1,25 @@
 # HISTORY.md
 
+## 2026-05-18 (v0.29.0 — 이어하기 + Android Back + 클라우드 백업)
+
+- 날짜: 2026-05-18
+- 작업: v0.28.1 직후 사용자가 GitHub 이슈 2건([#1](https://github.com/jeiel85/nightseed-survivor/issues/1) Android Back 으로 앱 종료 / [#2](https://github.com/jeiel85/nightseed-survivor/issues/2) 게임 현황 저장) 를 가리킴. 사용자가 세 갈래(인게임 일시정지/Back · 런 이어하기 · PGS 클라우드)를 한 릴리즈에 묶기로 결정 → v0.29.0 minor 으로 작업·검증.
+- 핵심 변경:
+  - `project.godot` `application/config/quit_on_go_back=false` — Godot 기본 자동 종료 차단
+  - 모든 화면이 `_notification(NOTIFICATION_WM_GO_BACK_REQUEST)` 핸들러 가짐. GameRoot 는 일시정지 메뉴, MainMenu 는 종료 확인, 서브 메뉴는 기존 `_on_back_pressed()` 호출
+  - `RunPersist` autoload (`user://run_save.json`) — Player·WeaponManager·WaveManager·GameRoot 런 플래그를 capture/commit/clear. 일시정지 진입 / 앱 백그라운드 / quit-to-menu 시점에 저장, 사망·승리·새 게임 시작·결과 패널 버튼에서 삭제
+  - `CloudSave` autoload — PlayGamesSnapshotsClient 래핑. `GameData.save_data()` 호출마다 dirty 플래그, 10초 throttle 업로드, MainMenu 진입 시 1회 load + safe merge (gold = max, unlocks = union)
+  - `MainMenu` 상단에 "▶ 이어하기 (스테이지 · Lv.N · M:SS)" CTA — `RunPersist.has_save()` 일 때만 표시. `_on_resume_pressed()` 가 GameData 의 stage/character/difficulty 를 저장된 값으로 핀 후 GameRoot 진입
+- 결정:
+  - 분할 vs 묶음: 사용자가 "어차피 머지가 복잡해지니 한 번에" 선택. 한 릴리즈에 세 갈래 모두 포함
+  - 적·투사체·픽업 미저장: WaveManager 가 `_elapsed` 만으로 자연스럽게 재구성되므로 별도 직렬화 불필요 — 이어하기 직후 짧은 정적 구간만 발생
+  - 캐릭터 시그니처 패시브 내부 카운터(스택, 발사 카운트, 힐 cadence)는 리셋: 직렬화 비용 대비 체감 손실 작음. Known limitation 로 명시
+  - 클라우드 충돌 자동 머지(union/max)만 구현. 수동 선택 UI 는 다음 릴리즈
+  - Play Console "Saved games" 활성화 확인 필요 — 비활성이면 클라우드 부분 자동 비활성, 로컬 저장만 동작 (가드 있음)
+- 검증:
+  - Headless editor 컴파일 통과 (parse error 0, warning 0)
+  - 인게임 폰 테스트는 사용자가 수행
+
 ## 2026-05-18 (v0.28.1 — 정령의 구 CD 표시 버그 + 레벨업 카드 오버플로 수정)
 
 - 날짜: 2026-05-18

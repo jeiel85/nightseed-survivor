@@ -41,6 +41,10 @@ const NAV_ICON_PATHS := {
 @onready var btn_credits: Button = $TopRightRow/BtnCredits
 @onready var character_showcase: CharacterShowcase = $CharacterShowcase
 
+var _resume_btn: Button = null
+var _resume_label: Label = null
+var _quit_dialog: AcceptDialog = null
+
 func _ready() -> void:
 	AudioManager.play_bgm("menu")
 	_apply_background()
@@ -48,6 +52,7 @@ func _ready() -> void:
 	_apply_button_styles()
 	_apply_button_icons()
 	_apply_status_card_style()
+	_build_resume_cta()
 	_refresh()
 	btn_play.pressed.connect(_on_play_pressed)
 	btn_character.pressed.connect(_on_character_pressed)
@@ -61,6 +66,23 @@ func _ready() -> void:
 	btn_leaderboard.visible = LeaderboardManager.is_supported() or OS.get_name() == "Android"
 	if Localization:
 		Localization.language_changed.connect(_on_language_changed)
+	# Cloud sync: ask PGS for the latest meta snapshot once on first arrival.
+	# Result comes back via _on_cloud_loaded; if a newer snapshot exists we
+	# prompt before overwriting local. No-op on non-Android / not-signed-in.
+	var cs := get_node_or_null("/root/CloudSave")
+	if cs:
+		cs.cloud_loaded.connect(_on_cloud_loaded)
+		cs.request_load()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST or what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_show_quit_confirm()
+	elif what == NOTIFICATION_APPLICATION_PAUSED:
+		# App backgrounded from the main menu — flush any pending cloud
+		# write so unlocks/gold from this session aren't lost on app kill.
+		var cs := get_node_or_null("/root/CloudSave")
+		if cs and cs.has_method("flush"):
+			cs.flush()
 
 func _apply_title_styles() -> void:
 	# Title is now a TextureRect (pixel-art logo image, language-aware in
@@ -237,6 +259,24 @@ func _on_language_changed(_lang: String) -> void:
 	_refresh()
 
 func _on_play_pressed() -> void:
+	# A fresh "PLAY" press starts a new run — any in-progress save would be
+	# stale or for a different stage/character. Drop it so GameRoot doesn't
+	# silently resume into the wrong loadout.
+	if RunPersist.has_save():
+		RunPersist.clear()
+	Transition.change_scene("res://scenes/main/GameRoot.tscn")
+
+func _on_resume_pressed() -> void:
+	# Pin GameData to the saved loadout before scene-change so GameRoot's
+	# normal _ready (which reads selected_character/stage) builds the right
+	# Player/WaveManager. The saved snapshot is applied AFTER that.
+	var save := RunPersist.load_save()
+	if save.is_empty():
+		_refresh_resume_cta()
+		return
+	GameData.selected_stage = String(save.get("stage", GameData.selected_stage))
+	GameData.selected_character = String(save.get("character", GameData.selected_character))
+	GameData.difficulty = String(save.get("difficulty", GameData.difficulty))
 	Transition.change_scene("res://scenes/main/GameRoot.tscn")
 
 func _on_character_pressed() -> void:
@@ -269,3 +309,75 @@ func _on_leaderboard_pressed() -> void:
 
 func _on_language_pressed() -> void:
 	Localization.cycle_language()
+
+# --- Resume CTA (v0.29.0) ---
+
+func _build_resume_cta() -> void:
+	# Inject above the existing Play button so it's the first thing the eye
+	# lands on when there's an in-progress run. Hidden when no save exists.
+	var parent := btn_play.get_parent()
+	if parent == null:
+		return
+	var container := VBoxContainer.new()
+	container.name = "ResumeBox"
+	container.add_theme_constant_override("separation", 4)
+	parent.add_child(container)
+	parent.move_child(container, btn_play.get_index())
+	_resume_btn = Button.new()
+	_resume_btn.custom_minimum_size = Vector2(0, 72)
+	_resume_btn.add_theme_font_size_override("font_size", 28)
+	ButtonStyles.apply(_resume_btn, ButtonStyles.VICTORY)
+	_resume_btn.pressed.connect(_on_resume_pressed)
+	container.add_child(_resume_btn)
+	_resume_label = Label.new()
+	_resume_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_resume_label.add_theme_font_size_override("font_size", 18)
+	_resume_label.add_theme_color_override("font_color", Color(0.85, 0.9, 1, 0.85))
+	container.add_child(_resume_label)
+	_refresh_resume_cta()
+
+func _refresh_resume_cta() -> void:
+	if _resume_btn == null:
+		return
+	if not RunPersist.has_save():
+		_resume_btn.get_parent().visible = false
+		return
+	var summary := RunPersist.get_save_summary()
+	if summary.is_empty():
+		_resume_btn.get_parent().visible = false
+		return
+	_resume_btn.get_parent().visible = true
+	_resume_btn.text = Localization.tr_key("btn_resume_run")
+	var stage_name := Stages.display_name(String(summary.get("stage", "")))
+	var lvl := int(summary.get("level", 1))
+	var seconds := int(summary.get("elapsed", 0))
+	_resume_label.text = Localization.tr_key("resume_run_info_fmt") % [stage_name, lvl, seconds / 60, seconds % 60]
+
+# --- Quit confirm dialog (Android Back at top level) ---
+
+func _show_quit_confirm() -> void:
+	if _quit_dialog != null and _quit_dialog.visible:
+		return
+	if _quit_dialog == null:
+		_quit_dialog = AcceptDialog.new()
+		_quit_dialog.title = ""
+		_quit_dialog.dialog_text = Localization.tr_key("quit_confirm_title")
+		_quit_dialog.dialog_autowrap = true
+		_quit_dialog.exclusive = true
+		_quit_dialog.add_cancel_button(Localization.tr_key("btn_cancel"))
+		_quit_dialog.get_ok_button().text = Localization.tr_key("btn_quit_app")
+		_quit_dialog.confirmed.connect(func(): get_tree().quit())
+		add_child(_quit_dialog)
+	_quit_dialog.popup_centered()
+
+# --- Cloud-save merge (Phase C) ---
+
+func _on_cloud_loaded(payload: Dictionary) -> void:
+	if payload.is_empty():
+		return
+	# Auto-merge: gold = max, unlocks = union. This is "import what's better"
+	# semantics — strictly additive, never destroys local progress. A future
+	# patch can show a prompt for explicit overwrite, but the safe default
+	# avoids surprising the user when they sign in on a fresh device.
+	GameData.apply_cloud_payload(payload)
+	_refresh()
