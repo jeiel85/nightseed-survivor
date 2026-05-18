@@ -70,6 +70,18 @@ func _make_card(stage: Dictionary) -> PanelContainer:
 	time_lbl.add_theme_font_size_override("font_size", 18)
 	info.add_child(time_lbl)
 
+	var cleared_diffs: Array = GameData.stages_cleared.get(stage_id, [])
+	if cleared_diffs.size() > 0:
+		var parts: Array = []
+		for d in Difficulty.ORDER:
+			if cleared_diffs.has(d):
+				parts.append("★ " + Difficulty.display_name(d))
+		var clear_lbl := Label.new()
+		clear_lbl.text = Localization.tr_key("stage_cleared_fmt") % "  ".join(parts)
+		clear_lbl.add_theme_font_size_override("font_size", 16)
+		clear_lbl.add_theme_color_override("font_color", Color(1.0, 0.88, 0.42))
+		info.add_child(clear_lbl)
+
 	var btn := Button.new()
 	btn.name = "ActionBtn"
 	btn.custom_minimum_size = Vector2(0, 70)

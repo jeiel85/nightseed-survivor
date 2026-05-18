@@ -1,5 +1,37 @@
 # CHANGELOG.md
 
+## v0.30.0 - 2026-05-18 (스테이지 첫 클리어 자동 해금)
+
+### Added — 첫 클리어 = 다음 스테이지 자동 해금
+
+뱀파이어 서바이버 계열 장르 관습에 맞춰, 어떤 스테이지든 첫 클리어 시 다음 스테이지가 **골드 차감 없이 자동으로 해금**됩니다. 사용자 피드백 "보통 스테이지는 클리어하면 자동으로 다음 스테이지로 진행되는 거잖아?" 반영.
+
+- `stages.json` 각 entry 에 `next_stage` 필드 추가 (forest → frozen_wastes → twilight_sanctum → inferno_chasm → cursed_tomb)
+- `GameData.stages_cleared` 기록 구조 추가 — `{stage_id: ["normal", "hard", ...]}` 형태로 어떤 스테이지를 어떤 난이도로 깼는지 영구 저장. PGS 클라우드 머지 정책은 union
+- `GameRoot._on_victory()` 가 첫 클리어를 감지하면 자동 해금 + 결과창에 ★ 알림 라인 표시
+- 골드로 직접 해금하는 ShopUI(StageSelect) 흐름은 그대로 유지 — 자동 해금 전에 골드로 미리 사도 됨
+
+### Added — 난이도 첫 클리어 골드 보너스
+
+같은 (스테이지, 난이도) 쌍을 처음 깬 경우 일회성 보너스 골드.
+
+- Normal 첫 클리어: 보너스 없음 (스테이지 해금만)
+- Hard 첫 클리어: +500 골드
+- Nightmare 첫 클리어: +1000 골드
+- 보너스는 결과창 ★ 라인으로 표시되고 즉시 `GameData` 에 영구 저장 (광고 Double Gold 와 독립)
+
+### Added — 캠페인 완주 엔딩 메시지
+
+Cursed Tomb (마지막 스테이지) 첫 클리어 시 결과창 상단에 `★ 모든 스테이지 정복 — 영원한 밤이 잠들었습니다.` 라인. 별도 컨텐츠 X — MVP 정책 그대로.
+
+### Added — StageSelect 카드에 클리어 표시
+
+각 스테이지 카드에 클리어한 난이도들이 `클리어:  ★ Normal  ★ Hard` 형태의 노란색 라인으로 노출. 어느 스테이지를 어디까지 깼는지 한눈에 보임.
+
+### Added — Localization 키
+
+- `result_stage_unlocked_fmt`, `result_first_clear_bonus_fmt`, `result_campaign_finished`, `stage_cleared_fmt` (en/ko)
+
 ## v0.29.1 - 2026-05-18 (PGS·AdMob 플러그인 ClassNotFoundException 수정)
 
 ### Fixed — v0.24.0 부터 누적된 리더보드/광고 미동작의 진짜 원인

@@ -88,6 +88,9 @@ const STRINGS: Dictionary = {
 	"result_gold_fmt":     {"en": "Gold earned:  %d", "ko": "획득 골드:  %d"},
 	"result_new_ach":      {"en": "★ NEW ACHIEVEMENTS", "ko": "★ 신규 업적"},
 	"result_ach_line":     {"en": "%s  (+%d gold)", "ko": "%s  (+%d 골드)"},
+	"result_stage_unlocked_fmt": {"en": "★ Next stage unlocked: %s", "ko": "★ 다음 스테이지 해금: %s"},
+	"result_first_clear_bonus_fmt": {"en": "★ First %s clear!  +%d gold", "ko": "★ 첫 %s 클리어!  +%d 골드"},
+	"result_campaign_finished": {"en": "★ All stages conquered — the eternal night sleeps.", "ko": "★ 모든 스테이지 정복 — 영원한 밤이 잠들었습니다."},
 	"result_next_goal_fmt":   {"en": "Next upgrade in %d gold", "ko": "다음 강화까지 %d 골드"},
 	"result_next_goal_ready": {"en": "★ Upgrade ready — visit Shop", "ko": "★ 강화 가능 — 상점에서 확인"},
 	"btn_play_again":      {"en": "Play Again", "ko": "다시 플레이"},
@@ -99,6 +102,7 @@ const STRINGS: Dictionary = {
 	# --- Selects / shared ---
 	"choose_character":    {"en": "CHOOSE CHARACTER", "ko": "캐릭터 선택"},
 	"choose_stage":        {"en": "CHOOSE STAGE", "ko": "스테이지 선택"},
+	"stage_cleared_fmt":   {"en": "Cleared:  %s", "ko": "클리어:  %s"},
 	"shop_title":          {"en": "PERMANENT UPGRADES", "ko": "영구 업그레이드"},
 	"btn_back":            {"en": "Back to Menu", "ko": "메뉴로 돌아가기"},
 	"btn_unlock_fmt":      {"en": "UNLOCK  (%d gold)", "ko": "해금  (%d 골드)"},

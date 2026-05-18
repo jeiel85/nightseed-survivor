@@ -35,6 +35,20 @@ var _run_boss_killed: bool = false
 var _last_seen_hp: int = -1
 var _newly_unlocked_achievements: Array = []
 
+# One-shot first-clear gold bonuses by difficulty. Stage auto-unlock fires
+# regardless of difficulty (the first clear on ANY difficulty unlocks next).
+const FIRST_CLEAR_BONUS: Dictionary = {
+	"normal": 0,
+	"hard": 500,
+	"nightmare": 1000,
+}
+
+# Stage clear bookkeeping for the result panel.
+var _newly_unlocked_stage: String = ""
+var _newly_first_clear_diff: String = ""
+var _first_clear_bonus_gold: int = 0
+var _newly_finished_campaign: bool = false
+
 # Rewarded-ad gates — each is one-shot per run so the player can't
 # repeatedly farm a single ad slot for free progress.
 var _revive_used: bool = false
@@ -201,7 +215,28 @@ func _on_player_died() -> void:
 func _on_victory() -> void:
 	_is_victory = true
 	RunPersist.clear()
+	_process_stage_clear_rewards()
 	_show_result(true)
+
+# Records the (stage, difficulty) clear and grants one-shot meta rewards on
+# the first clear: auto-unlock the next stage and a difficulty-based gold
+# bonus. Persists immediately via GameData so a player who closes the app
+# after the victory screen keeps the rewards.
+func _process_stage_clear_rewards() -> void:
+	var stage_id := GameData.selected_stage
+	var diff := GameData.difficulty
+	if not GameData.mark_stage_cleared(stage_id, diff):
+		return
+	_newly_first_clear_diff = diff
+	_first_clear_bonus_gold = int(FIRST_CLEAR_BONUS.get(diff, 0))
+	if _first_clear_bonus_gold > 0:
+		GameData.add_gold(_first_clear_bonus_gold)
+	var next_id := Stages.get_next_stage(stage_id)
+	if next_id != "" and not GameData.is_stage_unlocked(next_id):
+		if GameData.auto_unlock_stage(next_id):
+			_newly_unlocked_stage = next_id
+	if Stages.is_last_stage(stage_id):
+		_newly_finished_campaign = true
 
 func _show_result(victory: bool) -> void:
 	get_tree().paused = true
@@ -246,7 +281,7 @@ func _show_result(victory: bool) -> void:
 	result_stats.text = "\n".join(base_lines)
 	_start_gold_count_up(player.session_gold, tm)
 	result_next_goal.text = _result_next_goal_text()
-	result_achievements.text = _format_new_achievements()
+	result_achievements.text = _format_result_extras()
 	result_achievements.visible = result_achievements.text != ""
 	btn_restart.text = Localization.tr_key("btn_play_again") if victory else Localization.tr_key("btn_retry")
 	btn_menu.text = Localization.tr_key("btn_main_menu")
@@ -322,6 +357,25 @@ func _format_new_achievements() -> String:
 		var ach_gold: int = int(Achievements.DATA[key]["gold"])
 		parts.append(Localization.tr_key("result_ach_line") % [ach_name, ach_gold])
 	return "  ·  ".join(parts)
+
+# Combines first-clear / auto-unlock / campaign-finish / achievement lines
+# into a single block for the result panel's extras label. Each line is its
+# own row separated by newlines; the achievement row keeps the existing
+# "  ·  " inline layout so existing screenshots still parse.
+func _format_result_extras() -> String:
+	var lines: Array = []
+	if _newly_finished_campaign:
+		lines.append(Localization.tr_key("result_campaign_finished"))
+	if _newly_unlocked_stage != "":
+		var nm: String = Stages.display_name(_newly_unlocked_stage)
+		lines.append(Localization.tr_key("result_stage_unlocked_fmt") % nm)
+	if _first_clear_bonus_gold > 0 and _newly_first_clear_diff != "":
+		var diff_name: String = Difficulty.display_name(_newly_first_clear_diff)
+		lines.append(Localization.tr_key("result_first_clear_bonus_fmt") % [diff_name, _first_clear_bonus_gold])
+	var ach_line := _format_new_achievements()
+	if ach_line != "":
+		lines.append(ach_line)
+	return "\n".join(lines)
 
 func _on_restart_pressed() -> void:
 	_commit_run_results()

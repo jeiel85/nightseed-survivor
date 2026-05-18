@@ -1,0 +1,22 @@
+<ko-KR>
+🌙 스테이지 첫 클리어 자동 해금
+
+추가
+• 어떤 난이도든 스테이지 첫 클리어 시 다음 스테이지가 골드 차감 없이 자동으로 해금
+• Hard 첫 클리어 +500 골드, Nightmare 첫 클리어 +1000 골드 (일회성)
+• Cursed Tomb (마지막 스테이지) 첫 클리어 시 엔딩 메시지
+• 스테이지 카드에 클리어한 난이도가 ★ 표시로 노출
+
+기존 골드 직접 해금 흐름은 그대로 — 빠른 패스로 미리 사도 됨.
+</ko-KR>
+<en-US>
+🌙 Stage auto-unlock on first clear
+
+Added
+• First clear of any stage (any difficulty) auto-unlocks the next stage, no gold spent.
+• Hard first clear: +500 gold one-shot; Nightmare first clear: +1000 gold one-shot.
+• Cursed Tomb (final stage) first clear: ending line on the result screen.
+• StageSelect cards now show ★ marks for difficulties already cleared.
+
+The classic "spend gold to unlock" path still works as a shortcut.
+</en-US>

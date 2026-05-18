@@ -53,3 +53,12 @@ func display_desc(id: String) -> String:
 	if s.has("desc_key") and Localization:
 		return Localization.tr_key(String(s["desc_key"]), String(s.get("desc", "")))
 	return String(s.get("desc", ""))
+
+# Returns the id of the stage that should auto-unlock on first clear, or "" if
+# this is the final stage in the campaign. Reads `next_stage` from stages.json.
+func get_next_stage(id: String) -> String:
+	var s := get_stage(id)
+	return String(s.get("next_stage", ""))
+
+func is_last_stage(id: String) -> bool:
+	return get_next_stage(id) == ""

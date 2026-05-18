@@ -1,5 +1,29 @@
 # Progress
 
+## 2026-05-18 — v0.30.0 (스테이지 첫 클리어 자동 해금)
+
+### Status
+
+뱀파이어 서바이버 계열 장르 관습 반영. 첫 클리어 = 다음 스테이지 자동 해금 + 난이도별 일회성 보너스 골드 + 캠페인 완주 메시지. headless 컴파일 / JSON sanity / 글자수 통과, AAB 빌드 + Play Console internal testing 검증 대기.
+
+### Completed
+
+- AskUserQuestion 3건 — 자동 해금 비용 0, Cursed Tomb 보상 = 엔딩 메시지, 난이도 보상 = 골드 보너스만 (스킨/슬롯 부재로 축소)
+- `stages.json` v9 — 5개 스테이지에 `next_stage` 필드 추가
+- `GameData.stages_cleared` 영구 기록 + save/load/cloud merge (union) 통합 + 헬퍼 3개
+- `Stages.get_next_stage` / `is_last_stage` 헬퍼
+- `GameRoot._process_stage_clear_rewards()` + 결과창 통합 알림 (`_format_result_extras`)
+- StageSelect 카드에 클리어 난이도 ★ 라벨
+- Localization 4 키 (en/ko)
+- v0.30.0 / versionCode 34 bump
+- CHANGELOG / HISTORY / progress 갱신
+- 릴리즈 노트 (`docs/releases/v0.30.0.md` + `play_store/release_notes/v0.30.0.txt`, KO 233 / EN 427)
+
+### Next
+
+- 로컬 AAB 빌드 → 바탕화면 복사 → 커밋 → push → 태그 push → CI 통과 확인
+- 사용자가 Play Console internal testing 트랙에 v0.30.0 AAB 업로드 → 폰 실기에서 자동 해금 결과창 라인 / StageSelect ★ 마크 / Hard·Nightmare 보너스 골드 누적 검증
+
 ## 2026-05-18 — v0.29.1 패치 (PGS·AdMob 플러그인 ClassNotFoundException 수정)
 
 ### Status

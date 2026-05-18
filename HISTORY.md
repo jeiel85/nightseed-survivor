@@ -1,5 +1,25 @@
 # HISTORY.md
 
+## 2026-05-18 (v0.30.0 — 스테이지 첫 클리어 자동 해금)
+
+- 날짜: 2026-05-18
+- 작업: 사용자 피드백 "보통 스테이지는 클리어하면 자동으로 다음 스테이지로 진행되는 거잖아?" 반영. 뱀파이어 서바이버 계열 장르 관습대로 첫 클리어 = 다음 스테이지 자동 해금 흐름을 신규 도입.
+- 결정 (사용자 답변, AskUserQuestion):
+  1. 자동 해금된 스테이지 골드 비용: **0 (완전 무료)**
+  2. Cursed Tomb 마지막 클리어 보상: **결과창에 ★ 엔딩 메시지만** (별도 컨텐츠 X — MVP 정책 유지)
+  3. 난이도 보상 범위: 처음 "스킨/슬롯/골드 보너스"로 답했으나 스킨/슬롯 시스템 부재 확인 후 **골드 보너스만** 으로 축소. 스킨/슬롯은 후속 패치 (v0.31.0+) 로
+- 구현:
+  - `stages.json` 각 스테이지에 `next_stage` 필드 (forest→frozen_wastes→twilight_sanctum→inferno_chasm→cursed_tomb→"")
+  - `GameData.stages_cleared` Dictionary 추가 — `{stage_id: ["normal","hard","nightmare"]}` save/load/cloud merge (union) 통합
+  - `GameData.mark_stage_cleared` / `is_stage_cleared` / `auto_unlock_stage` 헬퍼
+  - `Stages.get_next_stage` / `is_last_stage` 헬퍼
+  - `GameRoot._process_stage_clear_rewards()` — 첫 클리어 시 다음 스테이지 자동 해금 + Hard +500 / Nightmare +1000 일회성 골드 + Cursed Tomb 첫 클리어 시 캠페인 완주 플래그
+  - `_format_result_extras()` 가 4가지 라인 (완주 메시지 / 스테이지 해금 / 첫 클리어 보너스 / 신규 업적) 을 통합 표시
+  - StageSelect 카드에 클리어한 난이도 ★ 라벨 추가
+  - Localization 4개 키 (result_stage_unlocked_fmt / result_first_clear_bonus_fmt / result_campaign_finished / stage_cleared_fmt)
+- 검증: headless editor import 2-pass 통과, JSON sanity (5 stages chain forest→…→cursed_tomb→"") 통과, KO 233 / EN 427 글자 (둘 다 500 미만)
+- 다음: 폰 실기에서 첫 클리어 시 자동 해금 결과창 라인 + StageSelect 클리어 마크 + Hard/Nightmare 보너스 골드 누적 검증
+
 ## 2026-05-18 (v0.29.1 — PGS·AdMob 플러그인 ClassNotFoundException 수정)
 
 - 날짜: 2026-05-18

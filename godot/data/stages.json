@@ -1,5 +1,5 @@
 {
-  "version": 8,
+  "version": 9,
   "stages": [
     {
       "id": "forest",
@@ -12,6 +12,7 @@
       "boss_type": "boss",
       "color": "#4ad44a",
       "unlock_cost": 0,
+      "next_stage": "frozen_wastes",
       "bg": {
         "void":         [0.04, 0.10, 0.05, 1.0],
         "tile":         [0.28, 0.46, 0.32, 1.0],
@@ -47,6 +48,7 @@
       "boss_type": "boss",
       "color": "#88ccff",
       "unlock_cost": 500,
+      "next_stage": "twilight_sanctum",
       "bg": {
         "void":         [0.04, 0.06, 0.14, 1.0],
         "tile":         [0.32, 0.48, 0.72, 1.0],
@@ -78,6 +80,7 @@
       "boss_type": "boss",
       "color": "#aa77ff",
       "unlock_cost": 1000,
+      "next_stage": "inferno_chasm",
       "bg": {
         "void":         [0.07, 0.05, 0.13, 1.0],
         "tile":         [0.48, 0.30, 0.68, 1.0],
@@ -110,6 +113,7 @@
       "boss_type": "boss",
       "color": "#ff5544",
       "unlock_cost": 1500,
+      "next_stage": "cursed_tomb",
       "bg": {
         "void":         [0.10, 0.04, 0.03, 1.0],
         "tile":         [0.62, 0.26, 0.18, 1.0],
@@ -142,6 +146,7 @@
       "boss_type": "boss",
       "color": "#dd4488",
       "unlock_cost": 2500,
+      "next_stage": "",
       "bg": {
         "void":         [0.08, 0.03, 0.08, 1.0],
         "tile":         [0.52, 0.22, 0.42, 1.0],

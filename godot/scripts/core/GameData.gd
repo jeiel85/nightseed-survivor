@@ -13,6 +13,10 @@ var unlocked_characters: Array = ["vagrant"]
 var achievements_unlocked: Array = []
 var selected_stage: String = "forest"
 var unlocked_stages: Array = ["forest"]
+# Per-stage difficulty clear records: { stage_id: ["normal", "hard", ...] }
+# Used by GameRoot._on_victory() to detect first-clears and grant one-shot
+# auto-unlock + difficulty gold bonuses.
+var stages_cleared: Dictionary = {}
 var difficulty: String = "normal"
 var language: String = "auto"
 
@@ -82,6 +86,33 @@ func select_stage(id: String) -> bool:
 	save_data()
 	return true
 
+func is_stage_cleared(id: String, diff: String = "") -> bool:
+	if not stages_cleared.has(id):
+		return false
+	if diff == "":
+		return (stages_cleared[id] as Array).size() > 0
+	return (stages_cleared[id] as Array).has(diff)
+
+# Returns true if this is the first clear of (stage, difficulty). Persists.
+func mark_stage_cleared(id: String, diff: String) -> bool:
+	if not stages_cleared.has(id):
+		stages_cleared[id] = []
+	var arr: Array = stages_cleared[id]
+	if arr.has(diff):
+		return false
+	arr.append(diff)
+	stages_cleared[id] = arr
+	save_data()
+	return true
+
+# Auto-unlocks a stage without charging gold. Returns true on a fresh unlock.
+func auto_unlock_stage(id: String) -> bool:
+	if id == "" or is_stage_unlocked(id):
+		return false
+	unlocked_stages.append(id)
+	save_data()
+	return true
+
 func has_achievement(key: String) -> bool:
 	return achievements_unlocked.has(key)
 
@@ -102,6 +133,7 @@ func save_data() -> void:
 		"achievements_unlocked": achievements_unlocked.duplicate(),
 		"selected_stage": selected_stage,
 		"unlocked_stages": unlocked_stages.duplicate(),
+		"stages_cleared": stages_cleared.duplicate(true),
 		"difficulty": difficulty,
 		"language": language,
 	}
@@ -136,6 +168,19 @@ func apply_cloud_payload(payload: Dictionary) -> void:
 		for s in cloud_stages:
 			if not unlocked_stages.has(s):
 				unlocked_stages.append(s)
+	var cloud_cleared = payload.get("stages_cleared", {})
+	if cloud_cleared is Dictionary:
+		for sid in cloud_cleared.keys():
+			var cloud_diffs = cloud_cleared[sid]
+			if not (cloud_diffs is Array):
+				continue
+			if not stages_cleared.has(sid):
+				stages_cleared[sid] = []
+			var local_arr: Array = stages_cleared[sid]
+			for d in cloud_diffs:
+				if not local_arr.has(d):
+					local_arr.append(d)
+			stages_cleared[sid] = local_arr
 	var cloud_achs = payload.get("achievements_unlocked", [])
 	if cloud_achs is Array:
 		for a in cloud_achs:
@@ -186,6 +231,13 @@ func load_data() -> void:
 		unlocked_stages.append("forest")
 	if not unlocked_stages.has(selected_stage):
 		selected_stage = "forest"
+	var saved_cleared = result.get("stages_cleared", {})
+	if saved_cleared is Dictionary:
+		stages_cleared = {}
+		for sid in saved_cleared.keys():
+			var diffs = saved_cleared[sid]
+			if diffs is Array:
+				stages_cleared[sid] = diffs.duplicate()
 	difficulty = result.get("difficulty", "normal")
 	if not Difficulty.DATA.has(difficulty):
 		difficulty = "normal"
