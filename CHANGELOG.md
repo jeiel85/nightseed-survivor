@@ -1,5 +1,39 @@
 # CHANGELOG.md
 
+## v0.31.0 - 2026-05-19 (뒤로 가기 정비 + 설정 화면)
+
+이슈 [#3](https://github.com/jeiel85/nightseed-survivor/issues/3) 후속 — 모바일 게임 기본 UX 컨벤션 7가지 갭을 한 번에 메웠습니다.
+
+### Added — 설정 화면
+
+메인 메뉴 우하단 "설정" 버튼으로 진입. BGM/SFX 음량 슬라이더(0~100%, 5% 단위)와 진동 토글. 변경은 즉시 반영되며 `GameData`에 영구 저장 — 같은 폰에서 다시 켜도 유지됩니다.
+
+- 새 [SettingsUI](godot/scenes/ui/SettingsUI.tscn) 씬 + 스크립트
+- `GameData.bgm_volume` / `sfx_volume` / `vibration_enabled` 필드 + 저장 / 로드
+- `AudioManager.set_bgm_volume()` / `set_sfx_volume()` — 실시간 dB 오프셋 합산
+- 진동 토글 ON 시 짧은 햅틱 피드백 (단말 지원 시)
+- Localization 키: `btn_settings`, `settings_title`, `settings_bgm`, `settings_sfx`, `settings_vibration`
+
+### Added — 메인 메뉴 종료 다이얼로그 게임 톤 커스텀
+
+기존 Godot 기본 `AcceptDialog`(OS 위젯 톤)을 게임 톤의 `PanelContainer + ButtonStyles` 기반 모달로 교체. "취소"(좌측, NEUTRAL) / "종료"(우측, DEFEAT 빨강) 두 버튼. 다이얼로그가 떠 있는 상태에서 뒤로 가기를 한 번 더 누르면 **다이얼로그만 닫힘** — 이전 버전에서는 가드 로직 때문에 메뉴에 갇히는 케이스가 있었습니다.
+
+### Changed — 일시정지 메뉴에서 BGM/SFX 정지
+
+`get_tree().paused = true`는 게임 노드만 멈추고 `AudioManager`(PROCESS_MODE_ALWAYS)는 계속 돌아가서, 일시정지 메뉴에서도 배경음이 흘러나오던 어색함 해결. `AudioManager.set_paused(true)`로 BGM 플레이어 + 8개 SFX 풀 모두 즉시 일시정지, 재개 시 같은 지점에서 이어집니다.
+
+### Changed — 앱 복귀 시 자동 일시정지 메뉴
+
+폰을 잠갔다가 풀거나 다른 앱에 갔다 돌아오면 (`NOTIFICATION_APPLICATION_RESUMED`) 의도치 않은 사이에 적이 다가오지 않도록 **자동으로 일시정지 메뉴를 띄웁니다**. v0.29.0의 자동 저장(`APPLICATION_PAUSED`)과 짝을 이루는 안전 장치.
+
+### Changed — 캐릭터/스테이지 선택 버튼 터치 영역
+
+기존 높이 70px (≈47dp, Material 최소 48dp 경계선) → **88px (≈59dp)**. 작은 폰에서 손가락 끝으로 정확히 누르기 쉬워집니다.
+
+### Fixed — 레벨업 카드 표시 중 뒤로 가기 의도 명시
+
+`LevelUpUI`에 `_notification` 처리를 추가해 카드 표시 중 뒤로 가기 무시(선택 강제)를 코드에 명시. 동작 자체는 v0.29.0부터 `GameRoot._toggle_pause_menu` 가드로 이미 막혀 있었지만, 의도가 한 곳에 드러나지 않아 향후 LevelUpUI 재사용 시 위험 요소였습니다.
+
 ## v0.30.0 - 2026-05-18 (스테이지 첫 클리어 자동 해금)
 
 ### Added — 첫 클리어 = 다음 스테이지 자동 해금

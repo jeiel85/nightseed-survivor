@@ -1,0 +1,26 @@
+<ko-KR>
+🌙 뒤로 가기 정비 + 설정 화면
+
+추가
+• 설정 화면 — 메인 메뉴 "설정" 진입, BGM/SFX 음량 슬라이더 + 진동 토글
+• 종료 다이얼로그 게임 톤 커스텀 — "취소" / "종료" 두 버튼
+
+다듬기
+• 일시정지 메뉴에서 BGM/SFX도 함께 정지, 재개 시 같은 지점에서 이어짐
+• 앱 복귀 시 자동 일시정지 메뉴 — 잠금 풀면 적이 다가오는 사고 방지
+• 종료 다이얼로그가 떠 있을 때 뒤로 가기 한 번 더 → 다이얼로그만 닫힘
+• 캐릭터/스테이지 선택 버튼 터치 영역 확대 (47dp → 59dp)
+</ko-KR>
+<en-US>
+🌙 Back-button polish + Settings screen
+
+Added
+• Settings screen — accessible from main menu, BGM/SFX volume sliders + vibration toggle
+• Custom-themed quit dialog with "Cancel" / "Quit" buttons
+
+Polish
+• Pause menu now mutes BGM/SFX too, resumes from the same spot
+• App resume from background auto-opens the pause menu — no surprise enemies on unlock
+• Back while quit dialog is up now closes the dialog only
+• Character/Stage select buttons enlarged for easier tapping (47dp → 59dp)
+</en-US>

@@ -38,12 +38,14 @@ const NAV_ICON_PATHS := {
 @onready var btn_codex: Button = $VBox/TertiaryRow/BtnCodex
 @onready var btn_leaderboard: Button = $VBox/TertiaryRow/BtnLeaderboard
 @onready var btn_language: Button = $TopRightRow/BtnLanguage
+@onready var btn_settings: Button = $TopRightRow/BtnSettings
 @onready var btn_credits: Button = $TopRightRow/BtnCredits
 @onready var character_showcase: CharacterShowcase = $CharacterShowcase
 
 var _resume_btn: Button = null
 var _resume_label: Label = null
-var _quit_dialog: AcceptDialog = null
+var _quit_layer: CanvasLayer = null
+var _quit_visible: bool = false
 
 func _ready() -> void:
 	AudioManager.play_bgm("menu")
@@ -62,6 +64,7 @@ func _ready() -> void:
 	btn_leaderboard.pressed.connect(_on_leaderboard_pressed)
 	btn_codex.pressed.connect(_on_codex_pressed)
 	btn_language.pressed.connect(_on_language_pressed)
+	btn_settings.pressed.connect(_on_settings_pressed)
 	btn_credits.pressed.connect(_on_credits_pressed)
 	btn_leaderboard.visible = LeaderboardManager.is_supported() or OS.get_name() == "Android"
 	if Localization:
@@ -76,7 +79,13 @@ func _ready() -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST or what == NOTIFICATION_WM_CLOSE_REQUEST:
-		_show_quit_confirm()
+		# 다이얼로그가 이미 떠 있으면 Back은 다이얼로그를 닫는 동작으로 매핑.
+		# (기존 AcceptDialog 시절엔 visible 가드로 빠져나가 다이얼로그가 닫히지 않는
+		#  버그가 있었음 — Back→Back 으로 메뉴에 갇히는 케이스 방지.)
+		if _quit_visible:
+			_close_quit_confirm()
+		else:
+			_show_quit_confirm()
 	elif what == NOTIFICATION_APPLICATION_PAUSED:
 		# App backgrounded from the main menu — flush any pending cloud
 		# write so unlocks/gold from this session aren't lost on app kill.
@@ -142,6 +151,7 @@ func _apply_button_styles() -> void:
 	ButtonStyles.apply_stone_texture(btn_leaderboard,  ButtonStyles.LEADERBOARD)
 	# Corner secondaries stay quiet — flat secondary stone, not the new texture.
 	ButtonStyles.apply_stone_secondary(btn_language, ButtonStyles.LANGUAGE)
+	ButtonStyles.apply_stone_secondary(btn_settings, ButtonStyles.NEUTRAL)
 	ButtonStyles.apply_stone_secondary(btn_credits,  ButtonStyles.CREDITS)
 
 func _apply_button_icons() -> void:
@@ -233,6 +243,7 @@ func _refresh() -> void:
 	btn_leaderboard.text = Localization.tr_key("btn_leaderboard_short")
 	btn_codex.text = Localization.tr_key("btn_story")
 	btn_language.text = Localization.current_label()
+	btn_settings.text = Localization.tr_key("btn_settings")
 	btn_credits.text = Localization.tr_key("btn_credits_short")
 
 # Show "next upgrade ready" if any shop upgrade is affordable now, otherwise
@@ -310,6 +321,9 @@ func _on_leaderboard_pressed() -> void:
 func _on_language_pressed() -> void:
 	Localization.cycle_language()
 
+func _on_settings_pressed() -> void:
+	Transition.change_scene("res://scenes/ui/SettingsUI.tscn")
+
 # --- Resume CTA (v0.29.0) ---
 
 func _build_resume_cta() -> void:
@@ -354,21 +368,78 @@ func _refresh_resume_cta() -> void:
 	_resume_label.text = Localization.tr_key("resume_run_info_fmt") % [stage_name, lvl, seconds / 60, seconds % 60]
 
 # --- Quit confirm dialog (Android Back at top level) ---
+#
+# 게임 톤에 맞춰 PanelContainer + ButtonStyles 기반 커스텀 모달을 직접 그린다.
+# AcceptDialog는 OS-window 위젯이라 다른 메뉴와 시각적으로 어긋났음.
+# CanvasLayer로 분리해두면 메인 메뉴의 다른 입력을 자연스럽게 차단할 수 있다.
 
 func _show_quit_confirm() -> void:
-	if _quit_dialog != null and _quit_dialog.visible:
+	if _quit_layer == null:
+		_build_quit_layer()
+	_quit_layer.visible = true
+	_quit_visible = true
+
+func _close_quit_confirm() -> void:
+	if _quit_layer == null:
 		return
-	if _quit_dialog == null:
-		_quit_dialog = AcceptDialog.new()
-		_quit_dialog.title = ""
-		_quit_dialog.dialog_text = Localization.tr_key("quit_confirm_title")
-		_quit_dialog.dialog_autowrap = true
-		_quit_dialog.exclusive = true
-		_quit_dialog.add_cancel_button(Localization.tr_key("btn_cancel"))
-		_quit_dialog.get_ok_button().text = Localization.tr_key("btn_quit_app")
-		_quit_dialog.confirmed.connect(func(): get_tree().quit())
-		add_child(_quit_dialog)
-	_quit_dialog.popup_centered()
+	_quit_layer.visible = false
+	_quit_visible = false
+
+func _build_quit_layer() -> void:
+	_quit_layer = CanvasLayer.new()
+	_quit_layer.layer = 80
+	add_child(_quit_layer)
+	# 어두운 dim 배경 — 클릭은 흡수해서 메뉴 버튼이 동시 입력되지 않게 한다.
+	# 다만 dim 클릭만으로 닫히지는 않는다 (의도치 않은 dismiss 방지).
+	var dim := ColorRect.new()
+	dim.color = Color(0, 0, 0, 0.72)
+	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	dim.mouse_filter = Control.MOUSE_FILTER_STOP
+	_quit_layer.add_child(dim)
+	var center := CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_quit_layer.add_child(center)
+	var panel := PanelContainer.new()
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.078, 0.094, 0.137, 0.97)
+	sb.border_color = Color(0.560, 0.660, 0.800, 0.85)
+	sb.set_border_width_all(3)
+	sb.set_corner_radius_all(12)
+	sb.set_content_margin_all(28)
+	panel.add_theme_stylebox_override("panel", sb)
+	center.add_child(panel)
+	var vbox := VBoxContainer.new()
+	vbox.custom_minimum_size = Vector2(440, 0)
+	vbox.add_theme_constant_override("separation", 18)
+	panel.add_child(vbox)
+	var title := Label.new()
+	title.text = Localization.tr_key("quit_confirm_title")
+	title.add_theme_font_size_override("font_size", 28)
+	title.add_theme_color_override("font_color", Color(1, 1, 1, 1))
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vbox.add_child(title)
+	# 버튼 묶음 — "취소" 좌측, "종료" 우측 (한국 모바일에서 종료/확정 액션이
+	# 우측에 놓이는 관습을 따름).
+	var btn_row := HBoxContainer.new()
+	btn_row.add_theme_constant_override("separation", 14)
+	vbox.add_child(btn_row)
+	var btn_cancel := Button.new()
+	btn_cancel.text = Localization.tr_key("btn_cancel")
+	btn_cancel.custom_minimum_size = Vector2(0, 72)
+	btn_cancel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	btn_cancel.add_theme_font_size_override("font_size", 24)
+	ButtonStyles.apply(btn_cancel, ButtonStyles.NEUTRAL)
+	btn_cancel.pressed.connect(_close_quit_confirm)
+	btn_row.add_child(btn_cancel)
+	var btn_quit := Button.new()
+	btn_quit.text = Localization.tr_key("btn_quit_app")
+	btn_quit.custom_minimum_size = Vector2(0, 72)
+	btn_quit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	btn_quit.add_theme_font_size_override("font_size", 24)
+	ButtonStyles.apply(btn_quit, ButtonStyles.DEFEAT)
+	btn_quit.pressed.connect(func(): get_tree().quit())
+	btn_row.add_child(btn_quit)
 
 # --- Cloud-save merge (Phase C) ---
 

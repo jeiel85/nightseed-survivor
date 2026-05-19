@@ -225,6 +225,13 @@ const STRINGS: Dictionary = {
 	"btn_quit_app":         {"en": "Quit", "ko": "종료"},
 	"btn_cancel":           {"en": "Cancel", "ko": "취소"},
 
+	# --- Settings (v0.31.0~) ---
+	"btn_settings":         {"en": "Settings", "ko": "설정"},
+	"settings_title":       {"en": "SETTINGS", "ko": "설정"},
+	"settings_bgm":         {"en": "BGM",      "ko": "배경음"},
+	"settings_sfx":         {"en": "SFX",      "ko": "효과음"},
+	"settings_vibration":   {"en": "Vibration","ko": "진동"},
+
 	# --- Run resume / cloud save (v0.29.0) ---
 	"btn_resume_run":       {"en": "▶ Continue run", "ko": "▶ 이어하기"},
 	"resume_run_info_fmt":  {"en": "%s · Lv.%d · %d:%02d", "ko": "%s · Lv.%d · %d:%02d"},

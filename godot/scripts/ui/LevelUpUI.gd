@@ -49,6 +49,13 @@ func _ready() -> void:
 		$Background/VBox/Card3,
 	]
 
+func _notification(what: int) -> void:
+	# 레벨업 카드가 떠 있는 동안 Android Back은 의도적으로 무시한다.
+	# GameRoot._toggle_pause_menu() 쪽에서도 level_up_ui.visible 가드로 무시하지만,
+	# 의도를 LevelUpUI 자체에도 명시해두어 향후 재사용 시 안전하도록 한다.
+	if visible and (what == NOTIFICATION_WM_GO_BACK_REQUEST or what == NOTIFICATION_WM_CLOSE_REQUEST):
+		pass
+
 func show_for_player(p: Player) -> void:
 	_player = p
 	_pending_count += 1

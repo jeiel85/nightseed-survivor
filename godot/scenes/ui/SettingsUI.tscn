@@ -1,0 +1,109 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/SettingsUI.gd" id="1_s"]
+
+[node name="SettingsUI" type="Control"]
+script = ExtResource("1_s")
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.06, 0.06, 0.1, 1)
+
+[node name="VBox" type="VBoxContainer" parent="."]
+offset_left = 40.0
+offset_top = 60.0
+offset_right = -40.0
+offset_bottom = -40.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 28
+
+[node name="Title" type="Label" parent="VBox"]
+custom_minimum_size = Vector2(0, 80)
+text = "SETTINGS"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 40
+
+[node name="Spacer1" type="Control" parent="VBox"]
+custom_minimum_size = Vector2(0, 12)
+
+[node name="BgmRow" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 96)
+theme_override_constants/separation = 16
+
+[node name="BgmLabel" type="Label" parent="VBox/BgmRow"]
+custom_minimum_size = Vector2(160, 0)
+text = "BGM"
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 28
+
+[node name="BgmSlider" type="HSlider" parent="VBox/BgmRow"]
+custom_minimum_size = Vector2(0, 56)
+size_flags_horizontal = 3
+size_flags_vertical = 5
+min_value = 0.0
+max_value = 1.0
+step = 0.05
+value = 0.8
+
+[node name="BgmValue" type="Label" parent="VBox/BgmRow"]
+custom_minimum_size = Vector2(96, 0)
+text = "80%"
+horizontal_alignment = 2
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 26
+
+[node name="SfxRow" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 96)
+theme_override_constants/separation = 16
+
+[node name="SfxLabel" type="Label" parent="VBox/SfxRow"]
+custom_minimum_size = Vector2(160, 0)
+text = "SFX"
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 28
+
+[node name="SfxSlider" type="HSlider" parent="VBox/SfxRow"]
+custom_minimum_size = Vector2(0, 56)
+size_flags_horizontal = 3
+size_flags_vertical = 5
+min_value = 0.0
+max_value = 1.0
+step = 0.05
+value = 0.8
+
+[node name="SfxValue" type="Label" parent="VBox/SfxRow"]
+custom_minimum_size = Vector2(96, 0)
+text = "80%"
+horizontal_alignment = 2
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 26
+
+[node name="VibrationRow" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 96)
+theme_override_constants/separation = 16
+
+[node name="VibrationLabel" type="Label" parent="VBox/VibrationRow"]
+custom_minimum_size = Vector2(160, 0)
+text = "Vibration"
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 28
+
+[node name="VibrationCheck" type="CheckButton" parent="VBox/VibrationRow"]
+custom_minimum_size = Vector2(0, 64)
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = ""
+button_pressed = true
+
+[node name="Spacer2" type="Control" parent="VBox"]
+size_flags_vertical = 3
+
+[node name="BtnBack" type="Button" parent="VBox"]
+custom_minimum_size = Vector2(0, 96)
+text = "Back to Menu"
+theme_override_font_sizes/font_size = 28

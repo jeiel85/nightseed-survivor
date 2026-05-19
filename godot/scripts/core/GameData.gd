@@ -20,6 +20,13 @@ var stages_cleared: Dictionary = {}
 var difficulty: String = "normal"
 var language: String = "auto"
 
+# --- Settings (v0.31.0~) ---
+# Linear 0..1. AudioManager는 시작 시 이 값을 dB로 변환해 적용한다.
+# 진동은 토글만 저장하며 실제 트리거는 SFX 콜사이트에서 GameData.vibration_enabled를 체크.
+var bgm_volume: float = 0.8
+var sfx_volume: float = 0.8
+var vibration_enabled: bool = true
+
 # Transient (not saved): current run elapsed seconds, set by GameRoot each frame.
 # EnemyBase reads this to apply time-based scaling (HP/speed/damage grow over time).
 var run_elapsed: float = 0.0
@@ -136,6 +143,9 @@ func save_data() -> void:
 		"stages_cleared": stages_cleared.duplicate(true),
 		"difficulty": difficulty,
 		"language": language,
+		"bgm_volume": bgm_volume,
+		"sfx_volume": sfx_volume,
+		"vibration_enabled": vibration_enabled,
 	}
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file:
@@ -242,6 +252,9 @@ func load_data() -> void:
 	if not Difficulty.DATA.has(difficulty):
 		difficulty = "normal"
 	language = result.get("language", "auto")
+	bgm_volume = clampf(float(result.get("bgm_volume", 0.8)), 0.0, 1.0)
+	sfx_volume = clampf(float(result.get("sfx_volume", 0.8)), 0.0, 1.0)
+	vibration_enabled = bool(result.get("vibration_enabled", true))
 
 func cycle_difficulty() -> String:
 	difficulty = Difficulty.next_key(difficulty)

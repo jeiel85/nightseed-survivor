@@ -84,7 +84,8 @@ func _make_card(stage: Dictionary) -> PanelContainer:
 
 	var btn := Button.new()
 	btn.name = "ActionBtn"
-	btn.custom_minimum_size = Vector2(0, 70)
+	# 모바일 터치 영역 최소 48dp 권장 — 720x1280 viewport 기준 88px ≈ 59dp.
+	btn.custom_minimum_size = Vector2(0, 88)
 	btn.add_theme_font_size_override("font_size", 22)
 	_setup_button(btn, stage_id, stage)
 	info.add_child(btn)

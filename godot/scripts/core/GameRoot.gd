@@ -526,6 +526,13 @@ func _notification(what: int) -> void:
 			var cs := get_node_or_null("/root/CloudSave")
 			if cs and cs.has_method("flush"):
 				cs.flush()
+	elif what == NOTIFICATION_APPLICATION_RESUMED:
+		# 앱이 백그라운드에서 돌아온 직후 — 일시정지 메뉴를 강제로 열어 사용자가
+		# 의도적으로 재개 버튼을 누르도록 한다. 백그라운드 진입 시 게임 tree가
+		# 자동으로 paused 되지는 않으므로, 플레이어가 보지 못한 사이 적이 다가오는
+		# 사고를 방지.
+		if not (_is_game_over or _is_victory) and not _pause_open:
+			_open_pause_menu()
 
 func _build_pause_menu() -> void:
 	if _pause_layer != null:
@@ -602,6 +609,9 @@ func _open_pause_menu() -> void:
 	get_tree().paused = true
 	_pause_layer.visible = true
 	_pause_open = true
+	# AudioManager는 PROCESS_MODE_ALWAYS라 tree.paused에도 계속 돌아간다 —
+	# 일시정지 화면에서 BGM/효과음이 새지 않도록 명시적으로 일시정지.
+	AudioManager.set_paused(true)
 
 func _close_pause_menu() -> void:
 	if _pause_layer == null:
@@ -609,6 +619,7 @@ func _close_pause_menu() -> void:
 	_pause_layer.visible = false
 	get_tree().paused = false
 	_pause_open = false
+	AudioManager.set_paused(false)
 
 func _on_pause_quit_pressed() -> void:
 	# Commit the snapshot we already captured in _open_pause_menu, then exit
@@ -617,6 +628,7 @@ func _on_pause_quit_pressed() -> void:
 	RunPersist.commit()
 	get_tree().paused = false
 	_pause_open = false
+	AudioManager.set_paused(false)
 	Transition.change_scene("res://scenes/ui/MainMenu.tscn")
 
 # --- Resume from RunPersist ---
