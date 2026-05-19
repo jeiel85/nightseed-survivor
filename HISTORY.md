@@ -1,5 +1,32 @@
 # HISTORY.md
 
+## 2026-05-19 (v0.33.0 — 스토리 상세 장부와 한국어 문장 윤문)
+
+- 날짜: 2026-05-19
+- 작업: v0.32.0 이후 추가된 StoryUI 상세 장부 데이터 연결과 한국어 문장 윤문을 v0.33.0으로 정리.
+- 변경 파일:
+  - `godot/export_presets.cfg`
+  - `CHANGELOG.md`
+  - `docs/releases/v0.33.0.md`
+  - `play_store/release_notes/v0.33.0.txt`
+  - `HISTORY.md`
+- 구현:
+  - Android / Android AAB preset `versionCode` 36 → 37.
+  - Android / Android AAB preset `versionName` 0.32.0 → 0.33.0.
+  - v0.33.0 GitHub Release 노트와 Play Console 다국어 릴리즈 노트 추가.
+  - CHANGELOG의 Unreleased 항목을 v0.33.0 릴리즈 섹션으로 승격.
+- 검증:
+  - 릴리즈 노트 정적 검토.
+  - Play Console 릴리즈 노트 KO 163자 / EN 299자, 500자 제한 내 확인.
+  - Python JSON parse: `story_chapters.json`, `story_dialogues.json` 통과.
+  - `git diff --check` 통과.
+  - Godot headless 기본 실행 및 StoryUI 단독 로드에서 스크립트 에러 출력 없음. 단, 기존과 동일하게 종료 시 ObjectDB leak 경고로 exit code 1 반환.
+  - CI 검증은 커밋 및 태그 push 후 확인.
+- 결과:
+  - 스토리 상세 장부 기능과 한국어 문장 윤문을 새 버전 배포 단위로 묶을 준비 완료.
+- 후속 작업:
+  - v0.33.0 태그 push 후 GitHub Actions 빌드 및 Release 산출물 확인.
+
 ## 2026-05-19 (스토리 한국어 문장 윤문)
 
 - 날짜: 2026-05-19

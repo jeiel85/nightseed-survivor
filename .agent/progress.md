@@ -1,5 +1,36 @@
 # Progress
 
+## 2026-05-19 — v0.33.0 릴리즈 정리
+
+### Status
+
+StoryUI 상세 장부 데이터 연결과 한국어 문장 윤문을 새 배포 단위인 v0.33.0으로 정리 중이다.
+
+### Completed
+
+- `godot/export_presets.cfg`
+  - Android / Android AAB `versionCode` 36 → 37
+  - Android / Android AAB `versionName` 0.32.0 → 0.33.0
+- `CHANGELOG.md`의 Unreleased 항목을 `v0.33.0 - 2026-05-19`로 승격
+- `docs/releases/v0.33.0.md` 작성
+- `play_store/release_notes/v0.33.0.txt` 작성
+- `HISTORY.md`, `.agent/tasks.md` 릴리즈 진행 항목 추가
+- Play Console 릴리즈 노트 길이 확인
+  - KO 163자
+  - EN 299자
+- JSON parse 확인
+  - `story_chapters.json`
+  - `story_dialogues.json`
+- `git diff --check` 통과
+- Godot headless 기본 실행 / StoryUI 단독 로드 확인
+  - 스크립트 에러 출력 없음
+  - 종료 시 기존과 같은 ObjectDB leak 경고로 exit code 1 반환
+
+### Next
+
+- 커밋 / push / 태그 push
+- GitHub Actions 성공 및 Release 산출물 확인
+
 ## 2026-05-19 — 스토리 한국어 문장 윤문
 
 ### Status

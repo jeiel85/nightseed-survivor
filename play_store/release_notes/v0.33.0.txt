@@ -1,0 +1,24 @@
+<ko-KR>
+🌙 스토리 상세 장부 추가
+
+새로 추가
+• StoryUI에서 스테이지별 상세 장부 본문 제공
+• 해금/클리어/캠페인 클리어 조건별 스포일러 잠금
+• 인게임 자막은 전투 기록 섹션으로 축소 표시
+
+다듬기
+• 한국어 스토리 문장을 더 자연스럽게 윤문
+• 긴 문장 StoryUI 줄바꿈/스크롤 확인
+</ko-KR>
+<en-US>
+🌙 Story chronicle update
+
+What's new
+• Detailed stage chronicle text in StoryUI
+• Spoiler locks for unlocked, cleared, and campaign-cleared sections
+• Battle subtitles kept as compact records
+
+Polish
+• Korean story text refined for smoother reading
+• Long text wrapping and StoryUI scrolling checked
+</en-US>

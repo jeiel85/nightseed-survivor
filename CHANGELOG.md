@@ -1,6 +1,6 @@
 # CHANGELOG.md
 
-## Unreleased
+## v0.33.0 - 2026-05-19 (스토리 상세 장부와 한국어 문장 윤문)
 
 ### Changed — Story Korean Text Polish
 
@@ -26,6 +26,8 @@
 
 - JSON 문법 검사 통과.
 - Godot headless 기본 실행 및 StoryUI 단독 로드에서 스크립트 에러 출력 없음. 단, 종료 시 기존과 같은 ObjectDB leak 경고로 exit code 1이 반환되었습니다.
+- StoryUI 720×1280 뷰포트 캡처 확인: 헤더, 카드 폭, 긴 한국어 문장 줄바꿈, 스크롤 영역, 하단 버튼 정상.
+- GitHub Actions `Build (Android + Windows + Linux + Web)` main push 성공.
 
 ## v0.32.0 - 2026-05-19 (스토리 화면 자산 리뉴얼)
 
