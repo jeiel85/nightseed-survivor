@@ -1,0 +1,30 @@
+<ko-KR>
+🌙 스토리 화면 자산 리뉴얼
+
+추가
+• 다크 챔버 배경 + 매달린 lamp — 절차 생성 별/원을 새 그림 배경으로 교체
+• 헤더에 그림자가 진 책 아이콘 + 가운데 정렬 타이틀
+• 5종 스테이지별 황금 wax seal 인장 (숲/얼음/황혼/화염/무덤)
+• 잠금 카드 위·아래 봉인 체인 띠
+• "메뉴로 / 용어집" 푸터 버튼을 나무판 9-slice 스타일로
+
+다듬기
+• 헤더 plaque 단순화 + 골드 underline으로 가독성 확보
+• 잠금 카드 인장은 desaturate로 잠금 여부 한눈에 구분
+• 자산 누락 시에도 폴백 스타일로 안전 렌더
+</ko-KR>
+<en-US>
+🌙 Story screen asset overhaul
+
+Added
+• Dark chamber background with a hanging lamp
+• Header grimoire icon + centered title
+• Five hand-drawn wax seals, one per stage
+• Chain bands wrap the top and bottom of locked cards
+• Wooden plaque buttons for Menu / Codex
+
+Polish
+• Cleaner header plaque + gold underline
+• Locked seals desaturated for clear lock state
+• Safe fallback rendering when assets are missing
+</en-US>

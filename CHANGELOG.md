@@ -1,28 +1,36 @@
 # CHANGELOG.md
 
-## Unreleased - 2026-05-19 (스토리 화면 리디자인)
+## v0.32.0 - 2026-05-19 (스토리 화면 자산 리뉴얼)
 
-### Changed
+### Changed — Story Chronicle 1차 (ST-P0)
 
 - StoryUI를 `D:\Project\story-design-guide`의 Story Chronicle redesign guide에 맞춰 "고대 장부" 톤으로 리디자인.
 - 해금된 스토리 카드는 양피지 표면, 금장 테두리, 챕터 라벨, 스테이지별 accent seal, 장식 구분선을 사용.
 - 잠긴 스토리 카드는 흐린 석판 표면과 중앙 LOCKED 표식으로 해금 카드와 명확히 분리.
 - 외부 폰트, 웹 텍스처, 새 이미지 자산 없이 Godot 기본 UI 스타일만 사용.
-- Story Chronicle 전용 생성 자산 목록과 ChatGPT 요청 프롬프트를 `docs/ASSETS_TO_GENERATE.md`에 추가.
-- `docs/UI_REDESIGN_SPEC.md`에 Story Chronicle 컴포넌트 카탈로그와 화면 분해를 보완.
 - 사용자가 생성한 ST-P0 자산 4종을 `godot/assets/sprites/ui/story/`에 추가하고 StoryUI texture fallback으로 연결.
   - `panel_story_parchment.9.png`
   - `panel_story_locked.9.png`
   - `divider_story_diamond.png`
   - `icon_story_lock.png`
-- 크로마키 재생성본 기준으로 녹색 배경과 잔여 green spill을 제거해 실제 투명 PNG로 정비.
+
+### Changed — Story Chronicle 2차 (ST-P1, 본 릴리즈에서 추가)
+
+- 절차적 `_draw()` 별/원 배경을 제거하고 `bg_story_chamber.png` (다크 챔버 + 매달린 lamp)로 교체. `STRETCH_KEEP_ASPECT_COVERED` + 35% 디밍 오버레이로 가독성 확보.
+- 헤더를 단순 다크 plaque + 골드 underline으로 정리하고 좌측에 `icon_story_book.png` (96×96), 가운데 "스토리" 타이틀, 우측 invisible spacer로 정확한 좌우 대칭 가운데 정렬.
+- 스테이지 카드 우측 글리프(♣/✦/▲ 등)를 텍스처 인장으로 교체. `stage_id` ↔ 인장 매핑:
+  - `seal_forest.png` / `seal_frozen_wastes.png` / `seal_twilight_sanctum.png` / `seal_inferno_chasm.png` / `seal_cursed_tomb.png`
+  - 잠금 카드는 `modulate(0.45, 0.45, 0.50, 0.65)`로 desaturate
+- 잠금 카드 body 위·아래에 `chain_story_locked.png` 가로 띠를 배치해 "봉인됨" 시각 메타포 강화.
+- 푸터 "메뉴로 / 용어집" 두 버튼을 `btn_story_wood.png` 기반 9-slice 나무판 스타일로 교체. 텍스처를 2172×724 → 543×181로 다운스케일하여 작은 버튼(280×72)에서도 9-slice 마진 합이 컨테이너보다 크지 않도록 조정.
+- `frame_story_gold.png` 자산은 portrait 비율(1161×1355)이라 landscape 헤더에서 9-slice 가운데 골드 라인이 doubled로 stretch되어 어색. 자산은 보존하되 본 릴리즈에서 미사용 — v0.33+ 챕터 인트로/잠금 카드 outer 장식 용도로 예약.
+- 자산 9종을 크로마 키 그린 RGB → RGBA로 변환 (PIL + numpy, greenness 150~220 ramp + despill). 진짜 어두운 녹색(forest seal interior 등)은 보존.
 
 ### Verification
 
-- Godot headless StoryUI 로드에서 스크립트 에러 없음. 단, 종료 시 ObjectDB leak 경고로 exit code 1 반환.
-- Godot headless import로 story PNG `.import` 파일 생성 확인. 단, Game Services 설정 로드 Error 7로 exit code 1 반환.
-- 최종 자산 검사: 4개 PNG 모두 corner alpha 0, chroma green leftover 0.
-- `git diff --check` 통과.
+- Godot headless StoryUI 로드에서 스크립트 에러 없음.
+- Godot headless import로 story PNG `.import` 파일 14종 생성 확인.
+- 데스크탑 720×1280→600×1066 캡처로 헤더/카드/잠금/푸터 4영역 시각 검증 완료. 9-slice 깨짐 0, 텍스트 클리핑 0.
 
 ## v0.31.0 - 2026-05-19 (뒤로 가기 정비 + 설정 화면)
 

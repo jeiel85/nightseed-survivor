@@ -1,5 +1,30 @@
 # HISTORY.md
 
+## 2026-05-19 (v0.32.0 — 스토리 화면 자산 리뉴얼)
+
+- 날짜: 2026-05-19
+- 작업: v0.31.0 직후 사용자가 다운로드 폴더에 준비한 Story Chronicle ST-P1 자산 10종을 적용해 StoryUI를 한 단계 더 다듬음. v0.32.0으로 묶어 푸시.
+- 핵심 변경:
+  - 절차적 `_draw()` 배경을 `bg_story_chamber.png` 텍스처로 교체 + 35% 디밍
+  - 헤더 단순화: 책 아이콘(96×96) + 가운데 정렬 "스토리" 타이틀 + 골드 underline. 우측에 invisible 96×96 spacer로 좌우 대칭 가운데 정렬 보정
+  - 스테이지 카드 우측 텍스트 글리프 → 텍스처 인장 (`seal_forest/frozen_wastes/twilight_sanctum/inferno_chasm/cursed_tomb.png`)
+  - 잠금 카드 body 위·아래에 `chain_story_locked.png` 가로 띠
+  - 푸터 "메뉴로 / 용어집" 버튼을 `btn_story_wood.png` 9-slice 나무판으로 교체. 텍스처 2172×724 → 543×181 다운스케일로 작은 버튼(280×72)에서도 9-slice 마진이 컨테이너보다 작도록 조정
+- 자산 처리:
+  - 9개 PNG가 RGB(녹색 크로마 키)였음. PIL + numpy로 greenness 150~220 ramp + despill, 임계 보수적으로 잡아 forest seal interior dark green 보존
+  - `frame_story_gold.png`는 portrait 1161×1355 비율이라 landscape 헤더에서 9-slice 가운데 골드 라인이 doubled로 stretch되어 어색 → 자산만 보존, 코드 참조 없이 v0.33+ 챕터 인트로 용도로 예약
+- 결정:
+  - 헤더 frame을 추가했다가 9-slice 깨짐 확인 후 단순 plaque로 후퇴. 사용자가 "그대로 가자"로 확인
+  - 타이틀 가운데 정렬 보정 시 좌측 BookIcon 옆에 EXPAND_FILL Title 라벨이 우측으로 쏠리는 문제 → 우측에 같은 크기 invisible spacer 추가
+  - 푸터 버튼이 텍스처 미렌더링 → 9-slice 마진 합이 버튼 세로 < 마진 합인 경우 Godot이 스킵하는 동작 확인 후 텍스처 다운스케일
+- 검증:
+  - Godot 4.2.2 headless `--editor --quit-after`로 14개 `.import` 생성 + 스크립트/임포트 에러 0
+  - 데스크탑 600×1066 캡처 + win32gui ForegroundWindow + PIL ImageGrab로 헤더/카드 중간/잠금 카드/푸터 4 영역 시각 검증
+  - 폰 실기 검증은 다음 세션 또는 사용자 직접
+- 후속 작업:
+  - `frame_story_gold.png`를 사용할 챕터 인트로/잠금 카드 outer 장식 (v0.33 후보)
+  - Codex 화면도 같은 "고대 장부" 톤으로 정렬 (선택)
+
 ## 2026-05-19 (스토리 메뉴 상세 장부 분리 계획)
 
 - 날짜: 2026-05-19
