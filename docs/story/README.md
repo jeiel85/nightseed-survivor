@@ -15,6 +15,8 @@
 
 | 파일 | 목적 |
 |---|---|
+| `godot/data/story_dialogues.json` | 인게임 `StoryBanner`에서 쓰는 짧은 시작/보스/클리어 자막 데이터 |
+| `godot/data/story_chapters.json` | 메인 메뉴 StoryUI에서 읽는 스테이지별 상세 장부/연대기 데이터 |
 | `godot/data/story_terms.json` | 향후 도감, 용어집, 툴팁 UI에서 재사용할 스토리 용어 데이터 |
 
 ## 출처 자료

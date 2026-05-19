@@ -1,5 +1,26 @@
 # CHANGELOG.md
 
+## Unreleased
+
+### Added — Story Chronicle 상세 장부 데이터
+
+- `godot/data/story_chapters.json` 추가. StoryUI에서 읽는 스테이지별 상세 장부 본문을 인게임 자막 데이터와 분리했습니다.
+- 5개 스테이지의 한국어/영어 상세 스토리 본문을 추가했습니다.
+  - 스테이지 해금 시 공개되는 본문
+  - 스테이지 클리어 후 공개되는 추가 단서
+  - Cursed Tomb 클리어 후 공개되는 캠페인 후일담
+
+### Changed — StoryUI
+
+- StoryUI가 기존처럼 짧은 전투 자막만 다시 보여주지 않고, 요약 → 상세 장부 → 전투 기록 순서로 내용을 표시합니다.
+- 미클리어/캠페인 미클리어 섹션은 스포일러 본문 대신 잠금 안내 문구만 표시합니다.
+- `story_dialogues.json`는 인게임 `StoryBanner`용 짧은 진행 자막으로 유지합니다.
+
+### Verification
+
+- JSON 문법 검사 통과.
+- Godot headless 기본 실행 및 StoryUI 단독 로드에서 스크립트 에러 출력 없음. 단, 종료 시 기존과 같은 ObjectDB leak 경고로 exit code 1이 반환되었습니다.
+
 ## v0.32.0 - 2026-05-19 (스토리 화면 자산 리뉴얼)
 
 ### Changed — Story Chronicle 1차 (ST-P0)

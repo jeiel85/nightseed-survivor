@@ -10,14 +10,14 @@
 - [x] 현재 구조 확인 — 인게임 `StoryBanner`와 StoryUI가 `story_dialogues.json`의 짧은 대사를 함께 사용 중
 - [x] 구현 계획 문서 작성: `docs/story/STORY_DETAIL_MENU_IMPLEMENTATION_PLAN.md`
 - [x] 5개 스테이지 상세 스토리 초안 및 확장용 프롬프트 추가
-- [ ] `godot/data/story_chapters.json` 신규 추가
-- [ ] `Story.gd`에 상세 챕터 로드/조회 API 추가
-- [ ] StoryUI에서 인게임 자막 재표시 중심 구조를 상세 챕터 표시 구조로 변경
-- [ ] 해금 전/스테이지 해금/스테이지 클리어 조건별 표시 정책 구현
-- [ ] `Localization.gd`에 상세 스토리 섹션 UI 키 추가
-- [ ] `docs/story/README.md`, `docs/ARCHITECTURE.md`에 데이터 역할 반영
-- [ ] JSON 문법 검사 및 Godot headless 검증
-- [ ] `CHANGELOG.md`, `HISTORY.md`, `.agent/progress.md` 실제 구현 결과 갱신
+- [x] `godot/data/story_chapters.json` 신규 추가
+- [x] `Story.gd`에 상세 챕터 로드/조회 API 추가
+- [x] StoryUI에서 인게임 자막 재표시 중심 구조를 상세 챕터 표시 구조로 변경
+- [x] 해금 전/스테이지 해금/스테이지 클리어 조건별 표시 정책 구현
+- [x] `Localization.gd`에 상세 스토리 섹션 UI 키 추가
+- [x] `docs/story/README.md`, `docs/ARCHITECTURE.md`에 데이터 역할 반영
+- [x] JSON 문법 검사 및 Godot headless 검증
+- [x] `CHANGELOG.md`, `HISTORY.md`, `.agent/progress.md` 실제 구현 결과 갱신
 
 ## 2026-05-19 진행 (스토리 화면 고대 장부 리디자인)
 

@@ -1,5 +1,36 @@
 # HISTORY.md
 
+## 2026-05-19 (스토리 메뉴 상세 장부 데이터 연결)
+
+- 날짜: 2026-05-19
+- 작업: `docs/story/STORY_DETAIL_MENU_IMPLEMENTATION_PLAN.md`의 상세 스토리 초안을 실제 StoryUI용 데이터로 분리하고 런타임 조회를 연결.
+- 변경 파일:
+  - `godot/data/story_chapters.json`
+  - `godot/scripts/core/Story.gd`
+  - `godot/scripts/ui/StoryUI.gd`
+  - `godot/scripts/core/Localization.gd`
+  - `docs/story/README.md`
+  - `docs/ARCHITECTURE.md`
+  - `.agent/tasks.md`
+  - `.agent/progress.md`
+  - `HISTORY.md`
+  - `CHANGELOG.md`
+- 구현:
+  - `story_dialogues.json`는 인게임 `StoryBanner`용 짧은 진행 자막으로 유지.
+  - 신규 `story_chapters.json`에 5개 스테이지 상세 장부 본문을 한국어/영어 병기로 추가.
+  - `Story.gd`에 상세 챕터 로드, 현 언어 조회, `stage_unlocked` / `stage_cleared` / `campaign_cleared` 공개 조건 판정 추가.
+  - StoryUI는 해금 스테이지 카드에서 요약 → 상세 장부 → 전투 기록 순서로 표시.
+  - 미클리어/캠페인 미클리어 섹션은 제목과 잠금 안내만 표시해 스포일러를 숨김.
+- 검증:
+  - Python JSON parse: `story_chapters.json`, `story_dialogues.json`, `story_terms.json` 통과.
+  - `git diff --check` 통과.
+  - Godot headless 기본 실행 및 StoryUI 단독 로드에서 스크립트 에러 출력 없음. 단, 기존 StoryUI 검증 기록과 동일하게 종료 시 ObjectDB leak 경고로 exit code 1 반환.
+- 결과:
+  - 인게임 자막과 메인 메뉴 상세 스토리의 데이터 역할이 분리됨.
+  - StoryUI가 단순 자막 다시 보기에서 스테이지별 상세 장부 화면으로 확장됨.
+- 후속 작업:
+  - 폰 실기에서 장문 스크롤, 카드 높이, 한국어/영어 가독성 확인.
+
 ## 2026-05-19 (v0.32.0 — 스토리 화면 자산 리뉴얼)
 
 - 날짜: 2026-05-19

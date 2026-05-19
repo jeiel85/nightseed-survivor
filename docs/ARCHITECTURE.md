@@ -309,7 +309,13 @@ godot/data/
   passives.json
   enemies.json
   waves.json
+  story_dialogues.json
+  story_chapters.json
   story_terms.json
 ```
 
-`story_terms.json`은 향후 용어집, 도감, 툴팁 UI에서 사용할 스토리 용어 데이터다. 런타임 UI 연결 전까지는 문서 기준을 코드와 공유하기 위한 기반 데이터로 유지한다.
+스토리 데이터는 용도별로 분리한다.
+
+- `story_dialogues.json`: 인게임 `StoryBanner`에서 쓰는 짧은 시작/보스/클리어 자막 데이터.
+- `story_chapters.json`: 메인 메뉴 StoryUI에서 읽는 스테이지별 상세 장부 데이터. `stage_unlocked`, `stage_cleared`, `campaign_cleared` 조건으로 본문 공개 시점을 나눈다.
+- `story_terms.json`: 향후 용어집, 도감, 툴팁 UI에서 사용할 스토리 용어 데이터.

@@ -1,5 +1,43 @@
 # Progress
 
+## 2026-05-19 — 스토리 메뉴 상세 장부 데이터 연결
+
+### Status
+
+`docs/story/STORY_DETAIL_MENU_IMPLEMENTATION_PLAN.md`의 초안을 실제 런타임 데이터와 StoryUI에 연결했다. 인게임 자막은 `story_dialogues.json`에 남기고, 메인 메뉴 StoryUI는 신규 `story_chapters.json`의 상세 장부 본문을 우선 표시한다.
+
+### Completed
+
+- 상세 스토리 초안을 모바일에서 읽기 쉬운 단락으로 다듬고 한국어/영어 병기 JSON으로 옮김
+  - `godot/data/story_chapters.json`
+  - 5개 스테이지 `summary`, `stage_unlocked`, `stage_cleared`
+  - Cursed Tomb `campaign_cleared` 후일담
+- `Story.gd` 확장
+  - `story_chapters.json` 로드
+  - `get_stage_chapter(stage_id)`
+  - `get_chapter_sections(stage_id)`
+  - `stage_unlocked` / `stage_cleared` / `campaign_cleared` 조건 판정
+- `StoryUI.gd` 변경
+  - 카드 상단 요약 표시
+  - 상세 장부 섹션 표시
+  - 미클리어/캠페인 미클리어 섹션은 제목만 남기고 스포일러 문구 숨김
+  - 기존 인게임 자막은 하단 `전투 기록` 섹션으로 축소 표시
+- `Localization.gd`에 상세 스토리 섹션/잠금 안내 키 추가
+- `docs/story/README.md`, `docs/ARCHITECTURE.md`에 `story_dialogues.json` / `story_chapters.json` / `story_terms.json` 역할 분리 반영
+- `.agent/tasks.md` 체크리스트 갱신
+
+### Verification
+
+- Python JSON parse: `story_chapters.json`, `story_dialogues.json`, `story_terms.json` 통과
+- `git diff --check` 통과
+- `Godot_v4.2.2-stable_win64_console.exe --headless --path godot --quit` 실행: 스크립트 에러 출력 없음, 종료 시 기존과 같은 ObjectDB leak 경고로 exit code 1
+- `StoryUI.tscn --quit-after 5` 단독 로드: 스크립트 에러 출력 없음, 종료 시 기존과 같은 ObjectDB leak 경고로 exit code 1
+
+### Next
+
+- 폰 실기에서 장문 StoryUI 스크롤, 카드 높이, 한글/영문 가독성 확인
+- 필요 시 장문 본문을 더 짧은 섹션으로 추가 분할
+
 ## 2026-05-19 — 스토리 메뉴 상세 장부 분리 계획
 
 ### Status

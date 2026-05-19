@@ -1,8 +1,8 @@
 extends Control
 
-## Story replay screen. Lists every stage with its unlocked dialogue lines
-## (intro / boss intro / clear). Locked stages show a "coming soon" placeholder
-## so players see what's still to come without spoiling the dialogue itself.
+## Story reading screen. Lists every stage with its detailed chronicle chapter.
+## Runtime battle subtitles stay in story_dialogues.json and are shown only as
+## a compact "battle records" section after the chapter body.
 ##
 ## v0.32 ancient-grimoire reskin: hand-drawn chamber background, gold-framed
 ## header with story-book icon, per-stage wax seals, and chain-wrapped locked
@@ -152,9 +152,9 @@ func _build_stage_entry(stage_id: String) -> PanelContainer:
 		_add_locked_body(vbox)
 		return panel
 
-	_append_section(vbox, stage_id, "intro", "story_section_intro")
-	_append_section(vbox, stage_id, "boss_intro", "story_section_boss")
-	_append_section(vbox, stage_id, "clear", "story_section_clear")
+	_append_chapter_summary(vbox, stage_id)
+	_append_chapter_sections(vbox, stage_id)
+	_append_battle_records(vbox, stage_id)
 	return panel
 
 func _add_card_header(vbox: VBoxContainer, stage_id: String, unlocked: bool) -> void:
@@ -279,6 +279,115 @@ func _append_section(vbox: VBoxContainer, stage_id: String, slot: String, header
 		line.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		vbox.add_child(line)
 	_add_rule(vbox, _stage_accent(stage_id))
+
+func _append_chapter_summary(vbox: VBoxContainer, stage_id: String) -> void:
+	var chapter := Story.get_stage_chapter(stage_id) if Story else {}
+	var summary := String(chapter.get("summary", ""))
+	if summary.is_empty():
+		return
+	var header := Label.new()
+	header.text = _section_label("story_section_summary")
+	header.add_theme_font_size_override("font_size", 14)
+	header.add_theme_color_override("font_color", _stage_accent(stage_id).darkened(0.22))
+	header.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(header)
+
+	var label := Label.new()
+	label.text = summary
+	label.add_theme_font_size_override("font_size", 22)
+	label.add_theme_color_override("font_color", COLOR_INK)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vbox.add_child(label)
+	_add_rule(vbox, _stage_accent(stage_id))
+
+func _append_chapter_sections(vbox: VBoxContainer, stage_id: String) -> void:
+	var sections: Array = Story.get_chapter_sections(stage_id) if Story else []
+	if sections.is_empty():
+		return
+	var detail_header := Label.new()
+	detail_header.text = _section_label("story_section_detail")
+	detail_header.add_theme_font_size_override("font_size", 14)
+	detail_header.add_theme_color_override("font_color", _stage_accent(stage_id).darkened(0.22))
+	detail_header.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(detail_header)
+
+	for section in sections:
+		if not (section is Dictionary):
+			continue
+		var is_unlocked := bool(section.get("unlocked", false))
+		var heading := Label.new()
+		heading.text = String(section.get("heading", ""))
+		heading.add_theme_font_size_override("font_size", 22)
+		heading.add_theme_color_override("font_color", COLOR_INK if is_unlocked else COLOR_INK_FADED)
+		heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		vbox.add_child(heading)
+
+		var body := Label.new()
+		if is_unlocked:
+			body.text = String(section.get("text", ""))
+			body.add_theme_color_override("font_color", COLOR_INK)
+		else:
+			body.text = _locked_section_text(String(section.get("unlock", "")))
+			body.add_theme_color_override("font_color", COLOR_INK_FADED)
+		body.add_theme_font_size_override("font_size", 20)
+		body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		vbox.add_child(body)
+	_add_rule(vbox, _stage_accent(stage_id))
+
+func _append_battle_records(vbox: VBoxContainer, stage_id: String) -> void:
+	var slots := ["intro", "boss_intro", "clear"]
+	var added_header := false
+	for slot in slots:
+		var lines: Array = Story.get_stage_lines(stage_id, slot) if Story else []
+		if lines.is_empty():
+			continue
+		if not added_header:
+			var header := Label.new()
+			header.text = _section_label("story_section_battle_quotes")
+			header.add_theme_font_size_override("font_size", 14)
+			header.add_theme_color_override("font_color", _stage_accent(stage_id).darkened(0.22))
+			header.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			vbox.add_child(header)
+			added_header = true
+		var slot_label := Label.new()
+		slot_label.text = _section_label(_battle_slot_key(slot))
+		slot_label.add_theme_font_size_override("font_size", 13)
+		slot_label.add_theme_color_override("font_color", COLOR_INK_FADED)
+		vbox.add_child(slot_label)
+		for entry in lines:
+			if not (entry is Dictionary):
+				continue
+			var line := Label.new()
+			var speaker: String = String(entry.get("speaker", ""))
+			var text: String = String(entry.get("text", ""))
+			line.text = ("%s - %s" % [speaker, text]) if speaker != "" else text
+			line.add_theme_font_size_override("font_size", 18)
+			line.add_theme_color_override("font_color", COLOR_INK_FADED)
+			line.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			vbox.add_child(line)
+	if added_header:
+		_add_rule(vbox, _stage_accent(stage_id))
+
+func _battle_slot_key(slot: String) -> String:
+	match slot:
+		"intro":
+			return "story_section_intro"
+		"boss_intro":
+			return "story_section_boss"
+		"clear":
+			return "story_section_clear"
+		_:
+			return "story_section_battle_quotes"
+
+func _locked_section_text(unlock: String) -> String:
+	match unlock:
+		"stage_cleared":
+			return Localization.tr_key("story_locked_clear_required")
+		"campaign_cleared":
+			return Localization.tr_key("story_locked_campaign_required")
+		_:
+			return Localization.tr_key("story_locked_long")
 
 func _entry_style(stage_id: String) -> StyleBox:
 	var unlocked: bool = (GameData != null and GameData.is_stage_unlocked(stage_id))
