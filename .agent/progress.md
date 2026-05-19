@@ -1,5 +1,33 @@
 # Progress
 
+## 2026-05-19 — 스토리 메뉴 상세 장부 분리 계획
+
+### Status
+
+사용자 제안에 따라 인게임 스토리 자막은 핵심 진행 요약으로 유지하고, 메인 메뉴 StoryUI에서는 더 상세한 스토리 본문을 읽는 구조로 분리하는 계획을 정리했다. 이번 세션에서는 코드 구현을 진행하지 않고 다음 세션용 구현 계획과 작업 항목만 추가했다.
+
+### Completed
+
+- 초기 스토리 기준 문서 재확인
+  - `docs/story/STORY_FINAL_SPEC.md`
+  - `docs/story/STORY_STAGE_DIALOGUE.md`
+  - `docs/story/README.md`
+- 현재 구현 구조 확인
+  - `godot/data/story_dialogues.json`: 인게임 intro / boss_intro / clear 자막 데이터
+  - `Story.gd`: 현재 언어 기준 대사 조회
+  - `StoryUI.gd`: 해금된 스테이지의 동일 자막을 다시 표시
+- 새 구현 계획 문서 추가
+  - `docs/story/STORY_DETAIL_MENU_IMPLEMENTATION_PLAN.md`
+- `.agent/tasks.md`에 다음 세션용 `feat: 스토리 메뉴 상세 장부 데이터 분리` 체크리스트 추가
+
+### Next
+
+- `godot/data/story_chapters.json` 추가
+- `Story.gd` 상세 챕터 조회 API 추가
+- StoryUI를 상세 장부 본문 중심으로 변경
+- 해금/클리어 조건별 스포일러 제어 구현
+- JSON 문법 검사 및 Godot headless 검증
+
 ## 2026-05-19 — 스토리 화면 고대 장부 리디자인
 
 ### Status

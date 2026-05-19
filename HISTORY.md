@@ -1,5 +1,20 @@
 # HISTORY.md
 
+## 2026-05-19 (스토리 메뉴 상세 장부 분리 계획)
+
+- 날짜: 2026-05-19
+- 작업: 인게임 스토리 자막은 핵심 요약으로 유지하고, StoryUI에서는 별도 상세 챕터를 읽는 구조로 분리하는 다음 세션용 구현 계획 작성.
+- 변경 파일:
+  - `docs/story/STORY_DETAIL_MENU_IMPLEMENTATION_PLAN.md`
+  - `.agent/tasks.md`
+  - `.agent/progress.md`
+- 검증:
+  - 문서 작업만 수행. Godot 실행 검증은 해당 없음.
+- 결과:
+  - `story_dialogues.json`는 인게임 요약 자막용으로 유지하고, 신규 `story_chapters.json`를 StoryUI 상세 장부용으로 추가하는 방향을 확정 계획으로 기록.
+- 후속 작업:
+  - `story_chapters.json` 추가, `Story.gd` 조회 API 확장, StoryUI 상세 챕터 표시 구현.
+
 ## 2026-05-19 (스토리 화면 고대 장부 리디자인)
 
 - 날짜: 2026-05-19
