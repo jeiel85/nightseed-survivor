@@ -76,6 +76,11 @@ theme_override_colors/font_outline_color = Color(0.04, 0.03, 0.02, 0.85)
 theme_override_constants/outline_size = 3
 autowrap_mode = 3
 
+[node name="StageTabs" type="HBoxContainer" parent="VBox"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+alignment = 1
+
 [node name="ScrollContainer" type="ScrollContainer" parent="VBox"]
 size_flags_horizontal = 3
 size_flags_vertical = 3

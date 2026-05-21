@@ -47,9 +47,13 @@ const STAGE_SEALS := {
 @onready var book_icon: TextureRect = $VBox/HeaderPanel/HeaderInner/TitleRow/BookIcon
 @onready var title_label: Label = $VBox/HeaderPanel/HeaderInner/TitleRow/Title
 @onready var hint_label: Label = $VBox/HeaderPanel/HeaderInner/Hint
+@onready var stage_tabs: HBoxContainer = $VBox/StageTabs
+@onready var scroll_container: ScrollContainer = $VBox/ScrollContainer
 @onready var stage_list: VBoxContainer = $VBox/ScrollContainer/StageList
 @onready var btn_back: Button = $VBox/FooterRow/BtnBack
 @onready var btn_codex: Button = $VBox/FooterRow/BtnCodex
+
+var _stage_panels: Dictionary = {}
 
 func _ready() -> void:
 	AudioManager.play_bgm("menu")
@@ -127,6 +131,24 @@ func _refresh() -> void:
 func _rebuild_list() -> void:
 	for child in stage_list.get_children():
 		child.queue_free()
+	_stage_panels.clear()
+	if Stages == null:
+		_rebuild_stage_tabs()
+		return
+	for stage in Stages.stages:
+		if not (stage is Dictionary):
+			continue
+		var stage_id: String = String(stage.get("id", ""))
+		if stage_id.is_empty():
+			continue
+		var panel := _build_stage_entry(stage_id)
+		_stage_panels[stage_id] = panel
+		stage_list.add_child(panel)
+	_rebuild_stage_tabs()
+
+func _rebuild_stage_tabs() -> void:
+	for child in stage_tabs.get_children():
+		child.queue_free()
 	if Stages == null:
 		return
 	for stage in Stages.stages:
@@ -135,7 +157,35 @@ func _rebuild_list() -> void:
 		var stage_id: String = String(stage.get("id", ""))
 		if stage_id.is_empty():
 			continue
-		stage_list.add_child(_build_stage_entry(stage_id))
+		stage_tabs.add_child(_build_stage_tab(stage_id))
+
+func _build_stage_tab(stage_id: String) -> Button:
+	var btn := Button.new()
+	btn.custom_minimum_size = Vector2(64, 64)
+	btn.flat = true
+	btn.focus_mode = Control.FOCUS_NONE
+	btn.tooltip_text = Stages.display_name(stage_id) if Stages and Stages.has_method("display_name") else stage_id
+	var tex_path: String = String(STAGE_SEALS.get(stage_id, ""))
+	var tex := _try_load_texture(tex_path) if tex_path != "" else null
+	if tex != null:
+		btn.icon = tex
+		btn.expand_icon = true
+		btn.add_theme_constant_override("icon_max_width", 56)
+	else:
+		btn.text = _stage_icon_glyph(stage_id)
+		btn.add_theme_font_size_override("font_size", 28)
+		btn.add_theme_color_override("font_color", _stage_accent(stage_id).lightened(0.15))
+	var unlocked: bool = (GameData != null and GameData.is_stage_unlocked(stage_id))
+	if not unlocked:
+		btn.modulate = Color(0.55, 0.55, 0.62, 0.55)
+	btn.pressed.connect(_on_stage_tab_pressed.bind(stage_id))
+	return btn
+
+func _on_stage_tab_pressed(stage_id: String) -> void:
+	var panel: Control = _stage_panels.get(stage_id, null)
+	if panel == null or scroll_container == null:
+		return
+	scroll_container.ensure_control_visible(panel)
 
 func _build_stage_entry(stage_id: String) -> PanelContainer:
 	var panel := PanelContainer.new()
