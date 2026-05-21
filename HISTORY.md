@@ -1,5 +1,27 @@
 # HISTORY.md
 
+## 2026-05-21 (v0.34.0 — 스토리 화면 폴리시)
+
+- 날짜: 2026-05-21
+- 작업: v0.33.0에서 연결한 StoryUI 상세 장부의 잠금 안내·스포일러 처리·가독성을 폰 사용 흐름에 맞춰 다듬고, 상단에 스테이지 인장 가로 탭(점프 기능)을 추가.
+- 변경 파일:
+  - `godot/export_presets.cfg`
+  - `godot/scripts/core/Localization.gd`
+  - `godot/scripts/ui/StoryUI.gd`
+  - `godot/scenes/ui/StoryUI.tscn`
+  - `CHANGELOG.md`
+  - `docs/releases/v0.34.0.md`
+  - `play_store/release_notes/v0.34.0.txt`
+  - `HISTORY.md`
+- 구현:
+  - Android / Android AAB preset `versionCode` 37 → 38.
+  - Android / Android AAB preset `versionName` 0.33.0 → 0.34.0.
+  - 잠긴 스테이지 카드 안내를 이전 스테이지 이름 기반으로 교체 (`「메아리의 숲」 클리어 후 해금됩니다.`).
+  - 잠긴 챕터 섹션의 제목을 `???` 로 마스킹.
+  - 챕터 섹션 본문 폰트 20 → 22, 제목 22 → 23.
+  - 헤더 아래에 5개 스테이지 인장 가로 탭 추가. 클릭 시 `ScrollContainer.ensure_control_visible`로 해당 카드로 점프.
+  - `Localization.gd`에 `story_locked_prev_stage_fmt` 신규 키 추가.
+
 ## 2026-05-19 (v0.33.0 — 스토리 상세 장부와 한국어 문장 윤문)
 
 - 날짜: 2026-05-19

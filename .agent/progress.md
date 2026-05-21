@@ -1,5 +1,35 @@
 # Progress
 
+## 2026-05-21 — v0.34.0 스토리 화면 폴리시 + 릴리즈
+
+### Status
+
+v0.33.0에서 본문 데이터를 연결한 StoryUI에 4가지 폴리시(잠금 안내 구체화 / 잠긴 섹션 제목 마스킹 / 본문 폰트 상향 / 상단 인장 가로 점프 탭)를 적용하고 v0.34.0으로 릴리즈했다. 사용자 보고: v0.32.0이 깔린 폰에서 본문이 안 보였던 건 빌드 차이였고 코드/데이터는 정상이었음을 확인.
+
+### Completed
+
+- StoryUI 4종 폴리시 — 2개 커밋
+  - `b980d45 feat(story): 잠금 안내 구체화 + 섹션 제목 마스킹 + 본문 폰트 상향`
+  - `924106e feat(story): 상단 스테이지 인장 가로 탭으로 챕터 점프`
+- `godot/scripts/core/Localization.gd`에 `story_locked_prev_stage_fmt` 키 추가
+- `godot/scenes/ui/StoryUI.tscn` 헤더와 ScrollContainer 사이에 `StageTabs` HBoxContainer 추가
+- 릴리즈 정리
+  - `godot/export_presets.cfg` versionCode 37 → 38, versionName 0.33.0 → 0.34.0
+  - `CHANGELOG.md` v0.34.0 항목 추가
+  - `docs/releases/v0.34.0.md` 작성
+  - `play_store/release_notes/v0.34.0.txt` 작성 (KO 159자, EN 254자 — 500자 제한 통과)
+- 로컬 AAB 빌드 성공 (61,280,033 bytes, AndroidManifest에 0.34.0 확인)
+- `build/nightseed-survivor-release.mapping.txt` (16,320,122 bytes) 복사
+- 바탕화면 사본
+  - `C:\Users\jeiel\OneDrive\바탕 화면\nightseed-survivor-v0.34.0.aab`
+  - `C:\Users\jeiel\OneDrive\바탕 화면\nightseed-survivor-v0.34.0-release-notes.txt`
+
+### Next
+
+- 커밋 / main push / 태그 v0.34.0 push (자동 CI + GitHub Release)
+- 폰 실기에서 새 잠금 안내, `???` 마스킹, 본문 폰트, 인장 탭 점프 동작 확인
+- Play Console internal testing 트랙에 v0.34.0 AAB + mapping.txt 업로드 (v0.33.0 업로드 잔여분과 통합 가능)
+
 ## 2026-05-19 — v0.33.0 릴리즈 정리
 
 ### Status

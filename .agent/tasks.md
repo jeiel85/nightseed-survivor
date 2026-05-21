@@ -4,6 +4,26 @@
 > Phase 1~4 로드맵을 작업 단위로 풀어 놓은 운영 목록입니다. 코드 상태를
 > 기준으로 한 마지막 동기화는 v0.23.0 작업 시작 시점입니다.
 
+## 2026-05-21 완료 (v0.34.0 — 스토리 화면 폴리시)
+
+### feat: StoryUI 폴리시 + 점프 탭
+- [x] 잠긴 스테이지 카드 안내를 이전 스테이지 이름 기반으로 교체
+- [x] 잠긴 챕터 섹션 제목을 `???` 로 마스킹
+- [x] 챕터 본문 폰트 20 → 22, 제목 22 → 23
+- [x] 상단 5개 스테이지 인장 가로 탭 추가 (스크롤 점프)
+- [x] `Localization.gd`에 `story_locked_prev_stage_fmt` 신규 키
+- [x] Godot headless 단독/풀 프로젝트 로드 검증
+
+### chore: v0.34.0 릴리즈 정리
+- [x] `export_presets.cfg` versionCode 37 → 38, versionName 0.33.0 → 0.34.0
+- [x] `CHANGELOG.md` v0.34.0 항목 추가
+- [x] `docs/releases/v0.34.0.md` 작성
+- [x] `play_store/release_notes/v0.34.0.txt` 작성 (KO 159 / EN 254자)
+- [x] 로컬 AAB 빌드 + mapping.txt 복사
+- [x] 바탕화면에 AAB / 노트 사본 배치
+- [ ] 커밋 / push / 태그 push
+- [ ] GitHub Actions 성공 확인 및 Release 산출물 확인
+
 ## 2026-05-19 완료 (v0.33.0 — 스토리 상세 장부 릴리즈)
 
 ### chore: v0.33.0 릴리즈 정리

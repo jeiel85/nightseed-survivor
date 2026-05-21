@@ -1,0 +1,22 @@
+<ko-KR>
+🌙 스토리 화면 폴리시
+
+새로 추가
+• 상단 5개 스테이지 인장 가로 탭 — 누르면 해당 챕터로 점프
+• 잠긴 카드 안내가 이전 스테이지 이름을 직접 가리킴
+
+다듬기
+• 잠긴 챕터 섹션 제목을 ??? 로 마스킹 (결말 스포일러 가림)
+• 챕터 본문 폰트 크기 상향 (장문 가독성 개선)
+</ko-KR>
+<en-US>
+🌙 Story screen polish
+
+What's new
+• Five stage seals as quick-jump tabs at the top
+• Locked-card hints now point to the exact previous stage
+
+Polish
+• Locked section titles masked as ??? to hide endings
+• Larger chapter body font for long Korean passages
+</en-US>
