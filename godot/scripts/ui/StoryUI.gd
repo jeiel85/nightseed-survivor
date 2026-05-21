@@ -149,7 +149,7 @@ func _build_stage_entry(stage_id: String) -> PanelContainer:
 	var unlocked: bool = (GameData != null and GameData.is_stage_unlocked(stage_id))
 	_add_card_header(vbox, stage_id, unlocked)
 	if not unlocked:
-		_add_locked_body(vbox)
+		_add_locked_body(vbox, stage_id)
 		return panel
 
 	_append_chapter_summary(vbox, stage_id)
@@ -211,7 +211,7 @@ func _build_seal(stage_id: String, unlocked: bool) -> Control:
 	label.add_theme_color_override("font_color", _stage_accent(stage_id).lightened(0.12) if unlocked else Color(0.34, 0.35, 0.40, 1.0))
 	return label
 
-func _add_locked_body(vbox: VBoxContainer) -> void:
+func _add_locked_body(vbox: VBoxContainer, stage_id: String) -> void:
 	var chain_tex := _try_load_texture(STORY_CHAIN_PATH)
 	if chain_tex != null:
 		vbox.add_child(_make_chain_band(chain_tex))
@@ -238,7 +238,7 @@ func _add_locked_body(vbox: VBoxContainer) -> void:
 	vbox.add_child(lock_label)
 
 	var locked := Label.new()
-	locked.text = Localization.tr_key("story_locked_long")
+	locked.text = _locked_card_hint(stage_id)
 	locked.add_theme_font_size_override("font_size", 20)
 	locked.add_theme_color_override("font_color", COLOR_LOCKED_TEXT)
 	locked.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -247,6 +247,25 @@ func _add_locked_body(vbox: VBoxContainer) -> void:
 
 	if chain_tex != null:
 		vbox.add_child(_make_chain_band(chain_tex))
+
+func _locked_card_hint(stage_id: String) -> String:
+	var prev_id := _previous_stage_id(stage_id)
+	if prev_id == "" or Stages == null or not Stages.has_method("display_name"):
+		return Localization.tr_key("story_locked_long")
+	var prev_name: String = Stages.display_name(prev_id)
+	return Localization.tr_key("story_locked_prev_stage_fmt") % prev_name
+
+func _previous_stage_id(stage_id: String) -> String:
+	var stage_source: Array = Stages.stages if Stages else []
+	var prev_id := ""
+	for stage in stage_source:
+		if not (stage is Dictionary):
+			continue
+		var sid := String(stage.get("id", ""))
+		if sid == stage_id:
+			return prev_id
+		prev_id = sid
+	return ""
 
 func _make_chain_band(tex: Texture2D) -> TextureRect:
 	var chain := TextureRect.new()
@@ -317,8 +336,8 @@ func _append_chapter_sections(vbox: VBoxContainer, stage_id: String) -> void:
 			continue
 		var is_unlocked := bool(section.get("unlocked", false))
 		var heading := Label.new()
-		heading.text = String(section.get("heading", ""))
-		heading.add_theme_font_size_override("font_size", 22)
+		heading.text = String(section.get("heading", "")) if is_unlocked else "???"
+		heading.add_theme_font_size_override("font_size", 23)
 		heading.add_theme_color_override("font_color", COLOR_INK if is_unlocked else COLOR_INK_FADED)
 		heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		vbox.add_child(heading)
@@ -330,7 +349,7 @@ func _append_chapter_sections(vbox: VBoxContainer, stage_id: String) -> void:
 		else:
 			body.text = _locked_section_text(String(section.get("unlock", "")))
 			body.add_theme_color_override("font_color", COLOR_INK_FADED)
-		body.add_theme_font_size_override("font_size", 20)
+		body.add_theme_font_size_override("font_size", 22)
 		body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		vbox.add_child(body)
 	_add_rule(vbox, _stage_accent(stage_id))

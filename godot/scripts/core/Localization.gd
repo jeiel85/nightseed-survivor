@@ -35,6 +35,7 @@ const STRINGS: Dictionary = {
 	"story_title":         {"en": "Story", "ko": "스토리"},
 	"story_hint":          {"en": "Read unlocked chronicle chapters and their battle records.", "ko": "해금한 장부 챕터와 전투 기록을 읽을 수 있습니다."},
 	"story_locked_long":   {"en": "Locked — unlock this stage to read its story.", "ko": "이 스테이지를 해금하면 이야기가 열립니다."},
+	"story_locked_prev_stage_fmt": {"en": "Unlocks after clearing %s.", "ko": "「%s」 클리어 후 해금됩니다."},
 	"story_locked_clear_required": {"en": "Clear this stage to reveal the remaining fragment.", "ko": "이 스테이지를 클리어하면 남은 조각이 열립니다."},
 	"story_locked_campaign_required": {"en": "Clear the final stage to reveal the remaining night.", "ko": "마지막 스테이지를 클리어하면 남은 밤이 열립니다."},
 	"story_section_summary": {"en": "— Summary —", "ko": "— 요약 —"},
