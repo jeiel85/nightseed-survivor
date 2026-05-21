@@ -229,6 +229,11 @@ jobs:
 
           # 4. Set up branding page at root
           cp branding/index.html build/gh-pages-root/
+          # Mirror privacy.html to root so the legacy URL
+          # (https://jeiel85.github.io/nightseed-survivor/privacy.html)
+          # registered in Play Console / AdMob keeps working alongside
+          # the new /live/privacy.html path.
+          cp godot/web_extras/privacy.html build/gh-pages-root/
           
           # 5. Copy branding assets (icons, screenshots)
           cp play_store/icon_512.png build/gh-pages-root/assets/icon.png
